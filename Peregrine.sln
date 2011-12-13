@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB", "PeregrineDB\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingTools", "TestingTools", "{9109C4B1-3EA9-4E78-9024-D2CF4501BAF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDbTesting", "TestingTools\PeregrineDbTesting\PeregrineDbTesting.csproj", "{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDBTesting", "TestingTools\PeregrineDbTesting\PeregrineDBTesting.csproj", "{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

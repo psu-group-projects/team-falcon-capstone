@@ -8,8 +8,8 @@
     <ProjectGuid>{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeregrineDbTesting</RootNamespace>
-    <AssemblyName>PeregrineDbTesting</AssemblyName>
+    <RootNamespace>PeregrineDBTesting</RootNamespace>
+    <AssemblyName>PeregrineDBTesting</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
