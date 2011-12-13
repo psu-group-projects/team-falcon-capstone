@@ -46,6 +46,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="SQL\DropCreateJobTable.sql" />
+    <Content Include="SQL\DropCreateLogRelTable.sql" />
+    <Content Include="SQL\DropCreateMessagesTable.sql" />
+    <Content Include="SQL\DropCreatePeregrineDB.sql" />
+    <Content Include="SQL\DropCreateProcessTable.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
