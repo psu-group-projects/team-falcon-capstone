@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using System.Data.SqlClient;
+using System.IO;
 
 namespace PeregrineDbTesting
 {
@@ -17,19 +18,39 @@ namespace PeregrineDbTesting
                 switch (arg)
                 {
                     case "c":
-                        Console.WriteLine("Creating a new PeregrineDB will completely overwrite your current PeregrineDB.");
-                        Console.WriteLine("Are you sure you wish to do this?");
-
-                        SqlConnection connection = new SqlConnection("connectionString");
-                        SqlCommand command = new SqlCommand("script",connection);
-                        command.ExecuteNonQuery();
-
+                        createDB();
                         break;
                     default:
                         Console.WriteLine("Unknown argument: {0}", arg);
                         break;
                 }
             }
+        }
+
+        static void createDB()
+        {
+            FileInfo file;
+            string script;
+            SqlCommand command;
+
+            Console.WriteLine("Creating a new PeregrineDB will completely overwrite your current PeregrineDB (if it exists).");
+            Console.WriteLine("Are you sure you wish to do this?");
+
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder["Data Source"] = "(local)";
+            builder["integrated Security"] = true;
+            Console.WriteLine(builder.ConnectionString);
+
+            SqlConnection connection = new SqlConnection(builder.ConnectionString);
+
+            connection.Open();
+
+            file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreatePeregrineDB.sql");
+            script = file.OpenText().ReadToEnd();
+            command = new SqlCommand(script, connection);
+            command.ExecuteNonQuery();
+
+            connection.Close();
         }
     }
 }
