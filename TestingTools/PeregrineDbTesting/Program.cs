@@ -13,12 +13,17 @@ namespace PeregrineDbTesting
     {
         static void Main(string[] args)
         {
-            foreach (string arg in args)
+            if (args.Count() == 0)
+            {
+                Console.WriteLine("Arguments are required. Here are your options...");
+                Console.WriteLine("create - create a fresh Peregrine database");
+            }
+            else foreach (string arg in args)
             {
 
                 switch (arg)
                 {
-                    case "c":
+                    case "create":
                         createDB();
                         break;
                     default:
@@ -32,40 +37,56 @@ namespace PeregrineDbTesting
         {
             FileInfo file;
             string script;
+            string reply;
 
             Console.WriteLine("Creating a new PeregrineDB will completely overwrite your current PeregrineDB (if it exists).");
-            Console.WriteLine("Are you sure you wish to do this?");
+            Console.WriteLine("Are you sure you wish to do this? (yes/no)");
 
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder["Data Source"] = "(local)";
-            builder["integrated Security"] = true;
-            Console.WriteLine(builder.ConnectionString);
+            reply = Console.ReadLine();
 
-            SqlConnection connection = new SqlConnection(builder.ConnectionString);
+            if (reply == "yes")
+            {
 
-            connection.Open();
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder["Data Source"] = "(local)";
+                builder["integrated Security"] = true;
 
-            file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreatePeregrineDB.sql");
-            script = file.OpenText().ReadToEnd();
-            executeSqlStrings(connection, script);
+                Console.WriteLine("Connecting to SQL server using \"{0}\" connection string...", builder.ConnectionString);
 
-            file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateMessagesTable.sql");
-            script = file.OpenText().ReadToEnd();
-            executeSqlStrings(connection, script);
+                SqlConnection connection = new SqlConnection(builder.ConnectionString);
 
-            file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateProcessTable.sql");
-            script = file.OpenText().ReadToEnd();
-            executeSqlStrings(connection, script);
-            
-            file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateJobTable.sql");
-            script = file.OpenText().ReadToEnd();
-            executeSqlStrings(connection, script);
+                connection.Open();
 
-            file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateLogRelTable.sql");
-            script = file.OpenText().ReadToEnd();
-            executeSqlStrings(connection, script);
-            
-            connection.Close();
+                Console.WriteLine("Creating database...");
+
+                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreatePeregrineDB.sql");
+                script = file.OpenText().ReadToEnd();
+                executeSqlStrings(connection, script);
+
+                Console.WriteLine("Creating tables...");
+
+                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateMessagesTable.sql");
+                script = file.OpenText().ReadToEnd();
+                executeSqlStrings(connection, script);
+
+                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateProcessTable.sql");
+                script = file.OpenText().ReadToEnd();
+                executeSqlStrings(connection, script);
+
+                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateJobTable.sql");
+                script = file.OpenText().ReadToEnd();
+                executeSqlStrings(connection, script);
+
+                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateLogRelTable.sql");
+                script = file.OpenText().ReadToEnd();
+                executeSqlStrings(connection, script);
+
+                Console.WriteLine("Closing connection to SQL server...");
+
+                connection.Close();
+
+                Console.WriteLine("Finished!");
+            }
         }
 
         // Commands can only be one batch. Batches are seperated by GO statements.
