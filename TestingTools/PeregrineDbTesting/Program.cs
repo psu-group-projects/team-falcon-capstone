@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 
 using System.Data.SqlClient;
-using System.IO;
+// using System.IO; // needed for accessing files - not currently needed
 using System.Text.RegularExpressions;
 
-namespace PeregrineDbTesting
+namespace PeregrineDBTesting
 {
     class Program
     {
@@ -35,7 +35,6 @@ namespace PeregrineDbTesting
 
         static void createDB()
         {
-            FileInfo file;
             string script;
             string reply;
             string oldDBName = "PeregrineDB";
@@ -63,30 +62,25 @@ namespace PeregrineDbTesting
 
                 Console.WriteLine("Creating {0} database...", dbName);
 
-                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreatePeregrineDB.sql");
-                script = file.OpenText().ReadToEnd();
+                script = Properties.Resources.DropCreatePeregrineDB_sql + Environment.NewLine;
                 script = script.Replace(oldDBName, dbName);
                 executeSqlStrings(connection, script);
 
                 Console.WriteLine("Creating tables...");
 
-                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateMessagesTable.sql");
-                script = file.OpenText().ReadToEnd();
+                script = Properties.Resources.DropCreateProcessTable_sql + Environment.NewLine;
                 script = script.Replace(oldDBName, dbName);
                 executeSqlStrings(connection, script);
 
-                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateProcessTable.sql");
-                script = file.OpenText().ReadToEnd();
+                script = Properties.Resources.DropCreateJobTable_sql + Environment.NewLine;
                 script = script.Replace(oldDBName, dbName);
                 executeSqlStrings(connection, script);
 
-                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateJobTable.sql");
-                script = file.OpenText().ReadToEnd();
+                script = Properties.Resources.DropCreateMessagesTable_sql + Environment.NewLine;
                 script = script.Replace(oldDBName, dbName);
                 executeSqlStrings(connection, script);
 
-                file = new FileInfo("C:\\falcon\\source\\TestingTools\\PeregrineDbTesting\\SQL\\DropCreateLogRelTable.sql");
-                script = file.OpenText().ReadToEnd();
+                script = Properties.Resources.DropCreateLogRelTable_sql + Environment.NewLine;
                 script = script.Replace(oldDBName, dbName);
                 executeSqlStrings(connection, script);
 
@@ -101,7 +95,8 @@ namespace PeregrineDbTesting
         // Commands can only be one batch. Batches are seperated by GO statements.
         static string[] splitSqlAtGo(string commandString)
         {
-            string[] commands = Regex.Split(commandString, "GO\r\n");
+            string delimiter = "GO" + Environment.NewLine;
+            string[] commands = Regex.Split(commandString, delimiter);
             return commands;
         }
 
@@ -111,10 +106,13 @@ namespace PeregrineDbTesting
 
             foreach (string commandtext in commandtexts)
             {
-                //Console.WriteLine("Splt--------------");
-                //Console.WriteLine(commandtext);
-                SqlCommand command = new SqlCommand(commandtext, connection);
-                command.ExecuteNonQuery();
+                if (commandtext != "")
+                {
+                    //Console.WriteLine("Splt--------------");
+                    //Console.WriteLine(commandtext);
+                    SqlCommand command = new SqlCommand(commandtext, connection);
+                    command.ExecuteNonQuery();
+                }
             }
         }
 
