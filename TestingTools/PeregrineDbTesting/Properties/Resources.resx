@@ -466,4 +466,8 @@ EXEC sys.sp_addextendedproperty @name=N'microsoft_database_tools_support', @valu
 GO</value>
     <comment>SQL script to drop and create sysdiagrams table</comment>
   </data>
+  <data name="OldDBName" xml:space="preserve">
+    <value>PeregrineDB</value>
+    <comment>name of db to be replaced in script text</comment>
+  </data>
 </root>

@@ -245,5 +245,14 @@ namespace PeregrineDBTesting.Properties {
                 return ResourceManager.GetString("DropCreateSysdiagramsTable_sql", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PeregrineDB.
+        /// </summary>
+        internal static string OldDBName {
+            get {
+                return ResourceManager.GetString("OldDBName", resourceCulture);
+            }
+        }
     }
 }

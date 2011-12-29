@@ -38,10 +38,22 @@ namespace PeregrineDBTesting
         {
             string dbName = "TestDB";           // name of db to be created
             string reply;                       // for user input
+            Boolean okayToGo;                   // for input loop
 
-            Console.Write("Enter a database name (Enter for {0}): ", dbName);
-            reply = Console.ReadLine();
-            if (reply != "" && reply != "master") dbName = reply;            
+            okayToGo = false;
+            while (okayToGo == false)
+            {
+                Console.Write("Enter a database name (Enter for {0}): ", dbName);
+                reply = Console.ReadLine();
+                // make sure user doesn't enter 'master' or name of our master PeregrineDB
+                if (reply.ToLower() == Properties.Resources.OldDBName.ToLower()) Console.WriteLine("{0} is the name of the master database and cannot be used.", Properties.Resources.OldDBName);
+                else if (reply == "master") Console.WriteLine("The database cannot be named master.");
+                else
+                {
+                    if (reply != "") dbName = reply;
+                    okayToGo = true;
+                }
+            }
 
             Console.WriteLine(Environment.NewLine + "Warning! Creating a new {0} database will completely overwrite any other database of the same name.", dbName);
             Console.Write("Are you sure you wish to do this (yes/no)? ");
@@ -80,10 +92,8 @@ namespace PeregrineDBTesting
 
         static void executeScript(SqlConnection connection, string dbName, string script)
         {
-            string oldDBName = "PeregrineDB";   // used for search and replace in scripts
-
             script = script + Environment.NewLine;
-            script = script.Replace(oldDBName, dbName);
+            script = script.Replace(Properties.Resources.OldDBName, dbName);
             executeSqlStrings(connection, script);
         }
 
