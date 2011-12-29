@@ -117,6 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CreateSP_ShowProcesses_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 12/28/2011 16:36:10 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[ShowProcesses]
+AS
+    SET NOCOUNT ON;
+SELECT ProcessID, ProcessName, State from dbo.Process
+
+
+GO</value>
+    <comment>SQL script to create stored procedure: ShowProcesses</comment>
+  </data>
   <data name="DropCreateJobTable_sql" xml:space="preserve">
     <value>USE [PeregrineDB]
 GO

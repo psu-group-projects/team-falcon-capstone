@@ -36,16 +36,14 @@ namespace PeregrineDBTesting
 
         static void createDB()
         {
-            string script;                      // string for sql scripts
-            string reply;                       // for user input
-            string oldDBName = "PeregrineDB";   // used for search and replace in scripts
             string dbName = "TestDB";           // name of db to be created
+            string reply;                       // for user input
 
             Console.Write("Enter a database name (Enter for {0}): ", dbName);
             reply = Console.ReadLine();
             if (reply != "" && reply != "master") dbName = reply;            
 
-            Console.WriteLine("Warning! Creating a new {0} database will completely overwrite any other database of the same name.", dbName);
+            Console.WriteLine(Environment.NewLine + "Warning! Creating a new {0} database will completely overwrite any other database of the same name.", dbName);
             Console.Write("Are you sure you wish to do this (yes/no)? ");
             reply = Console.ReadLine();
             if (reply.ToLower() == "yes")
@@ -55,46 +53,38 @@ namespace PeregrineDBTesting
                 builder["Data Source"] = "(local)";
                 builder["integrated Security"] = true;
 
-                Console.WriteLine("Connecting to SQL server using \"{0}\" connection string...", builder.ConnectionString);
-
+                Console.WriteLine(Environment.NewLine + "Connecting to SQL server using \"{0}\" connection string...", builder.ConnectionString);
                 SqlConnection connection = new SqlConnection(builder.ConnectionString);
-
                 connection.Open();
 
                 Console.WriteLine("Creating {0} database...", dbName);
-
-                script = Properties.Resources.DropCreatePeregrineDB_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);     // replace previous dbname in sql script with dbName
-                executeSqlStrings(connection, script);
+                executeScript(connection, dbName, Properties.Resources.DropCreatePeregrineDB_sql);
 
                 Console.WriteLine("Creating tables...");
+                executeScript(connection, dbName, Properties.Resources.DropCreateProcessTable_sql);
+                executeScript(connection, dbName, Properties.Resources.DropCreateJobTable_sql);
+                executeScript(connection, dbName, Properties.Resources.DropCreateMessagesTable_sql);
+                executeScript(connection, dbName, Properties.Resources.DropCreateLogRelTable_sql);
+                // I'm not sure the following table is needed.
+                executeScript(connection, dbName, Properties.Resources.DropCreateSysdiagramsTable_sql);
 
-                script = Properties.Resources.DropCreateProcessTable_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);
-                executeSqlStrings(connection, script);
-
-                script = Properties.Resources.DropCreateJobTable_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);
-                executeSqlStrings(connection, script);
-
-                script = Properties.Resources.DropCreateMessagesTable_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);
-                executeSqlStrings(connection, script);
-
-                script = Properties.Resources.DropCreateLogRelTable_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);
-                executeSqlStrings(connection, script);
-
-                script = Properties.Resources.DropCreateSysdiagramsTable_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);
-                executeSqlStrings(connection, script);
+                Console.WriteLine("Creating stored procedures...");
+                executeScript(connection, dbName, Properties.Resources.CreateSP_ShowProcesses_sql);
 
                 Console.WriteLine("Closing connection to SQL server...");
-
                 connection.Close();
 
                 Console.WriteLine("Finished!");
             }
+        }
+
+        static void executeScript(SqlConnection connection, string dbName, string script)
+        {
+            string oldDBName = "PeregrineDB";   // used for search and replace in scripts
+
+            script = script + Environment.NewLine;
+            script = script.Replace(oldDBName, dbName);
+            executeSqlStrings(connection, script);
         }
 
         // Commands can only be one batch. Batches are seperated by GO statements.

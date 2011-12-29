@@ -64,6 +64,31 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
         ///
+        ////****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 12/28/2011 16:36:10 ******/
+        ///SET ANSI_NULLS ON
+        ///GO
+        ///
+        ///SET QUOTED_IDENTIFIER ON
+        ///GO
+        ///
+        ///CREATE PROCEDURE [dbo].[ShowProcesses]
+        ///AS
+        ///    SET NOCOUNT ON;
+        ///SELECT ProcessID, ProcessName, State from dbo.Process
+        ///
+        ///
+        ///GO.
+        /// </summary>
+        internal static string CreateSP_ShowProcesses_sql {
+            get {
+                return ResourceManager.GetString("CreateSP_ShowProcesses_sql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [PeregrineDB]
+        ///GO
+        ///
         ////****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
         ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[Job]&apos;) AND type in (N&apos;U&apos;))
         ///DROP TABLE [dbo].[Job]
