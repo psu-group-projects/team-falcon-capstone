@@ -33,27 +33,11 @@ namespace PeregrineAPI
         {
             if (msg_id == 0)
             {
-                return new Message
-                {
-                    MessageId = 1,
-                    ProcessId = 1,
-                    Timestamp = 1321654332,
-                    MessageStr = "Process has booted up.",
-                    Type = "Boot",
-                    Priority = 0,
-                };
+                return new Message(1,1,1321654332,"process has booted up", 0, 0);
             }
             else if (msg_id == 1)
             {
-                return new Message
-                {
-                    MessageId = 2,
-                    ProcessId = 3,
-                    Timestamp = 1541633011,
-                    MessageStr = "Process has stopped unexpectedly.",
-                    Type = "Error",
-                    Priority = 10,
-                };
+                return new Message(2,3,1541633011,"Process has stopped unexpectedly", -1, 10);
             }
             return null;
         }
@@ -62,24 +46,7 @@ namespace PeregrineAPI
         {
             return new List<Process>()
             {
-                new Process
-                {
-                    ProcessId = 1,
-                    ProcessName = "Compute PI",
-                    State = 0,
-                },
-                new Process
-                {
-                    ProcessId = 2,
-                    ProcessName = "Fluid Dynamics Sim",
-                    State = 1,
-                },
-                new Process
-                {
-                    ProcessId = 3,
-                    ProcessName = "Solve NP in P",
-                    State = 2,
-                },
+                new Process(1, "Compute PI", 0)
             };
         }
 
@@ -94,15 +61,7 @@ namespace PeregrineAPI
              * (new DateTime(1970,1,1,0,0,0)).AddSeconds(unixtimestamp)
              * */
             
-            return new Job
-            {
-                JobId = 0,
-                ProcessId = 0,
-                Timestamp = (DateTime.UtcNow - new DateTime(1970,1,1,0,0,0)).TotalSeconds,
-                JobName = job_name,
-                PlannedCount = job_count,
-                CompletedCount = 0
-            };
+            return new Job(0, 0, (DateTime.UtcNow - new DateTime(1970,1,1,0,0,0)).TotalSeconds, job_name, job_count, 0);
         }
     }
 }

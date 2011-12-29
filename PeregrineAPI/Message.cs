@@ -11,12 +11,23 @@ namespace PeregrineAPI
     [DataContract]
     public class Message
     {
-        int message_id = 0;
-        int process_id = 0;
-        double timestamp = 0;
-        string message = "Null";
-        string type = "Null";
-        int priority = 0;
+        int message_id;
+        int process_id;
+        double timestamp; //we dont know what type this should be! need to figure this out.
+        string message;
+        int type; //probly should be an enum (bootup, shutdown)
+        int priority;
+
+        public Message(int m_id, int p_id, double time, string msg, int type, int pri)
+        {
+            message_id = m_id;
+            process_id = p_id;
+            timestamp = time;
+            message = msg;
+            this.type = type;
+            priority = pri;
+        }
+
         
         [DataMember]
         public int MessageId
@@ -49,7 +60,7 @@ namespace PeregrineAPI
         //type could be shutdown, startup, general etc...
         //might want to make an enum out of this....
         [DataMember]
-        public string Type
+        public int Type
         {
             get { return type; }
             set { type = value; }
