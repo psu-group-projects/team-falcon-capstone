@@ -18,6 +18,7 @@ namespace PeregrineDBTesting
                 Console.WriteLine("Arguments are required. Here are your options...");
                 Console.WriteLine("create - create a fresh Peregrine database");
             }
+            // iterate through given arguments
             else foreach (string arg in args)
             {
 
@@ -35,10 +36,10 @@ namespace PeregrineDBTesting
 
         static void createDB()
         {
-            string script;
-            string reply;
-            string oldDBName = "PeregrineDB";
-            string dbName = "TestDB";
+            string script;                      // string for sql scripts
+            string reply;                       // for user input
+            string oldDBName = "PeregrineDB";   // used for search and replace in scripts
+            string dbName = "TestDB";           // name of db to be created
 
             Console.Write("Enter a database name (Enter for {0}): ", dbName);
             reply = Console.ReadLine();
@@ -49,7 +50,7 @@ namespace PeregrineDBTesting
             reply = Console.ReadLine();
             if (reply.ToLower() == "yes")
             {
-
+                // create connection string
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
                 builder["Data Source"] = "(local)";
                 builder["integrated Security"] = true;
@@ -63,7 +64,7 @@ namespace PeregrineDBTesting
                 Console.WriteLine("Creating {0} database...", dbName);
 
                 script = Properties.Resources.DropCreatePeregrineDB_sql + Environment.NewLine;
-                script = script.Replace(oldDBName, dbName);
+                script = script.Replace(oldDBName, dbName);     // replace previous dbname in sql script with dbName
                 executeSqlStrings(connection, script);
 
                 Console.WriteLine("Creating tables...");
