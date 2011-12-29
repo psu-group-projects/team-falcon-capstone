@@ -13,43 +13,18 @@ namespace PeregrineAPI
     public interface IPeregrineService
     {
 
-        [OperationContract]
-        string GetData(int value);
-
-        [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
-
         // TODO: Add your service operations here
         [OperationContract]
-        Message GetMessage(int msg_id);
+        Message getMessage(int msg_id);
 
         [OperationContract]
-        List<Process> GetAllProcesses();
+        List<Process> getAllProcesses();
 
         [OperationContract]
-        Job LogJobStart(string process_name, string job_name, int job_count = 1);
-    }
-
-
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
-    [DataContract]
-    public class CompositeType
-    {
-        bool boolValue = true;
-        string stringValue = "Hello ";
-
-        [DataMember]
-        public bool BoolValue
-        {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
-
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
+        Job logJobStart(string process_name, string job_name, int job_count = 1);
+        
+        // This will be the main fetching method for the front page. gets summary objects.
+        [OperationContract]
+        List <ProcessSummary> getProcessSummaryList(int start_id, int num_to_fetch, int sort_by); //sort_by should be an enum.
     }
 }
