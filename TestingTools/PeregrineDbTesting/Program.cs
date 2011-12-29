@@ -84,6 +84,10 @@ namespace PeregrineDBTesting
                 script = script.Replace(oldDBName, dbName);
                 executeSqlStrings(connection, script);
 
+                script = Properties.Resources.DropCreateSysdiagramsTable_sql + Environment.NewLine;
+                script = script.Replace(oldDBName, dbName);
+                executeSqlStrings(connection, script);
+
                 Console.WriteLine("Closing connection to SQL server...");
 
                 connection.Close();

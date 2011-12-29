@@ -64,7 +64,7 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  Table [dbo].[Job]    Script Date: 12/12/2011 17:52:49 ******/
+        ////****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
         ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[Job]&apos;) AND type in (N&apos;U&apos;))
         ///DROP TABLE [dbo].[Job]
         ///GO
@@ -72,7 +72,7 @@ namespace PeregrineDBTesting.Properties {
         ///USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  Table [dbo].[Job]    Script Date: 12/12/2011 17:52:49 ******/
+        ////****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
         ///SET ANSI_NULLS ON
         ///GO
         ///
@@ -114,7 +114,7 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  Table [dbo].[Messages]    Script Date: 12/12/2011 17:52:00 ******/
+        ////****** Object:  Table [dbo].[Messages]    Script Date: 12/28/2011 16:17:24 ******/
         ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[Messages]&apos;) AND type in (N&apos;U&apos;))
         ///DROP TABLE [dbo].[Messages]
         ///GO
@@ -122,7 +122,7 @@ namespace PeregrineDBTesting.Properties {
         ///USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  Table [dbo].[Messages]    Script Date: 12/12/2011 17:52:00 ******/
+        ////****** Object:  Table [dbo].[Messages]    Script Date: 12/28/2011 16:17:24 ******/
         ///SET ANSI_NULLS ON
         ///GO
         ///
@@ -143,7 +143,7 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 12/12/2011 17:49:07 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
         ///IF  EXISTS (SELECT name FROM sys.databases WHERE name = N&apos;PeregrineDB&apos;)
         ///DROP DATABASE [PeregrineDB]
         ///GO
@@ -151,7 +151,7 @@ namespace PeregrineDBTesting.Properties {
         ///USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 12/12/2011 17:49:07 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
         ///CREATE DATABASE [PeregrineDB] ON  PRIMARY 
         ///( NAME = N&apos;PeregrineDB&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf&apos; , SIZE = 2048KB , MAXSIZE  [rest of string was truncated]&quot;;.
         /// </summary>
@@ -165,7 +165,7 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  Table [dbo].[Process]    Script Date: 12/12/2011 17:52:18 ******/
+        ////****** Object:  Table [dbo].[Process]    Script Date: 12/28/2011 16:18:32 ******/
         ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[Process]&apos;) AND type in (N&apos;U&apos;))
         ///DROP TABLE [dbo].[Process]
         ///GO
@@ -173,7 +173,7 @@ namespace PeregrineDBTesting.Properties {
         ///USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  Table [dbo].[Process]    Script Date: 12/12/2011 17:52:18 ******/
+        ////****** Object:  Table [dbo].[Process]    Script Date: 12/28/2011 16:18:32 ******/
         ///SET ANSI_NULLS ON
         ///GO
         ///
@@ -187,6 +187,37 @@ namespace PeregrineDBTesting.Properties {
         internal static string DropCreateProcessTable_sql {
             get {
                 return ResourceManager.GetString("DropCreateProcessTable_sql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [PeregrineDB]
+        ///GO
+        ///
+        ////****** Object:  Table [dbo].[sysdiagrams]    Script Date: 12/28/2011 16:12:12 ******/
+        ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[sysdiagrams]&apos;) AND type in (N&apos;U&apos;))
+        ///DROP TABLE [dbo].[sysdiagrams]
+        ///GO
+        ///
+        ///USE [PeregrineDB]
+        ///GO
+        ///
+        ////****** Object:  Table [dbo].[sysdiagrams]    Script Date: 12/28/2011 16:12:12 ******/
+        ///SET ANSI_NULLS ON
+        ///GO
+        ///
+        ///SET QUOTED_IDENTIFIER ON
+        ///GO
+        ///
+        ///SET ANSI_PADDING ON
+        ///GO
+        ///
+        ///CREATE TABLE [dbo].[sysdiagrams](
+        ///	[name] [sysname]  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DropCreateSysdiagramsTable_sql {
+            get {
+                return ResourceManager.GetString("DropCreateSysdiagramsTable_sql", resourceCulture);
             }
         }
     }
