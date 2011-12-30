@@ -1,0 +1,88 @@
+﻿@model IEnumerable<PeregrineWebUI.Models.Message>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+        <script src="../../Scripts/jquery-1.4.1.min.js"></script> 
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script> 
+        <style type="text/css">       
+             @@import url(../../Scripts/datatables/media/css/demo_table.css);
+        </style>
+         
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                ajaxcall();
+            });
+
+            function GetDate(jsonDate) {
+                var value = new Date(parseInt(jsonDate.substr(6)));
+                return value.getMonth() + 1 + "/" + value.getDate() + "/" + value.getFullYear() + "   " + value.getHours() + ":" + value.getMinutes() + ":" + value.getSeconds();
+            }
+
+            function ajaxcall() {
+                $.ajax({
+                    url: 'home/getMessage',
+                    type: 'POST',
+                    success: function (data) {
+                        $("#messageTableBody").empty();
+                        $("#messageTemplate").tmpl(data).appendTo("#messageTableBody");
+                    }
+                })
+                setTimeout(ajaxcall, 5000);
+            }
+        </script> 
+
+         <script id='messageTemplate' type='text/x-jquery-tmpl'>
+               <tr>
+                    <td align="center">${processName}</td>
+                    <td align="center">${content}</td>
+                    <td align="center">${priority}</td>
+                    <td align="center">${GetDate(Date)}</td>
+              </tr>                              
+         </script>            
+</head>
+<body>
+    <h2>Welcom to Peregrine</h2>
+         
+        <p></p>
+        <div id="container">
+            <div id="demo">
+                <table class="display">
+                    <thead>
+                        <tr>
+                            <th>
+                                ProcessName
+                            </th>
+                            <th>
+                                Content
+                            </th>
+                            <th>
+                                Priority
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id='messageTableBody'>
+                    
+ 
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+                            
+
+        <div id="footer">
+            <p>.</p>
+            <hr />
+            <h3 style="text-align:center">Copyright 2011 . Teamfalcons PSU capstone project</h3>
+        </div>
+</body>
+</html>
