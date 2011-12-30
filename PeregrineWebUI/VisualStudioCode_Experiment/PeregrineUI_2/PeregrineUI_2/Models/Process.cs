@@ -101,11 +101,12 @@ namespace PeregrineUI_2.Models
             ProcessesData.Add(new Process { ProcessName = "Falcon84", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm tt"), ProcessState = "GREEN" });
 
             var pagingContext = new PagedData<Process>();
-            int totalpage = Convert.ToInt32(Math.Ceiling((double)ProcessesData.Count() / pagesize));
 
             // Filtering if searching is actived
             if (searchpattern != "")
                 ProcessesData = ProcessesData.Where(p => p.ProcessName.Contains(searchpattern)).ToList();
+
+            int totalpage = Convert.ToInt32(Math.Ceiling((double)ProcessesData.Count() / pagesize));
 
             // Handle the case when user want to fetch a page that < 1 or > total page
             if (page > totalpage)
