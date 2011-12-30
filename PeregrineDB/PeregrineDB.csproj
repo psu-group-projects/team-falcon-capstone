@@ -8,8 +8,8 @@
     <ProjectGuid>{C785DAD0-7D82-41D5-A34B-2080E69FFB78}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ParegrineDB</RootNamespace>
-    <AssemblyName>ParegrineDB</AssemblyName>
+    <RootNamespace>PeregrineDB</RootNamespace>
+    <AssemblyName>PeregrineDB</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
