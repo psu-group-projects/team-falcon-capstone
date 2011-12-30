@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PeregrineDB" Class="ParegrineDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=CAPSTONEBB;Initial Catalog=PeregrineDB;Integrated Security=True" SettingsObjectName="ParegrineDB.Properties.Settings" SettingsPropertyName="PeregrineDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Process" Member="Processes">
+    <Type Name="Process" Id="ID1">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Process_LogRel" Member="LogRels" ThisKey="ProcessID" OtherKey="ProcessID" Type="LogRel" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LogRel" Member="LogRels">
+    <Type Name="LogRel">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Process_LogRel" Member="Process" ThisKey="ProcessID" OtherKey="ProcessID" Type="Process" IsForeignKey="true" />
+      <Association Name="Job_LogRel" Member="Job" ThisKey="JobID" OtherKey="JobID" Type="Job" IsForeignKey="true" />
+      <Association Name="Message_LogRel" Member="Message" ThisKey="MessageID" OtherKey="MessageID" Type="Message" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Job" Member="Jobs">
+    <Type Name="Job">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Job_LogRel" Member="LogRels" ThisKey="JobID" OtherKey="JobID" Type="LogRel" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Messages" Member="Messages">
+    <Type Name="Message">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Message" Member="Message1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Prority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Message_LogRel" Member="LogRel" ThisKey="MessageID" OtherKey="MessageID" Type="LogRel" Cardinality="One" />
+    </Type>
+  </Table>
+  <Function Name="dbo.GetTable1" Method="GetTable1">
+    <ElementType IdRef="ID1" />
+  </Function>
+</Database>
