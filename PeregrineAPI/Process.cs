@@ -11,9 +11,16 @@ namespace PeregrineAPI
     [DataContract]
     public class Process
     {
-        int process_id = 0;
-        string process_name = "Null";
-        int state = 0;
+        int process_id;
+        string process_name;
+        int state;
+
+        public Process(int p_id, string p_name, int st)
+        {
+            process_id = p_id;
+            process_name = p_name;
+            state = st;
+        }
 
         [DataMember]
         public int ProcessId

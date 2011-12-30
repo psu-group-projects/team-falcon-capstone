@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="IPeregrineService.cs" />
     <Compile Include="Process.cs" />
+    <Compile Include="ProcessSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

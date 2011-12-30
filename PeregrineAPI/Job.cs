@@ -11,12 +11,22 @@ namespace PeregrineAPI
     [DataContract]
     public class Job
     {
-        int job_id = 0;
-        int process_id = 0;
-        double timestamp = 0;
-        string job_name = "Null";
-        int completed_count = 0;
-        int planned_count = 1;
+        int job_id;
+        int process_id;
+        double timestamp;
+        string job_name;
+        int completed_count;
+        int planned_count;
+
+        public Job(int j_id, int p_id, double time, string j_name, int complete, int planned)
+        {
+            job_id = j_id;
+            process_id = p_id;
+            timestamp = time;
+            job_name = j_name;
+            completed_count = complete;
+            planned_count = planned;
+        }
         
         [DataMember]
         public int JobId
