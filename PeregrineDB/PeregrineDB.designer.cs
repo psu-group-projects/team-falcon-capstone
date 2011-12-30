@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ParegrineDB
+namespace PeregrineDB
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -45,7 +45,7 @@ namespace ParegrineDB
     #endregion
 		
 		public PeregrineDBDataContext() : 
-				base(global::ParegrineDB.Properties.Settings.Default.PeregrineDBConnectionString, mappingSource)
+				base(global::PeregrineDB.Properties.Settings.Default.PeregrineDBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

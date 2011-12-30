@@ -7,7 +7,7 @@ using System.Data.Linq.Mapping;
 
 
 
-namespace ParegrineDB
+namespace PeregrineDB
 {
     /*
     [Table(Name = "Process")]
