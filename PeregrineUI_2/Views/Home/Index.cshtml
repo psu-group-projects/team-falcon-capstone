@@ -1,0 +1,42 @@
+﻿@*
+Author   : Chinh T Cao
+           Anh T Nguyen
+Version  : 1.0.0
+Date     : 12/29/2011
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*@
+
+@{
+    ViewBag.Title = "Peregrine Main Page";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        @* Set up the initial stage of the main page *@
+        paging(parseInt("1"));       
+
+        @* Handle clicking page number *@
+        $(".page-number").live("click", function () {
+            var page = parseInt($(this).html());
+            paging(parseInt($(this).html()));
+        });
+
+        @* Automatic refresh the page *@
+        setInterval(function () {
+            paging(parseInt("1"));
+        }, 10000);
+
+    });
+
+</script>
+
+<h2>Processes Summary</h2>
+
+<fieldset>
+    <label>Search:</label>
+    <input id="search_input_id" type="text" onchange="searching(this.id)" />
+</fieldset>
+
+<div class="process-list"></div>

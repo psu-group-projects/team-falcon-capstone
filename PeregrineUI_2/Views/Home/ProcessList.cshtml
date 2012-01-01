@@ -1,0 +1,144 @@
+﻿@*
+Author   : Chinh T Cao
+           Anh T Nguyen
+Version  : 1.0.0
+Date     : 12/29/2011
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*@
+
+@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
+
+<style type="text/css">       
+        @@import url(../../Content/ProcessTable.css);         
+</style>
+
+
+<script type="text/javascript">
+
+    function sorting(chkboxname) {
+        // Getting the state of the chose checkbox
+        var state = document.getElementById(chkboxname).checked;
+
+        // If we check this checkbox, turnoff the other sorting checkbox
+        if (state) {
+            document.getElementById("ProcessName_checkbox").checked = false;
+            document.getElementById("LastMsg_checkbox").checked = false;
+            document.getElementById("MsgDate_checkbox").checked = false;
+            document.getElementById("ProcessState_checkbox").checked = false;
+            document.getElementById(chkboxname).checked = true;
+
+            // Make ajax call to controller to update the table          
+        }
+        else {
+            // We are not allowed all sorting checkbox uncheck
+            document.getElementById(chkboxname).checked = true;
+        }
+    }
+
+    $("#process_table").jExpand();
+</script>
+
+<table id="process_table" class="display">
+    <thead>
+        <tr>
+            <td>ProcessName <input id="ProcessName_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
+            <td>LastMessage <input id="LastMsg_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
+            <td>MsgDate <input id="MsgDate_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
+            <td>ProcessState <input id="ProcessState_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var process in Model.Data)
+        {
+            <tr>
+                <td>@process.ProcessName </td>
+                <td>@process.LastAction </td>
+                <td>@process.MsgDate </td>
+                <td><center><img src="..\..\Content\images\@(process.ProcessState.Trim()).png" alt=""/></center> </td>
+                <td><div class="arrow"></div></td>
+                           
+            </tr>
+            <tr>
+                <td colspan="5">Process details will be here</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                @{  // Pagination     
+                        
+                    int start, end;
+
+                    // Get the value of start and end based on the value of currpage and total number of page
+                    if (Model.NumberOfPages <= 5)
+                    {
+                        // If the total number of page is less than 5, show all to user
+                        start = 0;
+                        end = Model.NumberOfPages;
+                    }
+                    else
+                    {
+                        // Else, allows user to choose first page, last page and 5 other page around current chose page
+                        start = Model.CurrentPage - 2;
+                        end = Model.CurrentPage + 2;
+
+                        if (start < 1)
+                        {
+                            start = 1;
+                            end = 5;
+                        }
+                        else if (end > Model.NumberOfPages)
+                        {
+                            start = Model.NumberOfPages - 4;
+                            end = Model.NumberOfPages;
+                        }
+                    }
+
+                    for (int i = 1; i <= Model.NumberOfPages; i++)
+                    {
+                        if (i < start)
+                        {
+                            if (i == 1)
+                            {
+                                    <a class="page-number" href="javascript:void();">@i</a>   
+                            }
+                            else
+                            {
+                                    <label>...</label>
+                                i = start - 1;
+                            }
+                        }
+                        else if (i > end)
+                        {
+                            if (i == Model.NumberOfPages)
+                            {
+                                    <a class="page-number" href="javascript:void();">@i</a>
+                            }
+                            else
+                            {
+                                    <label>...</label>
+                                i = Model.NumberOfPages - 1;
+                            }
+                        }
+                        else if (i == Model.CurrentPage)
+                        {
+                                @i
+                        }
+                        else
+                        {
+                                <a class="page-number" href="javascript:void();">@i</a>
+                            }
+                        }    
+                                                               
+                }
+                            
+                <label>|</label>
+                <label>Go to page:</label>
+                <input id="page_target" type="text" style="width: 40px" onchange="paging(document.getElementById(this.id).value)"/>
+                
+            </td>
+        </tr>              
+    </tfoot>
+</table>
