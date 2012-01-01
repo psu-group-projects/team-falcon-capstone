@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB", "PeregrineDB\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB_WinForm", "PeregrineDB_WinForm\PeregrineDB_WinForm\PeregrineDB_WinForm.csproj", "{F4BC4E7D-A05A-4F53-9166-0C660A241D32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineUI_2", "..\PeregrineUI_2\PeregrineUI_2\PeregrineUI_2.csproj", "{CEA4F3F9-B56A-41CC-AC45-C33485CE71B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineUI_2", "PeregrineUI_2\PeregrineUI_2.csproj", "{CEA4F3F9-B56A-41CC-AC45-C33485CE71B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
