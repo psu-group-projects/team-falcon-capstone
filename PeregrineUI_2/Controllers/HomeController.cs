@@ -24,7 +24,7 @@ namespace PeregrineUI_2.Controllers
         public const int PageSize = 10;
 
         [HttpGet]
-        public ActionResult Index()
+        public ViewResult Index()
         {            
             return View();
         }

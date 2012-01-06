@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB_WinForm", "Pere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineUI_2", "PeregrineUI_2\PeregrineUI_2.csproj", "{CEA4F3F9-B56A-41CC-AC45-C33485CE71B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peregine_nunit.test", "Peregine_nunit.test\Peregine_nunit.test.csproj", "{1908F63A-28AD-4359-AAC8-ABEB16205F95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,16 @@ Global
 		{CEA4F3F9-B56A-41CC-AC45-C33485CE71B4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CEA4F3F9-B56A-41CC-AC45-C33485CE71B4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CEA4F3F9-B56A-41CC-AC45-C33485CE71B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

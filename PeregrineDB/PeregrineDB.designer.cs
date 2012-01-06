@@ -33,15 +33,15 @@ namespace PeregrineDB
     partial void InsertProcess(Process instance);
     partial void UpdateProcess(Process instance);
     partial void DeleteProcess(Process instance);
+    partial void InsertMessage(Message instance);
+    partial void UpdateMessage(Message instance);
+    partial void DeleteMessage(Message instance);
     partial void InsertLogRel(LogRel instance);
     partial void UpdateLogRel(LogRel instance);
     partial void DeleteLogRel(LogRel instance);
     partial void InsertJob(Job instance);
     partial void UpdateJob(Job instance);
     partial void DeleteJob(Job instance);
-    partial void InsertMessage(Message instance);
-    partial void UpdateMessage(Message instance);
-    partial void DeleteMessage(Message instance);
     #endregion
 		
 		public PeregrineDBDataContext() : 
@@ -82,6 +82,14 @@ namespace PeregrineDB
 			}
 		}
 		
+		public System.Data.Linq.Table<Message> Messages
+		{
+			get
+			{
+				return this.GetTable<Message>();
+			}
+		}
+		
 		public System.Data.Linq.Table<LogRel> LogRels
 		{
 			get
@@ -98,19 +106,18 @@ namespace PeregrineDB
 			}
 		}
 		
-		public System.Data.Linq.Table<Message> Messages
-		{
-			get
-			{
-				return this.GetTable<Message>();
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetTable1")]
 		public ISingleResult<Process> GetTable1()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((ISingleResult<Process>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateProcesses")]
+		public ISingleResult<UpdateProcessesResult> UpdateProcesses([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="NChar(200)")] string processName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="State", DbType="Int")] System.Nullable<int> state)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, processName, state);
+			return ((ISingleResult<UpdateProcessesResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -146,7 +153,7 @@ namespace PeregrineDB
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ProcessID
 		{
 			get
@@ -166,7 +173,7 @@ namespace PeregrineDB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(15) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
 		public string ProcessName
 		{
 			get
@@ -252,425 +259,6 @@ namespace PeregrineDB
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogRel")]
-	public partial class LogRel : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _MessageID;
-		
-		private int _ProcessID;
-		
-		private System.Nullable<int> _JobID;
-		
-		private EntityRef<Process> _Process;
-		
-		private EntityRef<Job> _Job;
-		
-		private EntityRef<Message> _Message;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMessageIDChanging(int value);
-    partial void OnMessageIDChanged();
-    partial void OnProcessIDChanging(int value);
-    partial void OnProcessIDChanged();
-    partial void OnJobIDChanging(System.Nullable<int> value);
-    partial void OnJobIDChanged();
-    #endregion
-		
-		public LogRel()
-		{
-			this._Process = default(EntityRef<Process>);
-			this._Job = default(EntityRef<Job>);
-			this._Message = default(EntityRef<Message>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int MessageID
-		{
-			get
-			{
-				return this._MessageID;
-			}
-			set
-			{
-				if ((this._MessageID != value))
-				{
-					if (this._Message.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMessageIDChanging(value);
-					this.SendPropertyChanging();
-					this._MessageID = value;
-					this.SendPropertyChanged("MessageID");
-					this.OnMessageIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
-		public int ProcessID
-		{
-			get
-			{
-				return this._ProcessID;
-			}
-			set
-			{
-				if ((this._ProcessID != value))
-				{
-					if (this._Process.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnProcessIDChanging(value);
-					this.SendPropertyChanging();
-					this._ProcessID = value;
-					this.SendPropertyChanged("ProcessID");
-					this.OnProcessIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int")]
-		public System.Nullable<int> JobID
-		{
-			get
-			{
-				return this._JobID;
-			}
-			set
-			{
-				if ((this._JobID != value))
-				{
-					if (this._Job.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnJobIDChanging(value);
-					this.SendPropertyChanging();
-					this._JobID = value;
-					this.SendPropertyChanged("JobID");
-					this.OnJobIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_LogRel", Storage="_Process", ThisKey="ProcessID", OtherKey="ProcessID", IsForeignKey=true)]
-		public Process Process
-		{
-			get
-			{
-				return this._Process.Entity;
-			}
-			set
-			{
-				Process previousValue = this._Process.Entity;
-				if (((previousValue != value) 
-							|| (this._Process.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Process.Entity = null;
-						previousValue.LogRels.Remove(this);
-					}
-					this._Process.Entity = value;
-					if ((value != null))
-					{
-						value.LogRels.Add(this);
-						this._ProcessID = value.ProcessID;
-					}
-					else
-					{
-						this._ProcessID = default(int);
-					}
-					this.SendPropertyChanged("Process");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_LogRel", Storage="_Job", ThisKey="JobID", OtherKey="JobID", IsForeignKey=true)]
-		public Job Job
-		{
-			get
-			{
-				return this._Job.Entity;
-			}
-			set
-			{
-				Job previousValue = this._Job.Entity;
-				if (((previousValue != value) 
-							|| (this._Job.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Job.Entity = null;
-						previousValue.LogRels.Remove(this);
-					}
-					this._Job.Entity = value;
-					if ((value != null))
-					{
-						value.LogRels.Add(this);
-						this._JobID = value.JobID;
-					}
-					else
-					{
-						this._JobID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Job");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_Message", ThisKey="MessageID", OtherKey="MessageID", IsForeignKey=true)]
-		public Message Message
-		{
-			get
-			{
-				return this._Message.Entity;
-			}
-			set
-			{
-				Message previousValue = this._Message.Entity;
-				if (((previousValue != value) 
-							|| (this._Message.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Message.Entity = null;
-						previousValue.LogRel = null;
-					}
-					this._Message.Entity = value;
-					if ((value != null))
-					{
-						value.LogRel = this;
-						this._MessageID = value.MessageID;
-					}
-					else
-					{
-						this._MessageID = default(int);
-					}
-					this.SendPropertyChanged("Message");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Job")]
-	public partial class Job : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _JobID;
-		
-		private string _JobName;
-		
-		private System.Nullable<int> _PlannedCount;
-		
-		private System.Nullable<int> _CompletedCount;
-		
-		private System.Nullable<double> _PercentComplete;
-		
-		private EntitySet<LogRel> _LogRels;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnJobIDChanging(int value);
-    partial void OnJobIDChanged();
-    partial void OnJobNameChanging(string value);
-    partial void OnJobNameChanged();
-    partial void OnPlannedCountChanging(System.Nullable<int> value);
-    partial void OnPlannedCountChanged();
-    partial void OnCompletedCountChanging(System.Nullable<int> value);
-    partial void OnCompletedCountChanged();
-    partial void OnPercentCompleteChanging(System.Nullable<double> value);
-    partial void OnPercentCompleteChanged();
-    #endregion
-		
-		public Job()
-		{
-			this._LogRels = new EntitySet<LogRel>(new Action<LogRel>(this.attach_LogRels), new Action<LogRel>(this.detach_LogRels));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int JobID
-		{
-			get
-			{
-				return this._JobID;
-			}
-			set
-			{
-				if ((this._JobID != value))
-				{
-					this.OnJobIDChanging(value);
-					this.SendPropertyChanging();
-					this._JobID = value;
-					this.SendPropertyChanged("JobID");
-					this.OnJobIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(10) NOT NULL", CanBeNull=false)]
-		public string JobName
-		{
-			get
-			{
-				return this._JobName;
-			}
-			set
-			{
-				if ((this._JobName != value))
-				{
-					this.OnJobNameChanging(value);
-					this.SendPropertyChanging();
-					this._JobName = value;
-					this.SendPropertyChanged("JobName");
-					this.OnJobNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
-		public System.Nullable<int> PlannedCount
-		{
-			get
-			{
-				return this._PlannedCount;
-			}
-			set
-			{
-				if ((this._PlannedCount != value))
-				{
-					this.OnPlannedCountChanging(value);
-					this.SendPropertyChanging();
-					this._PlannedCount = value;
-					this.SendPropertyChanged("PlannedCount");
-					this.OnPlannedCountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
-		public System.Nullable<int> CompletedCount
-		{
-			get
-			{
-				return this._CompletedCount;
-			}
-			set
-			{
-				if ((this._CompletedCount != value))
-				{
-					this.OnCompletedCountChanging(value);
-					this.SendPropertyChanging();
-					this._CompletedCount = value;
-					this.SendPropertyChanged("CompletedCount");
-					this.OnCompletedCountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
-		public System.Nullable<double> PercentComplete
-		{
-			get
-			{
-				return this._PercentComplete;
-			}
-			set
-			{
-				if ((this._PercentComplete != value))
-				{
-					this.OnPercentCompleteChanging(value);
-					this.SendPropertyChanging();
-					this._PercentComplete = value;
-					this.SendPropertyChanged("PercentComplete");
-					this.OnPercentCompleteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_LogRel", Storage="_LogRels", ThisKey="JobID", OtherKey="JobID")]
-		public EntitySet<LogRel> LogRels
-		{
-			get
-			{
-				return this._LogRels;
-			}
-			set
-			{
-				this._LogRels.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_LogRels(LogRel entity)
-		{
-			this.SendPropertyChanging();
-			entity.Job = this;
-		}
-		
-		private void detach_LogRels(LogRel entity)
-		{
-			this.SendPropertyChanging();
-			entity.Job = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Messages")]
 	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -711,7 +299,7 @@ namespace PeregrineDB
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int MessageID
 		{
 			get
@@ -731,7 +319,7 @@ namespace PeregrineDB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Message", Storage="_Message1", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Message", Storage="_Message1", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
 		public string Message1
 		{
 			get
@@ -857,6 +445,487 @@ namespace PeregrineDB
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogRel")]
+	public partial class LogRel : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _MessageID;
+		
+		private int _ProcessID;
+		
+		private System.Nullable<int> _JobID;
+		
+		private EntityRef<Message> _Message;
+		
+		private EntityRef<Process> _Process;
+		
+		private EntityRef<Job> _Job;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMessageIDChanging(int value);
+    partial void OnMessageIDChanged();
+    partial void OnProcessIDChanging(int value);
+    partial void OnProcessIDChanged();
+    partial void OnJobIDChanging(System.Nullable<int> value);
+    partial void OnJobIDChanged();
+    #endregion
+		
+		public LogRel()
+		{
+			this._Message = default(EntityRef<Message>);
+			this._Process = default(EntityRef<Process>);
+			this._Job = default(EntityRef<Job>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					if (this._Message.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMessageIDChanging(value);
+					this.SendPropertyChanging();
+					this._MessageID = value;
+					this.SendPropertyChanged("MessageID");
+					this.OnMessageIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					if (this._Process.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProcessIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProcessID = value;
+					this.SendPropertyChanged("ProcessID");
+					this.OnProcessIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int")]
+		public System.Nullable<int> JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					if (this._Job.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnJobIDChanging(value);
+					this.SendPropertyChanging();
+					this._JobID = value;
+					this.SendPropertyChanged("JobID");
+					this.OnJobIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_Message", ThisKey="MessageID", OtherKey="MessageID", IsForeignKey=true)]
+		public Message Message
+		{
+			get
+			{
+				return this._Message.Entity;
+			}
+			set
+			{
+				Message previousValue = this._Message.Entity;
+				if (((previousValue != value) 
+							|| (this._Message.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Message.Entity = null;
+						previousValue.LogRel = null;
+					}
+					this._Message.Entity = value;
+					if ((value != null))
+					{
+						value.LogRel = this;
+						this._MessageID = value.MessageID;
+					}
+					else
+					{
+						this._MessageID = default(int);
+					}
+					this.SendPropertyChanged("Message");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_LogRel", Storage="_Process", ThisKey="ProcessID", OtherKey="ProcessID", IsForeignKey=true)]
+		public Process Process
+		{
+			get
+			{
+				return this._Process.Entity;
+			}
+			set
+			{
+				Process previousValue = this._Process.Entity;
+				if (((previousValue != value) 
+							|| (this._Process.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Process.Entity = null;
+						previousValue.LogRels.Remove(this);
+					}
+					this._Process.Entity = value;
+					if ((value != null))
+					{
+						value.LogRels.Add(this);
+						this._ProcessID = value.ProcessID;
+					}
+					else
+					{
+						this._ProcessID = default(int);
+					}
+					this.SendPropertyChanged("Process");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_LogRel", Storage="_Job", ThisKey="JobID", OtherKey="JobID", IsForeignKey=true)]
+		public Job Job
+		{
+			get
+			{
+				return this._Job.Entity;
+			}
+			set
+			{
+				Job previousValue = this._Job.Entity;
+				if (((previousValue != value) 
+							|| (this._Job.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Job.Entity = null;
+						previousValue.LogRels.Remove(this);
+					}
+					this._Job.Entity = value;
+					if ((value != null))
+					{
+						value.LogRels.Add(this);
+						this._JobID = value.JobID;
+					}
+					else
+					{
+						this._JobID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Job");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Job")]
+	public partial class Job : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _JobID;
+		
+		private string _JobName;
+		
+		private System.Nullable<int> _PlannedCount;
+		
+		private System.Nullable<int> _CompletedCount;
+		
+		private System.Nullable<double> _PercentComplete;
+		
+		private EntitySet<LogRel> _LogRels;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnJobIDChanging(int value);
+    partial void OnJobIDChanged();
+    partial void OnJobNameChanging(string value);
+    partial void OnJobNameChanged();
+    partial void OnPlannedCountChanging(System.Nullable<int> value);
+    partial void OnPlannedCountChanged();
+    partial void OnCompletedCountChanging(System.Nullable<int> value);
+    partial void OnCompletedCountChanged();
+    partial void OnPercentCompleteChanging(System.Nullable<double> value);
+    partial void OnPercentCompleteChanged();
+    #endregion
+		
+		public Job()
+		{
+			this._LogRels = new EntitySet<LogRel>(new Action<LogRel>(this.attach_LogRels), new Action<LogRel>(this.detach_LogRels));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this.OnJobIDChanging(value);
+					this.SendPropertyChanging();
+					this._JobID = value;
+					this.SendPropertyChanged("JobID");
+					this.OnJobIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string JobName
+		{
+			get
+			{
+				return this._JobName;
+			}
+			set
+			{
+				if ((this._JobName != value))
+				{
+					this.OnJobNameChanging(value);
+					this.SendPropertyChanging();
+					this._JobName = value;
+					this.SendPropertyChanged("JobName");
+					this.OnJobNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		public System.Nullable<int> PlannedCount
+		{
+			get
+			{
+				return this._PlannedCount;
+			}
+			set
+			{
+				if ((this._PlannedCount != value))
+				{
+					this.OnPlannedCountChanging(value);
+					this.SendPropertyChanging();
+					this._PlannedCount = value;
+					this.SendPropertyChanged("PlannedCount");
+					this.OnPlannedCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		public System.Nullable<int> CompletedCount
+		{
+			get
+			{
+				return this._CompletedCount;
+			}
+			set
+			{
+				if ((this._CompletedCount != value))
+				{
+					this.OnCompletedCountChanging(value);
+					this.SendPropertyChanging();
+					this._CompletedCount = value;
+					this.SendPropertyChanged("CompletedCount");
+					this.OnCompletedCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		public System.Nullable<double> PercentComplete
+		{
+			get
+			{
+				return this._PercentComplete;
+			}
+			set
+			{
+				if ((this._PercentComplete != value))
+				{
+					this.OnPercentCompleteChanging(value);
+					this.SendPropertyChanging();
+					this._PercentComplete = value;
+					this.SendPropertyChanged("PercentComplete");
+					this.OnPercentCompleteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_LogRel", Storage="_LogRels", ThisKey="JobID", OtherKey="JobID")]
+		public EntitySet<LogRel> LogRels
+		{
+			get
+			{
+				return this._LogRels;
+			}
+			set
+			{
+				this._LogRels.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_LogRels(LogRel entity)
+		{
+			this.SendPropertyChanging();
+			entity.Job = this;
+		}
+		
+		private void detach_LogRels(LogRel entity)
+		{
+			this.SendPropertyChanging();
+			entity.Job = null;
+		}
+	}
+	
+	public partial class UpdateProcessesResult
+	{
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		public UpdateProcessesResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
+				}
 			}
 		}
 	}
