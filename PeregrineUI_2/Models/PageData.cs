@@ -17,5 +17,6 @@ namespace PeregrineUI_2.Models
         public IEnumerable<T> Data { get; set; }
         public int NumberOfPages { get; set; }
         public int CurrentPage { get; set; }
+        public int SortingType { get; set; }
     }
 }

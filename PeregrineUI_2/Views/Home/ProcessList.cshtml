@@ -27,7 +27,25 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             document.getElementById("ProcessState_checkbox").checked = false;
             document.getElementById(chkboxname).checked = true;
 
-            // Make ajax call to controller to update the table          
+            // Make ajax call to controller to update the table
+            if (chkboxname == "ProcessName_checkbox")
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("1"), 
+                                    document.getElementById("search_input_id").value    );
+            else if (chkboxname == "LastMsg_checkbox")
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("2"), 
+                                    document.getElementById("search_input_id").value    );
+            else if (chkboxname == "MsgDate_checkbox")
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("3"), 
+                                    document.getElementById("search_input_id").value    );
+            else if (chkboxname == "ProcessState_checkbox")
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("4"), 
+                                    document.getElementById("search_input_id").value    );
+            else
+                alert("SORTING ERROR");
         }
         else {
             // We are not allowed all sorting checkbox uncheck
@@ -38,14 +56,58 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     $("#process_table").jExpand();
 </script>
 
+<label id="current_page" hidden="true">@Model.CurrentPage</label>
+<label id="current_sorting" hidden="true">@Model.SortingType</label>
+
 <table id="process_table" class="display">
     <thead>
         <tr>
-            <td>ProcessName <input id="ProcessName_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
-            <td>LastMessage <input id="LastMsg_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
-            <td>MsgDate <input id="MsgDate_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
-            <td>ProcessState <input id="ProcessState_checkbox" type="checkbox" onclick="sorting(this.id)"/> </td>
-            <td></td>
+            <td>
+                ProcessName 
+                @if (Model.SortingType == 1)
+                {
+                    <input id="ProcessName_checkbox" type="checkbox" onclick="sorting(this.id)" checked="checked"/> 
+                }
+                else
+                {
+                    <input id="ProcessName_checkbox" type="checkbox" onclick="sorting(this.id)"/> 
+                }                 
+            </td>
+            <td>
+                LastMessage 
+                @if (Model.SortingType == 2)
+                {
+                    <input id="LastMsg_checkbox" type="checkbox" onclick="sorting(this.id)" checked="checked"/> 
+                }
+                else
+                {
+                    <input id="LastMsg_checkbox" type="checkbox" onclick="sorting(this.id)"/> 
+                }    
+            </td>
+            <td>
+                MsgDate 
+                @if (Model.SortingType == 3)
+                {
+                    <input id="MsgDate_checkbox" type="checkbox" onclick="sorting(this.id)" checked="checked"/> 
+                }
+                else
+                {
+                    <input id="MsgDate_checkbox" type="checkbox" onclick="sorting(this.id)"/> 
+                }    
+            </td>
+            <td>
+                ProcessState 
+                @if (Model.SortingType == 4)
+                {
+                    <input id="ProcessState_checkbox" type="checkbox" onclick="sorting(this.id)" checked="checked"/> 
+                }
+                else
+                {
+                    <input id="ProcessState_checkbox" type="checkbox" onclick="sorting(this.id)"/> 
+                }
+            </td>
+            <td>
+            </td>
         </tr>
     </thead>
     <tbody>
@@ -54,7 +116,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             <tr>
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
-                <td>@process.MsgDate </td>
+                <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
                 <td><center><img src="..\..\Content\images\@(process.ProcessState.Trim()).png" alt=""/></center> </td>
                 <td><div class="arrow"></div></td>
                            
@@ -135,9 +197,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 }
                             
                 <label>|</label>
-                <label>Go to page:</label>
-                <input id="page_target" type="text" style="width: 40px" onchange="paging(document.getElementById(this.id).value)"/>
-                
+                <label>Go to page:</label>                       
+                <input id="page_target" type="text" style="width: 40px" onchange="MainPageAjaxUpdate(parseInt(document.getElementById(this.id).value), parseInt(1), document.getElementById('search_input_id').value)"/>
             </td>
         </tr>              
     </tfoot>

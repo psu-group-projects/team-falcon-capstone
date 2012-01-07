@@ -21,7 +21,7 @@ namespace PeregrineUI_2.Controllers
         // Specify how many entries for one page
         // Will be added into config file in the future
         //
-        public const int PageSize = 10;
+        public const int PageSize = 5;
 
         [HttpGet]
         public ActionResult Index()
@@ -30,11 +30,18 @@ namespace PeregrineUI_2.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProcessList(int page)
+        public ActionResult MainPageAjaxUpdate(int page, int SortingType, string SearchPattern)
         {
-            var pagingContext = SummaryRepository.GetAllProcessesData(page, 1, "", PageSize);
-            return PartialView("ProcessList", pagingContext); 
+            var pagingContext = SummaryRepository.GetAllProcessesData(page, SortingType, SearchPattern, PageSize);
+            return PartialView("ProcessList", pagingContext);
         }
+
+        //[HttpGet]
+        //public ActionResult ProcessList(int page, int SortingType)
+        //{
+        //    var pagingContext = SummaryRepository.GetAllProcessesData(page, SortingType, "", PageSize);
+        //    return PartialView("ProcessList", pagingContext); 
+        //}
 
         [HttpGet]
         public ActionResult AjaxSearch(string searchpattern)

@@ -17,7 +17,7 @@ namespace PeregrineUI_2.Models
     {
         public string ProcessName { get; set; }
         public string LastAction { get; set; }
-        public string MsgDate { get; set; }
+        public DateTime MsgDate { get; set; }
         public string ProcessState { get; set; }
  
     }

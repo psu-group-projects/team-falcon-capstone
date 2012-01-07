@@ -6,6 +6,8 @@ Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 *@
 
+@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
+           
 @{
     ViewBag.Title = "Peregrine Main Page";
 }
@@ -15,18 +17,23 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     $(document).ready(function () {
 
         @* Set up the initial stage of the main page *@
-        paging(parseInt("1"));       
+        MainPageAjaxUpdate( parseInt("1"), 
+                            parseInt("1"), 
+                            "");       
 
         @* Handle clicking page number *@
-        $(".page-number").live("click", function () {
-            var page = parseInt($(this).html());
-            paging(parseInt($(this).html()));
+        $(".page-number").live("click", function () {           
+            MainPageAjaxUpdate( parseInt($(this).html()), 
+                                parseInt("1"), 
+                                document.getElementById("search_input_id").value);
         });
 
         @* Automatic refresh the page *@
         setInterval(function () {
-            paging(parseInt("1"));
-        }, 10000);
+            MainPageAjaxUpdate( parseInt(document.getElementById("current_page").innerHTML), 
+                                parseInt(document.getElementById("current_sorting").innerHTML), 
+                                document.getElementById("search_input_id").value    );       
+        }, 5000);
 
     });
 
@@ -36,7 +43,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <fieldset>
     <label>Search:</label>
-    <input id="search_input_id" type="text" onchange="searching(this.id)" />
+    <input id="search_input_id" type="text" onchange="MainPageAjaxUpdate( parseInt('1'), parseInt('1'), document.getElementById(this.id).value )" />
 </fieldset>
 
 <div class="process-list"></div>
