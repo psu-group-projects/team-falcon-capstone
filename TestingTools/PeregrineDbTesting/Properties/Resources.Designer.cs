@@ -64,31 +64,6 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
         ///
-        ////****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 12/28/2011 16:36:10 ******/
-        ///SET ANSI_NULLS ON
-        ///GO
-        ///
-        ///SET QUOTED_IDENTIFIER ON
-        ///GO
-        ///
-        ///CREATE PROCEDURE [dbo].[ShowProcesses]
-        ///AS
-        ///    SET NOCOUNT ON;
-        ///SELECT ProcessID, ProcessName, State from dbo.Process
-        ///
-        ///
-        ///GO.
-        /// </summary>
-        internal static string CreateSP_ShowProcesses_sql {
-            get {
-                return ResourceManager.GetString("CreateSP_ShowProcesses_sql", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to USE [PeregrineDB]
-        ///GO
-        ///
         ////****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
         ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[Job]&apos;) AND type in (N&apos;U&apos;))
         ///DROP TABLE [dbo].[Job]
@@ -109,9 +84,9 @@ namespace PeregrineDBTesting.Properties {
         ///	[JobName] [nchar](10) NOT NULL,
         ///	[PlannedCount] [int] NUL [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DropCreateJobTable_sql {
+        internal static string CreateJobTable_sql {
             get {
-                return ResourceManager.GetString("DropCreateJobTable_sql", resourceCulture);
+                return ResourceManager.GetString("CreateJobTable_sql", resourceCulture);
             }
         }
         
@@ -129,9 +104,9 @@ namespace PeregrineDBTesting.Properties {
         ///
         ///IF  EXISTS (SELECT * FROM sys.foreign_keys WH [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DropCreateLogRelTable_sql {
+        internal static string CreateLogRelTable_sql {
             get {
-                return ResourceManager.GetString("DropCreateLogRelTable_sql", resourceCulture);
+                return ResourceManager.GetString("CreateLogRelTable_sql", resourceCulture);
             }
         }
         
@@ -158,31 +133,9 @@ namespace PeregrineDBTesting.Properties {
         ///	[MessageID] [int] NOT NULL,
         ///	[Message] [nvarchar](50) NOT  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DropCreateMessagesTable_sql {
+        internal static string CreateMessagesTable_sql {
             get {
-                return ResourceManager.GetString("DropCreateMessagesTable_sql", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to USE [master]
-        ///GO
-        ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
-        ///IF  EXISTS (SELECT name FROM sys.databases WHERE name = N&apos;PeregrineDB&apos;)
-        ///DROP DATABASE [PeregrineDB]
-        ///GO
-        ///
-        ///USE [master]
-        ///GO
-        ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
-        ///CREATE DATABASE [PeregrineDB] ON  PRIMARY 
-        ///( NAME = N&apos;PeregrineDB&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf&apos; , SIZE = 2048KB , MAXSIZE  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string DropCreatePeregrineDB_sql {
-            get {
-                return ResourceManager.GetString("DropCreatePeregrineDB_sql", resourceCulture);
+                return ResourceManager.GetString("CreateMessagesTable_sql", resourceCulture);
             }
         }
         
@@ -209,9 +162,34 @@ namespace PeregrineDBTesting.Properties {
         ///	[ProcessID] [int] NOT NULL,
         ///	[ProcessName] [nchar](15) NOT NULL [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DropCreateProcessTable_sql {
+        internal static string CreateProcessTable_sql {
             get {
-                return ResourceManager.GetString("DropCreateProcessTable_sql", resourceCulture);
+                return ResourceManager.GetString("CreateProcessTable_sql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [PeregrineDB]
+        ///GO
+        ///
+        ////****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 12/28/2011 16:36:10 ******/
+        ///SET ANSI_NULLS ON
+        ///GO
+        ///
+        ///SET QUOTED_IDENTIFIER ON
+        ///GO
+        ///
+        ///CREATE PROCEDURE [dbo].[ShowProcesses]
+        ///AS
+        ///    SET NOCOUNT ON;
+        ///SELECT ProcessID, ProcessName, State from dbo.Process
+        ///
+        ///
+        ///GO.
+        /// </summary>
+        internal static string CreateSP_ShowProcesses_sql {
+            get {
+                return ResourceManager.GetString("CreateSP_ShowProcesses_sql", resourceCulture);
             }
         }
         
@@ -240,9 +218,31 @@ namespace PeregrineDBTesting.Properties {
         ///CREATE TABLE [dbo].[sysdiagrams](
         ///	[name] [sysname]  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DropCreateSysdiagramsTable_sql {
+        internal static string CreateSysdiagramsTable_sql {
             get {
-                return ResourceManager.GetString("DropCreateSysdiagramsTable_sql", resourceCulture);
+                return ResourceManager.GetString("CreateSysdiagramsTable_sql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [master]
+        ///GO
+        ///
+        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+        ///IF  EXISTS (SELECT name FROM sys.databases WHERE name = N&apos;PeregrineDB&apos;)
+        ///DROP DATABASE [PeregrineDB]
+        ///GO
+        ///
+        ///USE [master]
+        ///GO
+        ///
+        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+        ///CREATE DATABASE [PeregrineDB] ON  PRIMARY 
+        ///( NAME = N&apos;PeregrineDB&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf&apos; , SIZE = 2048KB , MAXSIZE  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DropCreatePeregrineDB_sql {
+            get {
+                return ResourceManager.GetString("DropCreatePeregrineDB_sql", resourceCulture);
             }
         }
         

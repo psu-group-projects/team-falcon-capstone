@@ -73,12 +73,12 @@ namespace PeregrineDBTesting
                 executeScript(connection, dbName, Properties.Resources.DropCreatePeregrineDB_sql);
 
                 Console.WriteLine("Creating tables...");
-                executeScript(connection, dbName, Properties.Resources.DropCreateProcessTable_sql);
-                executeScript(connection, dbName, Properties.Resources.DropCreateJobTable_sql);
-                executeScript(connection, dbName, Properties.Resources.DropCreateMessagesTable_sql);
-                executeScript(connection, dbName, Properties.Resources.DropCreateLogRelTable_sql);
+                executeScript(connection, dbName, Properties.Resources.CreateProcessTable_sql);
+                executeScript(connection, dbName, Properties.Resources.CreateJobTable_sql);
+                executeScript(connection, dbName, Properties.Resources.CreateMessagesTable_sql);
+                executeScript(connection, dbName, Properties.Resources.CreateLogRelTable_sql);
                 // I'm not sure the following table is needed.
-                executeScript(connection, dbName, Properties.Resources.DropCreateSysdiagramsTable_sql);
+                executeScript(connection, dbName, Properties.Resources.CreateSysdiagramsTable_sql);
 
                 Console.WriteLine("Creating stored procedures...");
                 executeScript(connection, dbName, Properties.Resources.CreateSP_ShowProcesses_sql);

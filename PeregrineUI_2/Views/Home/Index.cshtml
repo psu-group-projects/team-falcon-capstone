@@ -1,0 +1,52 @@
+﻿@*
+Author   : Chinh T Cao
+           Anh T Nguyen
+Version  : 1.0.0
+Date     : 12/29/2011
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*@
+
+@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
+           
+@{
+    ViewBag.Title = "Peregrine Main Page";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        @* Set up the initial stage of the main page *@
+        MainPageAjaxUpdate( parseInt("1"), 
+                            parseInt("1"), 
+                            "");       
+
+        @* Handle clicking page number *@
+        $(".page-number").live("click", function () {           
+            MainPageAjaxUpdate( parseInt($(this).html()), 
+                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
+                                document.getElementById("search_input_id").value);
+        });
+
+//        @* Automatic refresh the page *@
+//        setInterval(function () {
+//            MainPageAjaxUpdate( parseInt(document.getElementById("current_page_label").innerHTML), 
+//                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
+//                                document.getElementById("search_input_id").value    );       
+//        }, 5000);
+
+    });
+
+</script>
+
+<h2>Processes Summary</h2>
+
+<fieldset>
+    <label>Search:</label>
+    <input  id="search_input_id" type="text" 
+            onchange="MainPageAjaxUpdate(   parseInt('1'), 
+                                            parseInt('1'), 
+                                            document.getElementById(this.id).value )" />
+</fieldset>
+
+<div class="process-list"></div>
