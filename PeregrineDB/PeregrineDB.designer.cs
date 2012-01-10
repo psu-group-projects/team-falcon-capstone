@@ -33,15 +33,15 @@ namespace PeregrineDB
     partial void InsertProcess(Process instance);
     partial void UpdateProcess(Process instance);
     partial void DeleteProcess(Process instance);
-    partial void InsertMessage(Message instance);
-    partial void UpdateMessage(Message instance);
-    partial void DeleteMessage(Message instance);
     partial void InsertLogRel(LogRel instance);
     partial void UpdateLogRel(LogRel instance);
     partial void DeleteLogRel(LogRel instance);
     partial void InsertJob(Job instance);
     partial void UpdateJob(Job instance);
     partial void DeleteJob(Job instance);
+    partial void InsertMessage(Message instance);
+    partial void UpdateMessage(Message instance);
+    partial void DeleteMessage(Message instance);
     #endregion
 		
 		public PeregrineDBDataContext() : 
@@ -82,14 +82,6 @@ namespace PeregrineDB
 			}
 		}
 		
-		public System.Data.Linq.Table<Message> Messages
-		{
-			get
-			{
-				return this.GetTable<Message>();
-			}
-		}
-		
 		public System.Data.Linq.Table<LogRel> LogRels
 		{
 			get
@@ -106,6 +98,42 @@ namespace PeregrineDB
 			}
 		}
 		
+		public System.Data.Linq.Table<Message> Messages
+		{
+			get
+			{
+				return this.GetTable<Message>();
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteJob")]
+		public int DeleteJob([global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobID", DbType="Int")] System.Nullable<int> jobID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), jobID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateProcess")]
+		public ISingleResult<UpdateProcessResult> UpdateProcess([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="NChar(200)")] string processName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="State", DbType="Int")] System.Nullable<int> state)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, processName, state);
+			return ((ISingleResult<UpdateProcessResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteMessage")]
+		public int DeleteMessage([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteProcess")]
+		public int DeleteProcess([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID);
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetTable1")]
 		public ISingleResult<Process> GetTable1()
 		{
@@ -113,11 +141,74 @@ namespace PeregrineDB
 			return ((ISingleResult<Process>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateProcesses")]
-		public ISingleResult<UpdateProcessesResult> UpdateProcesses([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="NChar(200)")] string processName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="State", DbType="Int")] System.Nullable<int> state)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertJob")]
+		public ISingleResult<InsertJobResult> InsertJob([global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobID", DbType="Int")] System.Nullable<int> jobID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobName", DbType="NChar(200)")] string jobName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PlannedCount", DbType="Int")] System.Nullable<int> plannedCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompletedCount", DbType="Int")] System.Nullable<int> completedCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PercentComplete", DbType="Float")] System.Nullable<double> percentComplete)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), jobID, jobName, plannedCount, completedCount, percentComplete);
+			return ((ISingleResult<InsertJobResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertMessage")]
+		public ISingleResult<InsertMessageResult> InsertMessage([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(500)")] string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="DateTime")] System.Nullable<System.DateTime> date, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Category", DbType="Int")] System.Nullable<int> category, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Priority", DbType="Int")] System.Nullable<int> priority)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID, message, date, category, priority);
+			return ((ISingleResult<InsertMessageResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertProcess")]
+		public ISingleResult<InsertProcessResult> InsertProcess([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="VarChar(200)")] string processName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="State", DbType="Int")] System.Nullable<int> state)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, processName, state);
-			return ((ISingleResult<UpdateProcessesResult>)(result.ReturnValue));
+			return ((ISingleResult<InsertProcessResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ShowAll")]
+		public ISingleResult<ShowAllResult> ShowAll()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<ShowAllResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ShowJobs")]
+		public ISingleResult<ShowJobsResult> ShowJobs()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<ShowJobsResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ShowLogRel")]
+		public ISingleResult<ShowLogRelResult> ShowLogRel()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<ShowLogRelResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ShowMessages")]
+		public ISingleResult<ShowMessagesResult> ShowMessages()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<ShowMessagesResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ShowProcesses")]
+		public ISingleResult<ShowProcessesResult> ShowProcesses()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<ShowProcessesResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateJob")]
+		public ISingleResult<UpdateJobResult> UpdateJob([global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobID", DbType="Int")] System.Nullable<int> jobID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobName", DbType="NChar(200)")] string jobName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PlannedCount", DbType="Int")] System.Nullable<int> plannedCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompletedCount", DbType="Int")] System.Nullable<int> completedCount, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PercentComplete", DbType="Float")] System.Nullable<double> percentComplete)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), jobID, jobName, plannedCount, completedCount, percentComplete);
+			return ((ISingleResult<UpdateJobResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateMessage")]
+		public ISingleResult<UpdateMessageResult> UpdateMessage([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Message", DbType="NVarChar(500)")] string message, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Date", DbType="DateTime")] System.Nullable<System.DateTime> date, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Category", DbType="Int")] System.Nullable<int> category, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Priority", DbType="Int")] System.Nullable<int> priority)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID, message, date, category, priority);
+			return ((ISingleResult<UpdateMessageResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -259,196 +350,6 @@ namespace PeregrineDB
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Messages")]
-	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _MessageID;
-		
-		private string _Message1;
-		
-		private System.DateTime _Date;
-		
-		private int _Category;
-		
-		private int _Prority;
-		
-		private EntityRef<LogRel> _LogRel;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMessageIDChanging(int value);
-    partial void OnMessageIDChanged();
-    partial void OnMessage1Changing(string value);
-    partial void OnMessage1Changed();
-    partial void OnDateChanging(System.DateTime value);
-    partial void OnDateChanged();
-    partial void OnCategoryChanging(int value);
-    partial void OnCategoryChanged();
-    partial void OnProrityChanging(int value);
-    partial void OnProrityChanged();
-    #endregion
-		
-		public Message()
-		{
-			this._LogRel = default(EntityRef<LogRel>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int MessageID
-		{
-			get
-			{
-				return this._MessageID;
-			}
-			set
-			{
-				if ((this._MessageID != value))
-				{
-					this.OnMessageIDChanging(value);
-					this.SendPropertyChanging();
-					this._MessageID = value;
-					this.SendPropertyChanged("MessageID");
-					this.OnMessageIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Message", Storage="_Message1", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
-		public string Message1
-		{
-			get
-			{
-				return this._Message1;
-			}
-			set
-			{
-				if ((this._Message1 != value))
-				{
-					this.OnMessage1Changing(value);
-					this.SendPropertyChanging();
-					this._Message1 = value;
-					this.SendPropertyChanged("Message1");
-					this.OnMessage1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="Date NOT NULL")]
-		public System.DateTime Date
-		{
-			get
-			{
-				return this._Date;
-			}
-			set
-			{
-				if ((this._Date != value))
-				{
-					this.OnDateChanging(value);
-					this.SendPropertyChanging();
-					this._Date = value;
-					this.SendPropertyChanged("Date");
-					this.OnDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
-		public int Category
-		{
-			get
-			{
-				return this._Category;
-			}
-			set
-			{
-				if ((this._Category != value))
-				{
-					this.OnCategoryChanging(value);
-					this.SendPropertyChanging();
-					this._Category = value;
-					this.SendPropertyChanged("Category");
-					this.OnCategoryChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Prority", DbType="Int NOT NULL")]
-		public int Prority
-		{
-			get
-			{
-				return this._Prority;
-			}
-			set
-			{
-				if ((this._Prority != value))
-				{
-					this.OnProrityChanging(value);
-					this.SendPropertyChanging();
-					this._Prority = value;
-					this.SendPropertyChanged("Prority");
-					this.OnProrityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_LogRel", ThisKey="MessageID", OtherKey="MessageID", IsUnique=true, IsForeignKey=false)]
-		public LogRel LogRel
-		{
-			get
-			{
-				return this._LogRel.Entity;
-			}
-			set
-			{
-				LogRel previousValue = this._LogRel.Entity;
-				if (((previousValue != value) 
-							|| (this._LogRel.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._LogRel.Entity = null;
-						previousValue.Message = null;
-					}
-					this._LogRel.Entity = value;
-					if ((value != null))
-					{
-						value.Message = this;
-					}
-					this.SendPropertyChanged("LogRel");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogRel")]
 	public partial class LogRel : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -461,11 +362,11 @@ namespace PeregrineDB
 		
 		private System.Nullable<int> _JobID;
 		
-		private EntityRef<Message> _Message;
-		
 		private EntityRef<Process> _Process;
 		
 		private EntityRef<Job> _Job;
+		
+		private EntityRef<Message> _Message;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -481,9 +382,9 @@ namespace PeregrineDB
 		
 		public LogRel()
 		{
-			this._Message = default(EntityRef<Message>);
 			this._Process = default(EntityRef<Process>);
 			this._Job = default(EntityRef<Job>);
+			this._Message = default(EntityRef<Message>);
 			OnCreated();
 		}
 		
@@ -559,40 +460,6 @@ namespace PeregrineDB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_Message", ThisKey="MessageID", OtherKey="MessageID", IsForeignKey=true)]
-		public Message Message
-		{
-			get
-			{
-				return this._Message.Entity;
-			}
-			set
-			{
-				Message previousValue = this._Message.Entity;
-				if (((previousValue != value) 
-							|| (this._Message.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Message.Entity = null;
-						previousValue.LogRel = null;
-					}
-					this._Message.Entity = value;
-					if ((value != null))
-					{
-						value.LogRel = this;
-						this._MessageID = value.MessageID;
-					}
-					else
-					{
-						this._MessageID = default(int);
-					}
-					this.SendPropertyChanged("Message");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_LogRel", Storage="_Process", ThisKey="ProcessID", OtherKey="ProcessID", IsForeignKey=true)]
 		public Process Process
 		{
@@ -657,6 +524,40 @@ namespace PeregrineDB
 						this._JobID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Job");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_Message", ThisKey="MessageID", OtherKey="MessageID", IsForeignKey=true)]
+		public Message Message
+		{
+			get
+			{
+				return this._Message.Entity;
+			}
+			set
+			{
+				Message previousValue = this._Message.Entity;
+				if (((previousValue != value) 
+							|| (this._Message.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Message.Entity = null;
+						previousValue.LogRel = null;
+					}
+					this._Message.Entity = value;
+					if ((value != null))
+					{
+						value.LogRel = this;
+						this._MessageID = value.MessageID;
+					}
+					else
+					{
+						this._MessageID = default(int);
+					}
+					this.SendPropertyChanged("Message");
 				}
 			}
 		}
@@ -868,7 +769,197 @@ namespace PeregrineDB
 		}
 	}
 	
-	public partial class UpdateProcessesResult
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Message")]
+	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _MessageID;
+		
+		private string _Message1;
+		
+		private System.DateTime _Date;
+		
+		private int _Category;
+		
+		private int _Priority;
+		
+		private EntityRef<LogRel> _LogRel;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMessageIDChanging(int value);
+    partial void OnMessageIDChanged();
+    partial void OnMessage1Changing(string value);
+    partial void OnMessage1Changed();
+    partial void OnDateChanging(System.DateTime value);
+    partial void OnDateChanged();
+    partial void OnCategoryChanging(int value);
+    partial void OnCategoryChanged();
+    partial void OnPriorityChanging(int value);
+    partial void OnPriorityChanged();
+    #endregion
+		
+		public Message()
+		{
+			this._LogRel = default(EntityRef<LogRel>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this.OnMessageIDChanging(value);
+					this.SendPropertyChanging();
+					this._MessageID = value;
+					this.SendPropertyChanged("MessageID");
+					this.OnMessageIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Message", Storage="_Message1", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message1
+		{
+			get
+			{
+				return this._Message1;
+			}
+			set
+			{
+				if ((this._Message1 != value))
+				{
+					this.OnMessage1Changing(value);
+					this.SendPropertyChanging();
+					this._Message1 = value;
+					this.SendPropertyChanged("Message1");
+					this.OnMessage1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this.OnDateChanging(value);
+					this.SendPropertyChanging();
+					this._Date = value;
+					this.SendPropertyChanged("Date");
+					this.OnDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this.OnCategoryChanging(value);
+					this.SendPropertyChanging();
+					this._Category = value;
+					this.SendPropertyChanged("Category");
+					this.OnCategoryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this.OnPriorityChanging(value);
+					this.SendPropertyChanging();
+					this._Priority = value;
+					this.SendPropertyChanged("Priority");
+					this.OnPriorityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_LogRel", ThisKey="MessageID", OtherKey="MessageID", IsUnique=true, IsForeignKey=false)]
+		public LogRel LogRel
+		{
+			get
+			{
+				return this._LogRel.Entity;
+			}
+			set
+			{
+				LogRel previousValue = this._LogRel.Entity;
+				if (((previousValue != value) 
+							|| (this._LogRel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LogRel.Entity = null;
+						previousValue.Message = null;
+					}
+					this._LogRel.Entity = value;
+					if ((value != null))
+					{
+						value.Message = this;
+					}
+					this.SendPropertyChanged("LogRel");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	public partial class UpdateProcessResult
 	{
 		
 		private int _ProcessID;
@@ -877,7 +968,7 @@ namespace PeregrineDB
 		
 		private int _State;
 		
-		public UpdateProcessesResult()
+		public UpdateProcessResult()
 		{
 		}
 		
@@ -925,6 +1016,1022 @@ namespace PeregrineDB
 				if ((this._State != value))
 				{
 					this._State = value;
+				}
+			}
+		}
+	}
+	
+	public partial class InsertJobResult
+	{
+		
+		private int _JobID;
+		
+		private string _JobName;
+		
+		private System.Nullable<int> _PlannedCount;
+		
+		private System.Nullable<int> _CompletedCount;
+		
+		private System.Nullable<double> _PercentComplete;
+		
+		public InsertJobResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		public int JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this._JobID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string JobName
+		{
+			get
+			{
+				return this._JobName;
+			}
+			set
+			{
+				if ((this._JobName != value))
+				{
+					this._JobName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		public System.Nullable<int> PlannedCount
+		{
+			get
+			{
+				return this._PlannedCount;
+			}
+			set
+			{
+				if ((this._PlannedCount != value))
+				{
+					this._PlannedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		public System.Nullable<int> CompletedCount
+		{
+			get
+			{
+				return this._CompletedCount;
+			}
+			set
+			{
+				if ((this._CompletedCount != value))
+				{
+					this._CompletedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		public System.Nullable<double> PercentComplete
+		{
+			get
+			{
+				return this._PercentComplete;
+			}
+			set
+			{
+				if ((this._PercentComplete != value))
+				{
+					this._PercentComplete = value;
+				}
+			}
+		}
+	}
+	
+	public partial class InsertMessageResult
+	{
+		
+		private int _MessageID;
+		
+		private string _Message;
+		
+		private System.DateTime _Date;
+		
+		private int _Category;
+		
+		private int _Priority;
+		
+		public InsertMessageResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
+				}
+			}
+		}
+	}
+	
+	public partial class InsertProcessResult
+	{
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		public InsertProcessResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
+				}
+			}
+		}
+	}
+	
+	public partial class ShowAllResult
+	{
+		
+		private int _MessageID;
+		
+		private string _Message;
+		
+		private System.DateTime _Date;
+		
+		private int _Category;
+		
+		private int _Priority;
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		private int _JobID;
+		
+		private string _JobName;
+		
+		private System.Nullable<int> _PlannedCount;
+		
+		private System.Nullable<int> _CompletedCount;
+		
+		private System.Nullable<double> _PercentComplete;
+		
+		public ShowAllResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		public int JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this._JobID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string JobName
+		{
+			get
+			{
+				return this._JobName;
+			}
+			set
+			{
+				if ((this._JobName != value))
+				{
+					this._JobName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		public System.Nullable<int> PlannedCount
+		{
+			get
+			{
+				return this._PlannedCount;
+			}
+			set
+			{
+				if ((this._PlannedCount != value))
+				{
+					this._PlannedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		public System.Nullable<int> CompletedCount
+		{
+			get
+			{
+				return this._CompletedCount;
+			}
+			set
+			{
+				if ((this._CompletedCount != value))
+				{
+					this._CompletedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		public System.Nullable<double> PercentComplete
+		{
+			get
+			{
+				return this._PercentComplete;
+			}
+			set
+			{
+				if ((this._PercentComplete != value))
+				{
+					this._PercentComplete = value;
+				}
+			}
+		}
+	}
+	
+	public partial class ShowJobsResult
+	{
+		
+		private int _JobID;
+		
+		private string _JobName;
+		
+		private System.Nullable<int> _PlannedCount;
+		
+		private System.Nullable<int> _CompletedCount;
+		
+		private System.Nullable<double> _PercentComplete;
+		
+		public ShowJobsResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		public int JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this._JobID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string JobName
+		{
+			get
+			{
+				return this._JobName;
+			}
+			set
+			{
+				if ((this._JobName != value))
+				{
+					this._JobName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		public System.Nullable<int> PlannedCount
+		{
+			get
+			{
+				return this._PlannedCount;
+			}
+			set
+			{
+				if ((this._PlannedCount != value))
+				{
+					this._PlannedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		public System.Nullable<int> CompletedCount
+		{
+			get
+			{
+				return this._CompletedCount;
+			}
+			set
+			{
+				if ((this._CompletedCount != value))
+				{
+					this._CompletedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		public System.Nullable<double> PercentComplete
+		{
+			get
+			{
+				return this._PercentComplete;
+			}
+			set
+			{
+				if ((this._PercentComplete != value))
+				{
+					this._PercentComplete = value;
+				}
+			}
+		}
+	}
+	
+	public partial class ShowLogRelResult
+	{
+		
+		private int _MessageID;
+		
+		private int _ProcessID;
+		
+		private System.Nullable<int> _JobID;
+		
+		public ShowLogRelResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int")]
+		public System.Nullable<int> JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this._JobID = value;
+				}
+			}
+		}
+	}
+	
+	public partial class ShowMessagesResult
+	{
+		
+		private int _MessageID;
+		
+		private string _Message;
+		
+		private System.DateTime _Date;
+		
+		private int _Category;
+		
+		private int _Priority;
+		
+		public ShowMessagesResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
+				}
+			}
+		}
+	}
+	
+	public partial class ShowProcessesResult
+	{
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		public ShowProcessesResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
+				}
+			}
+		}
+	}
+	
+	public partial class UpdateJobResult
+	{
+		
+		private int _JobID;
+		
+		private string _JobName;
+		
+		private System.Nullable<int> _PlannedCount;
+		
+		private System.Nullable<int> _CompletedCount;
+		
+		private System.Nullable<double> _PercentComplete;
+		
+		public UpdateJobResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		public int JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this._JobID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string JobName
+		{
+			get
+			{
+				return this._JobName;
+			}
+			set
+			{
+				if ((this._JobName != value))
+				{
+					this._JobName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		public System.Nullable<int> PlannedCount
+		{
+			get
+			{
+				return this._PlannedCount;
+			}
+			set
+			{
+				if ((this._PlannedCount != value))
+				{
+					this._PlannedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		public System.Nullable<int> CompletedCount
+		{
+			get
+			{
+				return this._CompletedCount;
+			}
+			set
+			{
+				if ((this._CompletedCount != value))
+				{
+					this._CompletedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		public System.Nullable<double> PercentComplete
+		{
+			get
+			{
+				return this._PercentComplete;
+			}
+			set
+			{
+				if ((this._PercentComplete != value))
+				{
+					this._PercentComplete = value;
+				}
+			}
+		}
+	}
+	
+	public partial class UpdateMessageResult
+	{
+		
+		private int _MessageID;
+		
+		private string _Message;
+		
+		private System.DateTime _Date;
+		
+		private int _Category;
+		
+		private int _Priority;
+		
+		public UpdateMessageResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
 				}
 			}
 		}
