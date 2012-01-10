@@ -56,8 +56,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     $("#process_table").jExpand();
 </script>
 
-<label id="current_page" hidden="true">@Model.CurrentPage</label>
-<label id="current_sorting" hidden="true">@Model.SortingType</label>
+<label id="current_page_label" hidden="true">@Model.CurrentPage</label>
+<label id="current_sorting_label" hidden="true">@Model.SortingType</label>
 
 <table id="process_table" class="display">
     <thead>
@@ -198,7 +198,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             
                 <label>|</label>
                 <label>Go to page:</label>                       
-                <input id="page_target" type="text" style="width: 40px" onchange="MainPageAjaxUpdate(parseInt(document.getElementById(this.id).value), parseInt(1), document.getElementById('search_input_id').value)"/>
+                <input  id="page_target" type="text" style="width: 40px" 
+                        onchange="MainPageAjaxUpdate(   parseInt(document.getElementById(this.id).value), 
+                                                        parseInt(document.getElementById('current_sorting_label').innerHTML), 
+                                                        document.getElementById('search_input_id').value)"/>
             </td>
         </tr>              
     </tfoot>

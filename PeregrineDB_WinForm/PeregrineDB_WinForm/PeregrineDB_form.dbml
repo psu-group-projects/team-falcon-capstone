@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PeregrineDB" Class="PeregrineDB_formDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=CAPSTONEBB;Initial Catalog=PeregrineDB;Integrated Security=True" SettingsObjectName="PeregrineDB_WinForm.Properties.Settings" SettingsPropertyName="PeregrineDBConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Process" Member="Processes">
-    <Type Name="Process" Id="ID1">
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(15) NOT NULL" CanBeNull="false" />
+    <Type Name="Process">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
-    <InsertFunction FunctionId="FunctionId1" />
-    <DeleteFunction FunctionId="FunctionId2" />
   </Table>
-  <Function Id="FunctionId2" Name="dbo.GetTable" Method="GetTable">
-    <ElementType IdRef="ID1" />
-  </Function>
-  <Function Name="dbo.ShowProcesses" Method="ShowProcesses">
-    <ElementType IdRef="ID1" />
+  <Function Name="dbo.GetTable1" Method="GetTable1">
+    <ElementType Name="GetTable1Result">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
   </Function>
   <Function Name="dbo.UpdateProcesses" Method="UpdateProcesses">
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NChar(15)" />
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NChar(200)" />
     <Parameter Name="State" Parameter="state" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID1" />
-  </Function>
-  <Function Id="FunctionId1" Name="dbo.GetTable1" Method="GetTable1">
-    <ElementType IdRef="ID1" />
+    <ElementType Name="UpdateProcessesResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
   </Function>
 </Database>

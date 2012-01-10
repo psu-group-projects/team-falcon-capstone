@@ -24,16 +24,16 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         @* Handle clicking page number *@
         $(".page-number").live("click", function () {           
             MainPageAjaxUpdate( parseInt($(this).html()), 
-                                parseInt("1"), 
+                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
                                 document.getElementById("search_input_id").value);
         });
 
-        @* Automatic refresh the page *@
-        setInterval(function () {
-            MainPageAjaxUpdate( parseInt(document.getElementById("current_page").innerHTML), 
-                                parseInt(document.getElementById("current_sorting").innerHTML), 
-                                document.getElementById("search_input_id").value    );       
-        }, 5000);
+//        @* Automatic refresh the page *@
+//        setInterval(function () {
+//            MainPageAjaxUpdate( parseInt(document.getElementById("current_page_label").innerHTML), 
+//                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
+//                                document.getElementById("search_input_id").value    );       
+//        }, 5000);
 
     });
 
@@ -43,7 +43,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <fieldset>
     <label>Search:</label>
-    <input id="search_input_id" type="text" onchange="MainPageAjaxUpdate( parseInt('1'), parseInt('1'), document.getElementById(this.id).value )" />
+    <input  id="search_input_id" type="text" 
+            onchange="MainPageAjaxUpdate(   parseInt('1'), 
+                                            parseInt('1'), 
+                                            document.getElementById(this.id).value )" />
 </fieldset>
 
 <div class="process-list"></div>

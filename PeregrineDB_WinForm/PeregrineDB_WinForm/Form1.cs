@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,7 +68,7 @@ namespace PeregrineDB_WinForm
 
         private void processBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
-            peregrineDB_formDataContext1.UpdateProcesses(2,"UpdateProcess2",1);
+            //peregrineDB_formDataContext1.UpdateProcesses(2,"SecondProcess",1);
             peregrineDB_formDataContext1.SubmitChanges();
         }
 

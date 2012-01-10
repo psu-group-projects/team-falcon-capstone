@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,63 +17,6 @@ using System.Data.Linq.Mapping;
 
 namespace PeregrineDB
 {
-    /*
-    [Table(Name = "Process")]
-    public class Process
-    {
-        private int _ProcessID;
-        [Column(IsPrimaryKey = true, Storage = "_ProcessID")]
-        public int ProcessID
-        {
-            get
-            {
-                return this._ProcessID;
-
-            }
-
-            set
-            {
-                this._ProcessID = value;
-            }
-        }
-
-
-        private string _ProcessName;
-        [Column(Storage = "_ProcessName")]
-        public string ProcessName
-        {
-            get
-            {
-                return this._ProcessName;
-
-            }
-
-            set
-            {
-                this._ProcessName = value;
-            }
-        }
-
-
-        private int _State;
-        [Column(Storage = "_State")]
-        public int State
-        {
-            get
-            {
-                return this._State;
-
-            }
-
-            set
-            {
-                this._State = value;
-            }
-        }
-
-    }
-
-     */
 
     class Program
     {
@@ -73,7 +24,9 @@ namespace PeregrineDB
         {
             
             //Connection String
-            PeregrineDBDataContext db = new PeregrineDBDataContext(@"Data Source=CAPSTONEBB;Initial Catalog=PeregrineDB;Integrated Security=True");
+            //PeregrineDBDataContext db = new PeregrineDBDataContext(@"Data Source=CAPSTONEBB;Initial Catalog=PeregrineDB;Integrated Security=True");
+            PeregrineDBDataContext db = new PeregrineDBDataContext(Properties.Settings.Default.PeregrineDBConnectionString);
+
 
             //Get a typed table to run query
             var processes = db.GetTable1();
