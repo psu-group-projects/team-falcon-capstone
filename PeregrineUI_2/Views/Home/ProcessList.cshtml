@@ -53,14 +53,66 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         }
     }
 
+    // Expand process detail
     $("#process_table").jExpand();
+
+    // Show Jobs, hide Messages on clicks
+    function show_job(process_name) {
+        document.getElementById(process_name + 'message').style.display = 'none';
+        document.getElementById(process_name + 'JobBtn').style.display = 'none';
+        document.getElementById(process_name + 'job').style.display = 'block';
+        document.getElementById(process_name + 'MsgBtn').style.display = 'block';
+        ProcessJobUpdate(/*page*/1, process_name);
+    }
+
+    // Show Messages, hide Jobs on clicks
+    function show_message(process_name) {
+        document.getElementById(process_name + 'job').style.display = 'none';
+        document.getElementById(process_name + 'MsgBtn').style.display = 'none';
+        document.getElementById(process_name + 'message').style.display = 'block';
+        document.getElementById(process_name + 'JobBtn').style.display = 'block';
+        ProcessMsgUpdate(/*page*/1, process_name);
+    }
+
+    function ProcessMsgUpdate(page, process_name) {
+        $.ajax({
+            url: '/Home/ProcessMsgUpdate',
+            data: { "page": page, "processName": process_name },
+            success: function (data) {
+                $('div.' + process_name + 'message').empty();
+                $('div.' + process_name + 'message').append(data);
+            },
+            error: function (result) {
+                alert(result);
+            }
+        });
+    }
+
+    function ProcessJobUpdate(page, process_name) {
+        $.ajax({
+            url: '/Home/ProcessJobUpdate',
+            data: { "page": page, "processName": process_name },
+            success: function (data) {
+                $('div.' + process_name + 'job').empty();
+                $('div.' + process_name + 'job').append(data);
+            },
+            error: function (result) {
+                alert(result);
+            }
+        });
+    }
 </script>
 
+<!-- Hidden labels to keep track of values -->
 <label id="current_page_label" hidden="true">@Model.CurrentPage</label>
 <label id="current_sorting_label" hidden="true">@Model.SortingType</label>
 
+
+<!-- Main table -->
 <table id="process_table" class="display">
-    <thead>
+
+    <!-- Table header: Display column names, use checkboxes for Sorting -->
+    <thead>     
         <tr>
             <td>
                 ProcessName 
@@ -110,9 +162,14 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             </td>
         </tr>
     </thead>
+
+
+    <!-- Table Body: Display summary & details -->
     <tbody>
+        <!-- For every process -->
         @foreach (var process in Model.Data)
         {
+            <!-- Show summary -->
             <tr>
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
@@ -121,16 +178,36 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td><div class="arrow"></div></td>
                            
             </tr>
+            
+            <!-- If click on the process, expand the table, show process details -->
             <tr>
-                <td colspan="5">Process details will be here</td>
+                <td colspan="5" >
+                    <!-- Table of messages in current process -->
+                    <input id="@(process.ProcessName)JobBtn" type="button" value="Show Jobs"
+                            onclick="show_job('@(process.ProcessName)')"/>
+                    <!-- Partial View: Message --> 
+                    <div  id = "@(process.ProcessName)message" style="display:inline-block; width:100%">
+                        <div class = "@(process.ProcessName)message"></div>
+                    </div>
+
+                    <!-- Table of jobs in current process -->
+                    <input id="@(process.ProcessName)MsgBtn" type="button" value="Show Messages" style="display:none" 
+                            onclick="show_message('@(process.ProcessName)')"/>
+                    <!-- Partial View: Job -->
+                    <div id = "@(process.ProcessName)job" style="display:none; width:100%">
+                        <div class = "@(process.ProcessName)job"></div>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>
+
+    <!-- Table footer: Paging -->
     <tfoot>
         <tr>
             <td colspan="4">
                 @{  // Pagination     
-                        
+
                     int start, end;
 
                     // Get the value of start and end based on the value of currpage and total number of page

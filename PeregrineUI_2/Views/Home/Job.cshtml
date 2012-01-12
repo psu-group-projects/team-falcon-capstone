@@ -1,0 +1,28 @@
+﻿@*
+Author   : Anh T Nguyen           
+Version  : 1.0.0
+Date     : 1/11/2012
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*@
+@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Job>
+              
+<table>    
+        <thead>
+            <tr>
+                    <td>JobContent </td>
+                    <td>Progess </td>
+            </tr>
+        </thead>     
+        <tbody>
+            @foreach (var job in Model.Data)
+            {
+                <tr>
+                    <td>@job.JobContent </td>
+                    <td>@job.PercentProgress </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+                <!-- Pagination here -->
+        </tfoot>
+</table>

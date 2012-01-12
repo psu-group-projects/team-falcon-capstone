@@ -32,23 +32,23 @@ namespace PeregrineUI_2.Controllers
         [HttpGet]
         public ActionResult MainPageAjaxUpdate(int page, int SortingType, string SearchPattern)
         {
-            var pagingContext = SummaryRepository.GetAllProcessesData(page, SortingType, SearchPattern, PageSize);
+            var pagingContext = SummaryRepository.GetAllSummaryData(page, SortingType, SearchPattern, PageSize);
             return PartialView("ProcessList", pagingContext);
         }
 
-        //[HttpGet]
-        //public ActionResult ProcessList(int page, int SortingType)
-        //{
-        //    var pagingContext = SummaryRepository.GetAllProcessesData(page, SortingType, "", PageSize);
-        //    return PartialView("ProcessList", pagingContext); 
-        //}
 
         [HttpGet]
-        public ActionResult AjaxSearch(string searchpattern)
+        public ActionResult ProcessMsgUpdate(int page, string processName)
         {
-            var pagingContext = SummaryRepository.GetAllProcessesData(1, 1, searchpattern, PageSize);
-            return PartialView("ProcessList", pagingContext);
+            var pagingContext = MessageRepository.GetMessageByProcess(/*page*/1, PageSize, processName);
+            return PartialView("Message", pagingContext);
         }
 
+        [HttpGet]
+        public ActionResult ProcessJobUpdate(int page, string processName)
+        {
+            var pagingContext = JobRepository.GetJobByProcess(/*page*/1, PageSize, processName);
+            return PartialView("Job", pagingContext);
+        }
     }
 }

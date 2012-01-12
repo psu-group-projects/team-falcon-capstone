@@ -1,8 +1,7 @@
 ﻿/*
-Author   : Chinh T Cao
-           Anh T Nguyen
+Author   : Anh T Nguyen
 Version  : 1.0.0
-Date     : 12/29/2011
+Date     : 1/12/2012
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 */
 
@@ -10,16 +9,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.IO;
 
 namespace PeregrineUI_2.Models
 {
-    public class Process
+    public class Message
     {
         public string ProcessName { get; set; }
-        public string LastAction { get; set; }
-        public DateTime MsgDate { get; set; }
-        public string ProcessState { get; set; }
- 
+        public string Content { get; set; }
+        public int Priority { get; set; }
+        public int Category { get; set; }
+        public DateTime Date { get; set; }
     }
 }
