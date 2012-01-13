@@ -22,7 +22,7 @@ namespace PeregrineAPI
                 return new Message(2,3,1541633011,"Process has stopped unexpectedly", -1, 10);
             }
 
-            List<Process> a = db.fetchProcess();
+            //List<Process> a = db.fetchProcess();
 
             return null;
         }
