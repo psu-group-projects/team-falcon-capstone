@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peregine_nunit.test", "Pere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineServiceTestClient", "PeregrineServiceTestClient\PeregrineServiceTestClient.csproj", "{4C211B92-96BB-4585-81A3-30128A7000F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDBTestClient", "PeregrinDBTestClient\PeregrineDBTestClient.csproj", "{070B280C-9A9A-4E82-9A67-332F7F243763}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,22 @@ Global
 		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|x86.ActiveCfg = Release|Any CPU
+		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|x86.ActiveCfg = Debug|x86
+		{4C211B92-96BB-4585-81A3-30128A7000F6}.Release|Any CPU.ActiveCfg = Release|x86
+		{4C211B92-96BB-4585-81A3-30128A7000F6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4C211B92-96BB-4585-81A3-30128A7000F6}.Release|x86.ActiveCfg = Release|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Debug|x86.ActiveCfg = Debug|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Debug|x86.Build.0 = Debug|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Release|Any CPU.ActiveCfg = Release|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Release|Mixed Platforms.Build.0 = Release|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Release|x86.ActiveCfg = Release|x86
+		{070B280C-9A9A-4E82-9A67-332F7F243763}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
