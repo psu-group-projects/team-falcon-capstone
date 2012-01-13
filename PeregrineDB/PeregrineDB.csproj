@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBOWrappers.cs" />
+    <Compile Include="PeregrineDB.cs">
+      <DependentUpon>PeregrineDB.dbml</DependentUpon>
+    </Compile>
     <Compile Include="PeregrineDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
