@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peregine_nunit.test", "Pere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineServiceTestClient", "PeregrineServiceTestClient\PeregrineServiceTestClient.csproj", "{4C211B92-96BB-4585-81A3-30128A7000F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDBTestClient", "PeregrinDBTestClient\PeregrineDBTestClient.csproj", "{070B280C-9A9A-4E82-9A67-332F7F243763}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDBTestClient", "PeregrineDBTestClient\PeregrineDBTestClient.csproj", "{070B280C-9A9A-4E82-9A67-332F7F243763}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
