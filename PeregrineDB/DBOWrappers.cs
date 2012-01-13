@@ -13,6 +13,13 @@ namespace PeregrineDB
         {
         }
 
+        public ProcessWrapper(string procName, int procState)
+        {
+            ProcessID = -1; // should be null but int is not nullable
+            ProcessName = procName;
+            State = procState;
+        }
+
         public ProcessWrapper(int id)
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
