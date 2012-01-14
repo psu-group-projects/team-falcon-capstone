@@ -18,3 +18,31 @@ function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
         }
     });
 }
+
+function ProcessMsgUpdate(page, process_name) {
+    $.ajax({
+        url: '/Home/ProcessMsgUpdate',
+        data: { "page": page, "processName": process_name },
+        success: function (data) {
+            $('div.' + process_name + 'message').empty();
+            $('div.' + process_name + 'message').append(data);
+        },
+        error: function (result) {
+            alert(result);
+        }
+    });
+}
+
+function ProcessJobUpdate(page, process_name) {
+    $.ajax({
+        url: '/Home/ProcessJobUpdate',
+        data: { "page": page, "processName": process_name },
+        success: function (data) {
+            $('div.' + process_name + 'job').empty();
+            $('div.' + process_name + 'job').append(data);
+        },
+        error: function (result) {
+            alert(result);
+        }
+    });
+}

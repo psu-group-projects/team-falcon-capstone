@@ -40,14 +40,14 @@ namespace PeregrineUI_2.Controllers
         [HttpGet]
         public ActionResult ProcessMsgUpdate(int page, string processName)
         {
-            var pagingContext = MessageRepository.GetMessageByProcess(/*page*/1, PageSize, processName);
+            var pagingContext = MessageRepository.GetMessageByProcess(page, PageSize, processName);
             return PartialView("Message", pagingContext);
         }
 
         [HttpGet]
         public ActionResult ProcessJobUpdate(int page, string processName)
         {
-            var pagingContext = JobRepository.GetJobByProcess(/*page*/1, PageSize, processName);
+            var pagingContext = JobRepository.GetJobByProcess(page, PageSize, processName);
             return PartialView("Job", pagingContext);
         }
     }

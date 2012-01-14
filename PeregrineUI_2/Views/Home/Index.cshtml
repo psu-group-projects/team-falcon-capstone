@@ -16,25 +16,25 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
     $(document).ready(function () {
 
-        @* Set up the initial stage of the main page *@
+        // Set up the initial stage of the main page
         MainPageAjaxUpdate( parseInt("1"), 
                             parseInt("1"), 
                             "");       
 
-        @* Handle clicking page number *@
-        $(".page-number").live("click", function () {           
+        // Handle clicking page number 
+        $(".page-number").live("click", function () {                      
             MainPageAjaxUpdate( parseInt($(this).html()), 
                                 parseInt(document.getElementById("current_sorting_label").innerHTML), 
                                 document.getElementById("search_input_id").value);
         });
 
-        @* Automatic refresh the page *@
+        // Automatic refresh the page 
         
-        setInterval(function () {
-            MainPageAjaxUpdate( parseInt(document.getElementById("current_page_label").innerHTML), 
-                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
-                                document.getElementById("search_input_id").value    );       
-        }, 15000);
+//        setInterval(function () {
+//            MainPageAjaxUpdate( parseInt(document.getElementById("current_page_label").innerHTML), 
+//                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
+//                                document.getElementById("search_input_id").value    );       
+//        }, 15000);
         
 
     });
