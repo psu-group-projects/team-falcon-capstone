@@ -61,63 +61,61 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $("#process_table tr:first-child").show();
 
         $("#process_table tr.odd").click(function () {
+            // Only allow at most one scroll down subtable 
+            // When we open one process tab, the openning tab will be close and all information inside it will be delete
+            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
+            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();    
+            $("#process_table tr:not(.odd)").hide();
+            $("#process_table tr:first-child").show();
+
             $(this).next("tr").toggle();
             $(this).find(".arrow").toggleClass("up");
         });
         //$("#report").jExpand();
+
+        // Handle clicking msg page number 
+        $(".process_msg_page-number").live("click", function () {
+            show_message(   parseInt($(this).html()),
+                            document.getElementById("current_scrolldown_process").innerHTML);
+        });
+
+        // Handle clicking msg page number 
+        $(".process_job_page-number").live("click", function () {
+            show_job(   parseInt($(this).html()),
+                        document.getElementById("current_scrolldown_process").innerHTML);
+        });
     });
 
 
     // Show Jobs, hide Messages on clicks
-    function show_job(process_name) {
+    function show_job(page, process_name) {
+        // Update the current value of current_scrolldown_process
+        document.getElementById("current_scrolldown_process").innerHTML = process_name;
+
         document.getElementById(process_name + 'message').style.display = 'none';
         document.getElementById(process_name + 'JobBtn').style.display = 'none';
         document.getElementById(process_name + 'job').style.display = 'block';
         document.getElementById(process_name + 'MsgBtn').style.display = 'block';
-        ProcessJobUpdate(/*page*/1, process_name);
+        ProcessJobUpdate(page, process_name);
     }
 
     // Show Messages, hide Jobs on clicks
-    function show_message(process_name) {
+    function show_message(page, process_name) {
+        // Update the current value of current_scrolldown_process
+        document.getElementById("current_scrolldown_process").innerHTML = process_name;
+
         document.getElementById(process_name + 'job').style.display = 'none';
         document.getElementById(process_name + 'MsgBtn').style.display = 'none';
         document.getElementById(process_name + 'message').style.display = 'block';
         document.getElementById(process_name + 'JobBtn').style.display = 'block';
-        ProcessMsgUpdate(/*page*/1, process_name);
-    }
-
-    function ProcessMsgUpdate(page, process_name) {
-        $.ajax({
-            url: '/Home/ProcessMsgUpdate',
-            data: { "page": page, "processName": process_name },
-            success: function (data) {
-                $('div.' + process_name + 'message').empty();
-                $('div.' + process_name + 'message').append(data);
-            },
-            error: function (result) {
-                alert(result);
-            }
-        });
-    }
-
-    function ProcessJobUpdate(page, process_name) {
-        $.ajax({
-            url: '/Home/ProcessJobUpdate',
-            data: { "page": page, "processName": process_name },
-            success: function (data) {
-                $('div.' + process_name + 'job').empty();
-                $('div.' + process_name + 'job').append(data);
-            },
-            error: function (result) {
-                alert(result);
-            }
-        });
+        ProcessMsgUpdate(page, process_name);
     }
 </script>
 
 <!-- Hidden labels to keep track of values -->
 <label id="current_page_label" hidden="true">@Model.CurrentPage</label>
 <label id="current_sorting_label" hidden="true">@Model.SortingType</label>
+<label id="current_scrolldown_process" hidden="true"></label>
 
 
 <!-- Main table -->
@@ -196,7 +194,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td colspan="5" >
                     <!-- Table of messages in current process -->
                     <input id="@(process.ProcessName)JobBtn" type="button" value="Show Jobs"
-                            onclick="show_job('@(process.ProcessName)')"/>
+                            onclick="show_job('1', '@(process.ProcessName)')"/>
                     <!-- Partial View: Message --> 
                     <div  id = "@(process.ProcessName)message" style="display:inline-block; width:100%">
                         <div class = "@(process.ProcessName)message"></div>
@@ -204,7 +202,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
                     <!-- Table of jobs in current process -->
                     <input id="@(process.ProcessName)MsgBtn" type="button" value="Show Messages" style="display:none" 
-                            onclick="show_message('@(process.ProcessName)')"/>
+                            onclick="show_message('1', '@(process.ProcessName)')"/>
                     <!-- Partial View: Job -->
                     <div id = "@(process.ProcessName)job" style="display:none; width:100%">
                         <div class = "@(process.ProcessName)job"></div>
@@ -253,11 +251,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         {
                             if (i == 1)
                             {
-                                    <a class="page-number" href="javascript:void();">@i</a>   
+                                <a class="page-number" href="javascript:void(0)">@i</a>   
                             }
                             else
                             {
-                                    <label>...</label>
+                                <label>...</label>
                                 i = start - 1;
                             }
                         }
@@ -265,23 +263,23 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         {
                             if (i == Model.NumberOfPages)
                             {
-                                    <a class="page-number" href="javascript:void();">@i</a>
+                                <a class="page-number" href="javascript:void(0)">@i</a>
                             }
                             else
                             {
-                                    <label>...</label>
+                                <label>...</label>
                                 i = Model.NumberOfPages - 1;
                             }
                         }
                         else if (i == Model.CurrentPage)
                         {
-                                @i
+                            @i
                         }
                         else
                         {
-                                <a class="page-number" href="javascript:void();">@i</a>
-                            }
-                        }    
+                            <a class="page-number" href="javascript:void(0)">@i</a>
+                        }
+                    }    
                                                                
                 }
                             
