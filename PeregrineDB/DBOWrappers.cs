@@ -11,6 +11,9 @@ namespace PeregrineDB
     {
         public ProcessWrapper()
         {
+            ProcessID = -1; // should be null but int is not nullable
+            ProcessName = "";
+            State = 0;
         }
 
         public ProcessWrapper(string procName, int procState)
@@ -26,6 +29,19 @@ namespace PeregrineDB
             ISingleResult<GetProcessResult> result = db.GetProcess(id);
             // should only have one proc in result
             foreach (GetProcessResult proc in result)
+            {
+                ProcessID = proc.ProcessID;
+                ProcessName = proc.ProcessName;
+                State = proc.State;
+            }
+        }
+
+        public void PutInDatabase()
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<InsertProcessResult> result = db.InsertProcess(null, ProcessName, State);
+            // should only have one proc in result
+            foreach (InsertProcessResult proc in result)
             {
                 ProcessID = proc.ProcessID;
                 ProcessName = proc.ProcessName;
