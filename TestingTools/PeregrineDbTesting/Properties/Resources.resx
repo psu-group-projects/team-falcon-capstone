@@ -1,0 +1,473 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CreateJobTable_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Job]') AND type in (N'U'))
+DROP TABLE [dbo].[Job]
+GO
+
+USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Job](
+	[JobID] [int] NOT NULL,
+	[JobName] [nchar](10) NOT NULL,
+	[PlannedCount] [int] NULL,
+	[CompletedCount] [int] NULL,
+	[PercentComplete] [float] NULL,
+ CONSTRAINT [PK_Job] PRIMARY KEY CLUSTERED 
+(
+	[JobID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO</value>
+    <comment>SQL script to drop and create Job table</comment>
+  </data>
+  <data name="CreateLogRelTable_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Job]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Job]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Message]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Message]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Process]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Process]
+GO
+
+USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[LogRel]    Script Date: 12/28/2011 16:16:43 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LogRel]') AND type in (N'U'))
+DROP TABLE [dbo].[LogRel]
+GO
+
+USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[LogRel]    Script Date: 12/28/2011 16:16:43 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[LogRel](
+	[MessageID] [int] NOT NULL,
+	[ProcessID] [int] NOT NULL,
+	[JobID] [int] NULL,
+ CONSTRAINT [PK_LogRel] PRIMARY KEY CLUSTERED 
+(
+	[MessageID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Job] FOREIGN KEY([JobID])
+REFERENCES [dbo].[Job] ([JobID])
+GO
+
+ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Job]
+GO
+
+ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Message] FOREIGN KEY([MessageID])
+REFERENCES [dbo].[Messages] ([MessageID])
+GO
+
+ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Message]
+GO
+
+ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Process] FOREIGN KEY([ProcessID])
+REFERENCES [dbo].[Process] ([ProcessID])
+GO
+
+ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Process]
+GO</value>
+    <comment>SQL script to drop and create LogRel table</comment>
+  </data>
+  <data name="CreateMessagesTable_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[Messages]    Script Date: 12/28/2011 16:17:24 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Messages]') AND type in (N'U'))
+DROP TABLE [dbo].[Messages]
+GO
+
+USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[Messages]    Script Date: 12/28/2011 16:17:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Messages](
+	[MessageID] [int] NOT NULL,
+	[Message] [nvarchar](50) NOT NULL,
+	[Date] [date] NOT NULL,
+	[Category] [int] NOT NULL,
+	[Prority] [int] NOT NULL,
+ CONSTRAINT [PK_Message] PRIMARY KEY CLUSTERED 
+(
+	[MessageID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO</value>
+    <comment>SQL script to drop and create Messages table</comment>
+  </data>
+  <data name="CreateProcessTable_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[Process]    Script Date: 12/28/2011 16:18:32 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Process]') AND type in (N'U'))
+DROP TABLE [dbo].[Process]
+GO
+
+USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[Process]    Script Date: 12/28/2011 16:18:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Process](
+	[ProcessID] [int] NOT NULL,
+	[ProcessName] [nchar](15) NOT NULL,
+	[State] [int] NOT NULL,
+ CONSTRAINT [PK_Process_1] PRIMARY KEY CLUSTERED 
+(
+	[ProcessID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO</value>
+    <comment>SQL script to drop and create Process table</comment>
+  </data>
+  <data name="CreateSP_ShowProcesses_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 12/28/2011 16:36:10 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[ShowProcesses]
+AS
+    SET NOCOUNT ON;
+SELECT ProcessID, ProcessName, State from dbo.Process
+
+
+GO</value>
+    <comment>SQL script to create stored procedure: ShowProcesses</comment>
+  </data>
+  <data name="CreateSysdiagramsTable_sql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[sysdiagrams]    Script Date: 12/28/2011 16:12:12 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sysdiagrams]') AND type in (N'U'))
+DROP TABLE [dbo].[sysdiagrams]
+GO
+
+USE [PeregrineDB]
+GO
+
+/****** Object:  Table [dbo].[sysdiagrams]    Script Date: 12/28/2011 16:12:12 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[sysdiagrams](
+	[name] [sysname] NOT NULL,
+	[principal_id] [int] NOT NULL,
+	[diagram_id] [int] IDENTITY(1,1) NOT NULL,
+	[version] [int] NULL,
+	[definition] [varbinary](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[diagram_id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY],
+ CONSTRAINT [UK_principal_name] UNIQUE NONCLUSTERED 
+(
+	[principal_id] ASC,
+	[name] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'microsoft_database_tools_support', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'sysdiagrams'
+GO</value>
+    <comment>SQL script to drop and create sysdiagrams table</comment>
+  </data>
+  <data name="DropCreatePeregrineDB_sql" xml:space="preserve">
+    <value>USE [master]
+GO
+
+/****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'PeregrineDB')
+DROP DATABASE [PeregrineDB]
+GO
+
+USE [master]
+GO
+
+/****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+CREATE DATABASE [PeregrineDB] ON  PRIMARY 
+( NAME = N'PeregrineDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf' , SIZE = 2048KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'PeregrineDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+
+ALTER DATABASE [PeregrineDB] SET COMPATIBILITY_LEVEL = 100
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [PeregrineDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [PeregrineDB] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET AUTO_CREATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [PeregrineDB] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [PeregrineDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [PeregrineDB] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET  DISABLE_BROKER 
+GO
+
+ALTER DATABASE [PeregrineDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [PeregrineDB] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [PeregrineDB] SET  READ_WRITE 
+GO
+
+ALTER DATABASE [PeregrineDB] SET RECOVERY FULL 
+GO
+
+ALTER DATABASE [PeregrineDB] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [PeregrineDB] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [PeregrineDB] SET DB_CHAINING OFF 
+GO</value>
+    <comment>SQL script  to drop and create Peregrine database</comment>
+  </data>
+  <data name="OldDBName" xml:space="preserve">
+    <value>PeregrineDB</value>
+    <comment>name of db to be replaced in script text</comment>
+  </data>
+</root>

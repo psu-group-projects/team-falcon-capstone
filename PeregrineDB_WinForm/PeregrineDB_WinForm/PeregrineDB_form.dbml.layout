@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="PeregrineDB_form">
+  <DataContextMoniker Name="/PeregrineDB_formDataContext" />
+  <nestedChildShapes>
+    <classShape Id="98cbddbe-9753-4b84-91e7-89315fd7ab44" absoluteBounds="3, 2.75, 2, 1.26050048828125">
+      <DataClassMoniker Name="/PeregrineDB_formDataContext/Process" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0851e90d-8543-459e-acc3-abb60fe0b56e" absoluteBounds="3.015, 3.21, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

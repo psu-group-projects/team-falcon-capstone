@@ -1,0 +1,109 @@
+﻿@*
+Author   : Anh T Nguyen           
+Version  : 1.0.0
+Date     : 1/11/2012
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*@
+
+@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Message>
+
+ <table>
+        <thead>
+            <tr>
+                <td>Message Content </td>
+                <td>Priority </td>
+                <td>Category </td>
+                <td>Date </td>
+            </tr>
+        </thead>     
+        <tbody>
+            @foreach (var message in Model.Data)
+            {
+                <tr>
+                    <td>@message.Content </td>
+                    <td>@message.Priority </td>
+                    <td>@message.Category </td>
+                    <td>@message.Date.ToString("yyyy-MM-dd HH:mm tt") </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    @{  // Pagination     
+
+                        int start, end;
+
+                        // Get the value of start and end based on the value of currpage and total number of page
+                        if (Model.NumberOfPages <= 5)
+                        {
+                            // If the total number of page is less than 5, show all to user
+                            start = 0;
+                            end = Model.NumberOfPages;
+                        }
+                        else
+                        {
+                            // Else, allows user to choose first page, last page and 5 other page around current chose page
+                            start = Model.CurrentPage - 2;
+                            end = Model.CurrentPage + 2;
+
+                            if (start < 1)
+                            {
+                                start = 1;
+                                end = 5;
+                            }
+                            else if (end > Model.NumberOfPages)
+                            {
+                                start = Model.NumberOfPages - 4;
+                                end = Model.NumberOfPages;
+                            }
+                        }
+
+                        for (int i = 1; i <= Model.NumberOfPages; i++)
+                        {
+                            if (i < start)
+                            {
+                                if (i == 1)
+                                {
+                                    <a class="process_msg_page-number" href="javascript:void(0)">@i</a>   
+                                }
+                                else
+                                {
+                                    <label>...</label>
+                                    i = start - 1;
+                                }
+                            }
+                            else if (i > end)
+                            {
+                                if (i == Model.NumberOfPages)
+                                {
+                                    <a class="process_msg_page-number" href="javascript:void(0)">@i</a>
+                                }
+                                else
+                                {
+                                    <label>...</label>
+                                    i = Model.NumberOfPages - 1;
+                                }
+                            }
+                            else if (i == Model.CurrentPage)
+                            {
+                                @i
+                            }
+                            else
+                            {
+                                <a class="process_msg_page-number" href="javascript:void(0)">@i</a>
+                            }
+                        }    
+                                                               
+                    }
+                            
+                    <label>|</label>
+                    <label>Go to page:</label> 
+                    <input  id="process_msg_page_target" type="text" style="width: 40px" 
+                            onchange="show_message(     parseInt(document.getElementById(this.id).value),                                                       
+                                                        document.getElementById('current_scrolldown_process').innerHTML )"/> 
+                                                                                                             
+                </td>
+            </tr>
+        </tfoot>
+</table>

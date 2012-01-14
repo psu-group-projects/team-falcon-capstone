@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 11.25" name="PeregrineDB">
+  <DataContextMoniker Name="/PeregrineDBDataContext" />
+  <nestedChildShapes>
+    <classShape Id="71dc09a2-6112-4072-8b92-45319ac935aa" absoluteBounds="5.5, 4.875, 2, 1.26050048828125">
+      <DataClassMoniker Name="/PeregrineDBDataContext/Process" />
+      <nestedChildShapes>
+        <elementListCompartment Id="820507e0-7594-4dab-870d-1684c50fec78" absoluteBounds="5.515, 5.335, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bd489b61-ea00-4e5f-8a39-a8cfb6711b80" absoluteBounds="5.75, 7.125, 2, 1.26050048828125">
+      <DataClassMoniker Name="/PeregrineDBDataContext/LogRel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5c92be48-a76f-49cd-a924-256138777fc4" absoluteBounds="5.765, 7.585, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.625 : 6.13550048828125); (6.625 : 7.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/PeregrineDBDataContext/Process/Process_LogRel" />
+      <nodes>
+        <classShapeMoniker Id="71dc09a2-6112-4072-8b92-45319ac935aa" />
+        <classShapeMoniker Id="bd489b61-ea00-4e5f-8a39-a8cfb6711b80" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="7997ee87-ac8f-4e74-be35-b20d7058f28a" absoluteBounds="7.125, 9.375, 2, 1.5891951497395831">
+      <DataClassMoniker Name="/PeregrineDBDataContext/Job" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c47535ea-c4a3-4813-8307-e049605a2308" absoluteBounds="7.1400000000000006, 9.835, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(7.4375 : 9.375); (7.4375 : 8.38550048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/PeregrineDBDataContext/Job/Job_LogRel" />
+      <nodes>
+        <classShapeMoniker Id="7997ee87-ac8f-4e74-be35-b20d7058f28a" />
+        <classShapeMoniker Id="bd489b61-ea00-4e5f-8a39-a8cfb6711b80" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="425da2c7-687f-41d1-ac7a-7199991452da" absoluteBounds="4.375, 9.375, 2, 1.5891951497395831">
+      <DataClassMoniker Name="/PeregrineDBDataContext/Message" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8e3b7caa-cc78-4a9d-8b74-da0fe9d54912" absoluteBounds="4.39, 9.835, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.0625 : 9.375); (6.0625 : 8.38550048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/PeregrineDBDataContext/Message/Message_LogRel" />
+      <nodes>
+        <classShapeMoniker Id="425da2c7-687f-41d1-ac7a-7199991452da" />
+        <classShapeMoniker Id="bd489b61-ea00-4e5f-8a39-a8cfb6711b80" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
