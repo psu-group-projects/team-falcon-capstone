@@ -73,16 +73,25 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         });
         //$("#report").jExpand();
 
-        // Handle clicking page number 
+        // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
             show_message(   parseInt($(this).html()),
                             document.getElementById("current_scrolldown_process").innerHTML);
+        });
+
+        // Handle clicking msg page number 
+        $(".process_job_page-number").live("click", function () {
+            show_job(   parseInt($(this).html()),
+                        document.getElementById("current_scrolldown_process").innerHTML);
         });
     });
 
 
     // Show Jobs, hide Messages on clicks
     function show_job(page, process_name) {
+        // Update the current value of current_scrolldown_process
+        document.getElementById("current_scrolldown_process").innerHTML = process_name;
+
         document.getElementById(process_name + 'message').style.display = 'none';
         document.getElementById(process_name + 'JobBtn').style.display = 'none';
         document.getElementById(process_name + 'job').style.display = 'block';
