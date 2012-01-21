@@ -5,8 +5,6 @@ Version  : 1.0.0
 Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 *@
-
-@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
            
 @{
     ViewBag.Title = "Peregrine Main Page";
@@ -40,13 +38,19 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 </script>
 
+<nav>
+    <ul id="menu">
+        <li>@Html.ActionLink("Message Inquiry", "MsgInquiry", "Home")</li>
+    </ul>
+</nav>
+
 <h2>Processes Summary</h2>
 
 <fieldset>
     <label>Search:</label>
     <input  id="search_input_id" type="text" 
-            onchange="MainPageAjaxUpdate(   parseInt('1'), 
-                                            parseInt('1'), 
+            onchange="MainPageAjaxUpdate(   '1', 
+                                            '1', 
                                             document.getElementById(this.id).value )" />
 </fieldset>
 

@@ -1,5 +1,6 @@
 ﻿/*
 Author   : Anh T Nguyen
+           Chinh T Cao
 Version  : 1.0.0
 Date     : 1/12/2012
 Copyright: Capstone Project Team Falcon 2011 All right reserved
@@ -20,4 +21,10 @@ namespace PeregrineUI_2.Models
         public int Category { get; set; }
         public DateTime Date { get; set; }
     }
+
+    public class Msg_inq : Message
+    {
+        public int ProcessID { get; set; }
+    }
+
 }

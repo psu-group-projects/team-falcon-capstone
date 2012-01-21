@@ -46,3 +46,23 @@ function ProcessJobUpdate(page, process_name) {
         }
     });
 }
+
+function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
+    $.ajax({
+        url: '/Home/MsgInquiryUpdate',
+        data:
+            {   "page_number": page_number,
+                "sort_option": sort_option,
+                "msg_priority": msg_priority,
+                "process_name": process_name,
+                "SU_SD_msg" : SU_SD_msg
+            },
+        success: function (data) {
+            $('div.message-list').empty();
+            $('div.message-list').append(data);
+        },
+        error: function (result) {
+            alert(result);
+        }
+    });
+}

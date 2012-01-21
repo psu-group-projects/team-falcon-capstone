@@ -12,20 +12,15 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         @@import url(../../Content/ProcessTable.css);         
 </style>
 
-
 <script type="text/javascript">
 
+    /**/
     function sorting(chkboxname) {
         // Getting the state of the chose checkbox
         var state = document.getElementById(chkboxname).checked;
 
         // If we check this checkbox, turnoff the other sorting checkbox
         if (state) {
-            document.getElementById("ProcessName_checkbox").checked = false;
-            document.getElementById("LastMsg_checkbox").checked = false;
-            document.getElementById("MsgDate_checkbox").checked = false;
-            document.getElementById("ProcessState_checkbox").checked = false;
-            document.getElementById(chkboxname).checked = true;
 
             // Make ajax call to controller to update the table
             if (chkboxname == "ProcessName_checkbox")
@@ -85,7 +80,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         document.getElementById("current_scrolldown_process").innerHTML);
         });
     });
-
 
     // Show Jobs, hide Messages on clicks
     function show_job(page, process_name) {

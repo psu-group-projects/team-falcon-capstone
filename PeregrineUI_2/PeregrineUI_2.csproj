@@ -72,6 +72,7 @@
     <Compile Include="Models\Process.cs" />
     <Compile Include="Models\Repository\JobRepository.cs" />
     <Compile Include="Models\Repository\MessageRepository.cs" />
+    <Compile Include="Models\Repository\MsgInquiryRepo.cs" />
     <Compile Include="Models\Repository\SummaryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -164,6 +165,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Job.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\MsgInquiry.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\MessageList.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
