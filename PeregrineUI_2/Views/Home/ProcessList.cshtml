@@ -59,24 +59,28 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             // Only allow at most one scroll down subtable 
             // When we open one process tab, the openning tab will be close and all information inside it will be delete
             $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
-            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();    
-            $("#process_table tr:not(.odd)").hide();
+            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();
+            $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
+            $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
             $("#process_table tr:first-child").show();
 
             $(this).next("tr").toggle();
             $(this).find(".arrow").toggleClass("up");
+
+            document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
+            document.getElementById($(this).attr("id") + 'MsgBtn').click();
         });
         //$("#report").jExpand();
 
         // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
-            show_message(   parseInt($(this).html()),
+            show_message(parseInt($(this).html()),
                             document.getElementById("current_scrolldown_process").innerHTML);
         });
 
         // Handle clicking msg page number 
         $(".process_job_page-number").live("click", function () {
-            show_job(   parseInt($(this).html()),
+            show_job(parseInt($(this).html()),
                         document.getElementById("current_scrolldown_process").innerHTML);
         });
     });
@@ -84,7 +88,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     // Show Jobs, hide Messages on clicks
     function show_job(page, process_name) {
         // Update the current value of current_scrolldown_process
-        document.getElementById("current_scrolldown_process").innerHTML = process_name;
+        //document.getElementById("current_scrolldown_process").innerHTML = process_name;
 
         document.getElementById(process_name + 'message').style.display = 'none';
         document.getElementById(process_name + 'JobBtn').style.display = 'none';
@@ -96,7 +100,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     // Show Messages, hide Jobs on clicks
     function show_message(page, process_name) {
         // Update the current value of current_scrolldown_process
-        document.getElementById("current_scrolldown_process").innerHTML = process_name;
+        //document.getElementById("current_scrolldown_process").innerHTML = process_name;
 
         document.getElementById(process_name + 'job').style.display = 'none';
         document.getElementById(process_name + 'MsgBtn').style.display = 'none';
@@ -174,7 +178,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         @foreach (var process in Model.Data)
         {
             <!-- Show summary -->
-            <tr>
+            <tr id="@(process.ProcessName)">
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
