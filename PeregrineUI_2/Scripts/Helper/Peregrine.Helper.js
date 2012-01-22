@@ -1,9 +1,26 @@
 ﻿/*
 Author   : Chinh T Cao
+           Anh T Nguyen
 Version  : 1.0.0
 Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 */
+
+function MainPageAjaxSearch(page, SortingType, SearchPattern) {
+    $.ajax({
+        url: '/Home/MainPageAjaxUpdate',
+        data: { "page": page, "SortingType": SortingType, "SearchPattern": SearchPattern },
+        success: function (data) {
+            $('div.process-list').empty();
+            $('div.process-list').append(data);
+        },
+        error: function (result) {
+            alert(result);
+        }
+    });
+    document.getElementById("current_scrolldown_process").innerHTML = '';
+}
+
 
 function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
     $.ajax({
@@ -17,6 +34,16 @@ function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
             alert(result);
         }
     });
+}
+
+function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
+    
+    if (msg_or_job == 'Msg') {
+        show_message(inside_page, process_name);
+    }
+    else {
+        show_job(inside_page, process_name);
+    }
 }
 
 function ProcessMsgUpdate(page, process_name) {
@@ -65,4 +92,37 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
             alert(result);
         }
     });
+}
+
+// Show Jobs, hide Messages on clicks
+function show_job(page, process_name) {
+    // Update the current value of current_scrolldown_process
+    //document.getElementById("current_scrolldown_process").innerHTML = process_name;
+
+    // Save info of the opened tab
+    document.getElementById("msg_or_job").innerHTML = 'Job';
+    document.getElementById("inside_page").innerHTML = page;
+
+    // Show jobs and hide messages
+    document.getElementById(process_name + 'message').style.display = 'none';
+    document.getElementById(process_name + 'JobBtn').style.display = 'none';
+    document.getElementById(process_name + 'job').style.display = 'block';
+    document.getElementById(process_name + 'MsgBtn').style.display = 'block';
+    ProcessJobUpdate(page, process_name);
+}
+
+// Show Messages, hide Jobs on clicks
+function show_message(page, process_name) {
+    // Update the current value of current_scrolldown_process
+
+    // Save info of the opened tab
+    document.getElementById("msg_or_job").innerHTML = 'Msg';
+    document.getElementById("inside_page").innerHTML = page;
+
+    // Show messages and hide jobs
+    document.getElementById(process_name + 'job').style.display = 'none';
+    document.getElementById(process_name + 'MsgBtn').style.display = 'none';
+    document.getElementById(process_name + 'message').style.display = 'block';
+    document.getElementById(process_name + 'JobBtn').style.display = 'block';
+    ProcessMsgUpdate(page, process_name);
 }

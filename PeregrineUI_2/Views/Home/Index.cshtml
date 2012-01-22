@@ -21,18 +21,18 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
         // Handle clicking page number 
         $(".page-number").live("click", function () {                      
-            MainPageAjaxUpdate( parseInt($(this).html()), 
+            MainPageAjaxSearch( parseInt($(this).html()), 
                                 parseInt(document.getElementById("current_sorting_label").innerHTML), 
                                 document.getElementById("search_input_id").value);
         });
 
         // Automatic refresh the page 
         
-//        setInterval(function () {
-//            MainPageAjaxUpdate( parseInt(document.getElementById("current_page_label").innerHTML), 
-//                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
-//                                document.getElementById("search_input_id").value    );       
-//        }, 2000);        
+        setInterval(function () {
+            MainPageAjaxUpdate( parseInt(document.getElementById("current_page_label").innerHTML), 
+                                parseInt(document.getElementById("current_sorting_label").innerHTML), 
+                                        document.getElementById("search_input_id").value    );        
+        }, 15000);        
 
     });
 
@@ -49,9 +49,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <fieldset>
     <label>Search:</label>
     <input  id="search_input_id" type="text" 
-            onchange="MainPageAjaxUpdate(   '1', 
+            onchange="MainPageAjaxSearch(   '1', 
                                             '1', 
                                             document.getElementById(this.id).value )" />
 </fieldset>
 
 <div class="process-list"></div>
+<label id="current_scrolldown_process" visibility="hidden"></label>
+<label id="msg_or_job" visibility="hidden"></label>
+<label id="inside_page" visibility="hidden"></label>
