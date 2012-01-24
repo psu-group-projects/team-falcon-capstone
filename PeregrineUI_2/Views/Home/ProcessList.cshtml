@@ -12,36 +12,31 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         @@import url(../../Content/ProcessTable.css);         
 </style>
 
-
 <script type="text/javascript">
 
+    /**/
     function sorting(chkboxname) {
         // Getting the state of the chose checkbox
         var state = document.getElementById(chkboxname).checked;
 
         // If we check this checkbox, turnoff the other sorting checkbox
         if (state) {
-            document.getElementById("ProcessName_checkbox").checked = false;
-            document.getElementById("LastMsg_checkbox").checked = false;
-            document.getElementById("MsgDate_checkbox").checked = false;
-            document.getElementById("ProcessState_checkbox").checked = false;
-            document.getElementById(chkboxname).checked = true;
 
             // Make ajax call to controller to update the table
             if (chkboxname == "ProcessName_checkbox")
-                MainPageAjaxUpdate( parseInt("1"),
+                MainPageAjaxSearch( parseInt("1"),
                                     parseInt("1"), 
                                     document.getElementById("search_input_id").value    );
             else if (chkboxname == "LastMsg_checkbox")
-                MainPageAjaxUpdate( parseInt("1"),
+                MainPageAjaxSearch(parseInt("1"),
                                     parseInt("2"), 
                                     document.getElementById("search_input_id").value    );
             else if (chkboxname == "MsgDate_checkbox")
-                MainPageAjaxUpdate( parseInt("1"),
+                MainPageAjaxSearch(parseInt("1"),
                                     parseInt("3"), 
                                     document.getElementById("search_input_id").value    );
             else if (chkboxname == "ProcessState_checkbox")
-                MainPageAjaxUpdate( parseInt("1"),
+                MainPageAjaxSearch(parseInt("1"),
                                     parseInt("4"), 
                                     document.getElementById("search_input_id").value    );
             else
@@ -60,62 +55,52 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $("#process_table tr:not(.odd)").hide();
         $("#process_table tr:first-child").show();
 
+        opened_row_id = document.getElementById("current_scrolldown_process").innerHTML;
+        if (opened_row_id != '') {
+            opened_row = document.getElementById(opened_row_id);
+            $(opened_row).next("tr").show();
+            ExpandedTabUpdate(document.getElementById("current_scrolldown_process").innerHTML,
+                                    document.getElementById("msg_or_job").innerHTML,
+                                     parseInt(document.getElementById("inside_page").innerHTML));
+        }
+
         $("#process_table tr.odd").click(function () {
             // Only allow at most one scroll down subtable 
             // When we open one process tab, the openning tab will be close and all information inside it will be delete
             $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
-            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();    
-            $("#process_table tr:not(.odd)").hide();
+            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();
+            $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
+            $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
             $("#process_table tr:first-child").show();
 
             $(this).next("tr").toggle();
             $(this).find(".arrow").toggleClass("up");
+
+            document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
+            document.getElementById($(this).attr("id") + 'MsgBtn').click();
         });
         //$("#report").jExpand();
 
         // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
-            show_message(   parseInt($(this).html()),
+            show_message(parseInt($(this).html()),
                             document.getElementById("current_scrolldown_process").innerHTML);
         });
 
         // Handle clicking msg page number 
         $(".process_job_page-number").live("click", function () {
-            show_job(   parseInt($(this).html()),
+            show_job(parseInt($(this).html()),
                         document.getElementById("current_scrolldown_process").innerHTML);
         });
     });
 
-
-    // Show Jobs, hide Messages on clicks
-    function show_job(page, process_name) {
-        // Update the current value of current_scrolldown_process
-        document.getElementById("current_scrolldown_process").innerHTML = process_name;
-
-        document.getElementById(process_name + 'message').style.display = 'none';
-        document.getElementById(process_name + 'JobBtn').style.display = 'none';
-        document.getElementById(process_name + 'job').style.display = 'block';
-        document.getElementById(process_name + 'MsgBtn').style.display = 'block';
-        ProcessJobUpdate(page, process_name);
-    }
-
-    // Show Messages, hide Jobs on clicks
-    function show_message(page, process_name) {
-        // Update the current value of current_scrolldown_process
-        document.getElementById("current_scrolldown_process").innerHTML = process_name;
-
-        document.getElementById(process_name + 'job').style.display = 'none';
-        document.getElementById(process_name + 'MsgBtn').style.display = 'none';
-        document.getElementById(process_name + 'message').style.display = 'block';
-        document.getElementById(process_name + 'JobBtn').style.display = 'block';
-        ProcessMsgUpdate(page, process_name);
-    }
+    
 </script>
 
 <!-- Hidden labels to keep track of values -->
 <label id="current_page_label" hidden="true">@Model.CurrentPage</label>
 <label id="current_sorting_label" hidden="true">@Model.SortingType</label>
-<label id="current_scrolldown_process" hidden="true"></label>
+
 
 
 <!-- Main table -->
@@ -180,7 +165,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         @foreach (var process in Model.Data)
         {
             <!-- Show summary -->
-            <tr>
+            <tr id="@(process.ProcessName)">
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>

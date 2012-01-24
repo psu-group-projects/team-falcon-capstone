@@ -1,0 +1,118 @@
+﻿@*
+Author   : Chinh T Cao        
+Version  : 1.0.0
+Date     : 1/11/2012
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*@
+
+@{
+    ViewBag.Title = "Messages Summary";
+}
+
+<h2>Message Inquiry</h2>
+
+<script type="text/javascript">
+
+    /**/
+    function Msg_inquiry_collect_info(page_number, sort_option, process_priority, process_name) {
+        // Getting the current state of the SU_SD_Checkbox checkbox
+        var state = document.getElementById("SU_SD_Checkbox").checked;
+
+        // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
+        if (state) {
+            MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '1');
+        }
+        else {
+            MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '0');
+        }
+    }
+
+    function Change_SU_SD_Status(sort_option, process_priority, process_name) 
+    {
+        // Getting the current state of the SU_SD_Checkbox checkbox
+        var state = document.getElementById("SU_SD_Checkbox").checked;
+
+        // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
+        if (state) {
+            MsgInquiryUpdate('1', sort_option, process_priority, process_name, '1');
+        }
+        else {
+            MsgInquiryUpdate('1', sort_option, process_priority, process_name, '0');
+        }
+    }
+
+    function showmsg() {
+        ;
+    }
+
+    /**/
+    $(document).ready(function () {
+        // Set up the initial stage of the message inquiry page
+        MsgInquiryUpdate(
+                            "1",
+                            "1",
+                            "0",
+                            "",
+                            "0"
+                        );
+
+        // Handle clicking page number 
+        $(".msg_inquiry_page-number").live("click", function () {
+            Msg_inquiry_collect_info(
+                                        $(this).html(),
+                                        document.getElementById("msg_inquiry_current_sort").innerHTML,
+                                        document.getElementById("process_prio_input").value,
+                                        document.getElementById("process_name_input").value
+                                    );
+        });
+
+        //Automatic update
+//        setInterval(function () {
+//            Msg_inquiry_collect_info(
+//                                        document.getElementById("msg_inquiry_current_page").innerHTML,
+//                                        document.getElementById("msg_inquiry_current_sort").innerHTML,
+//                                        document.getElementById("process_prio_input").value,
+//                                        document.getElementById("process_name_input").value
+//                                    );
+//        }, 5000);
+    });
+
+</script>
+
+<fieldset>
+
+    <label>Search message by process name:</label>
+    <input  id="process_name_input" type="text" 
+            onchange="Msg_inquiry_collect_info  ( 
+                                                    '1',
+                                                    '1',                                      
+                                                    document.getElementById('process_prio_input').value,
+                                                    document.getElementById('process_name_input').value 
+                                                )"/>
+
+    <br />
+
+    <label>Search message by message priority:</label>
+    <input  id="process_prio_input" type="text" 
+             onchange="Msg_inquiry_collect_info ( 
+                                                    '1',
+                                                    '1',                                      
+                                                    document.getElementById('process_prio_input').value,
+                                                    document.getElementById('process_name_input').value
+                                                )"/>
+
+    <br />
+
+    <label>Get all start up and shutdown msg: </label>
+    <input id="SU_SD_Checkbox" type="checkbox" 
+            onclick="Change_SU_SD_Status (
+                                            '1',
+                                            document.getElementById('process_prio_input').value,
+                                            document.getElementById('process_name_input').value  
+                                         )"/>
+                                                                               
+
+</fieldset>
+
+<div class="message-list"></div>
+

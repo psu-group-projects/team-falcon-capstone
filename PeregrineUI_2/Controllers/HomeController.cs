@@ -50,5 +50,36 @@ namespace PeregrineUI_2.Controllers
             var pagingContext = JobRepository.GetJobByProcess(page, PageSize, processName);
             return PartialView("Job", pagingContext);
         }
+
+        [HttpGet]
+        public ViewResult MsgInquiry()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult MsgInquiryUpdate(   string page_number,
+                                                string sort_option,
+                                                string msg_priority,
+                                                string process_name, 
+                                                string SU_SD_msg)
+        {
+            int input_msg_priority;
+
+            // Parsing process
+            if (msg_priority == "")
+                input_msg_priority = 0;
+            else
+                input_msg_priority = Convert.ToInt32(msg_priority);
+
+
+            var pagingContext = MsgInquiryRepo.GetMessages( Convert.ToInt32(page_number),
+                                                            Convert.ToInt32(sort_option),
+                                                            input_msg_priority,
+                                                            process_name,
+                                                            Convert.ToInt32(SU_SD_msg),
+                                                            PageSize);
+            return PartialView("MessageList", pagingContext);
+        }
     }
 }
