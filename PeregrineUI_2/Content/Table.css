@@ -1,0 +1,156 @@
+﻿/*
+Author   : Anh T Nguyen, Chinh T Cao
+Version  : 1.0.1
+Date     : 01/01/2012
+Modified : 1/21/2012 by CC
+Copyright: Capstone Project Team Falcon 2011 All right reserved
+*/
+
+body {
+    font-family:    Arial, Helvetica, Sans-Serif; 
+    font-size:  0.8em;
+
+}
+
+/*
+-----------------*/
+#process_table  {
+    margin: 0 auto;
+	clear: both;
+	width: 100%;
+ }
+
+#process_table h4  {
+    margin:0px; padding:0px;
+}
+
+#process_table ul { margin:10px 0 10px 40px; padding:0px;}
+
+#process_list_header
+{
+    background:#7CB8E2 url(images/header_bkg.png) repeat-x scroll center left;
+    color: #fff;
+    text-align:left;
+    padding: 3px 18px 3px 10px;
+	border-bottom: 1px solid black;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#process_table tbody td {  color:#000; padding:7px 15px; }
+
+#expand_row { background:#C7DDEE none repeat-x scroll center left; color:#000; padding:7px 15px; }
+
+#process_table tbody tr.not(odd) td { background:#C7DDEE none repeat-x scroll center left; cursor:pointer; }
+
+#process_table tbody tr.odd td { background:#fff url(images/row_bkg.png) repeat-x scroll center left; cursor:pointer; }
+
+#process_table div.arrow { background:transparent url(images/arrows.png) no-repeat scroll 0px -16px; width:16px; height:16px; display:block;}
+
+#process_table div.up { background-position:0px 0px;}
+
+
+/*
+---For message inquiry page--------------*/
+
+#msg_list_table  {
+    margin: 0 auto;
+	clear: both;
+	width: 100%;
+ }
+
+#msg_list_table h4  {
+    margin:0px; padding:0px;
+}
+
+#msg_list_table ul { margin:10px 0 10px 40px; padding:0px;}
+
+#msg_list_table thead  
+{
+    background:#7CB8E2 url(images/header_bkg.png) repeat-x scroll center left;
+    color: #fff;
+    text-align:left;
+    padding: 3px 18px 3px 10px;
+	border-bottom: 1px solid black;
+	font-weight: bold;
+}
+
+#msg_list_table tbody tr:nth-child(even) td { background:#E0FFFF; color:#000; padding:7px 15px; }
+
+#msg_list_table tbody tr:nth-child(odd) td { background:#D1EEEE; color:#000; padding:7px 15px; }
+
+
+
+table.msg_table 
+{
+    margin: 0 auto;
+	clear: both;
+	width: 100%;
+}
+
+table.msg_table thead  
+{
+    background:#9AC0CD repeat-x scroll center left;
+    color: #fff;
+    text-align:left;
+    padding: 3px 18px 3px 10px;
+	border-bottom: 1px solid black;
+	font-weight: bold;
+}
+
+table.msg_table th 
+{
+    font-size:1.1em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    color:#ffffff;
+}
+
+table.msg_table tbody tr:nth-child(even) td
+{
+    background:#E0FFFF;
+}
+
+table.msg_table tbody tr:nth-child(odd) td 
+{
+    background:#D1EEEE;
+}
+
+
+table.job_table
+{
+    margin: 0 auto;
+	clear: both;
+	width: 100%;
+}
+
+table.job_table thead  
+{
+    background:#9AC0CD repeat-x scroll center left;
+    color: #fff;
+    text-align:left;
+    padding: 3px 18px 3px 10px;
+	border-bottom: 1px solid black;
+	font-weight: bold;
+}
+
+table.job_table th 
+{
+    font-size:1.1em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    color:#ffffff;
+}
+
+table.job_table tbody tr:nth-child(even) td
+{
+    background:#E0FFFF;
+}
+
+table.job_table tbody tr:nth-child(odd) td 
+{
+    background:#D1EEEE;
+}
+
