@@ -7,18 +7,22 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 *@
 
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Job>
+           
+<style type="text/css">
+    @@import url(../../Content/Table.css);
+</style>
               
-<table>    
+<table class = "job_table">    
         <thead>
             <tr>
                 <td>Job Content </td>
-                <td>Progess </td>
+                <td>Progress </td>
             </tr>
         </thead>     
         <tbody>
             @foreach (var job in Model.Data)
             {
-                <tr>
+                <tr >
                     <td>@job.JobContent </td>
                     <td>@job.PercentProgress </td>
                 </tr>

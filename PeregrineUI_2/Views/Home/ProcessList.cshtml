@@ -9,7 +9,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
 
 <style type="text/css">       
-        @@import url(../../Content/ProcessTable.css);         
+        @@import url(../../Content/Table.css);         
 </style>
 
 <script type="text/javascript">
@@ -58,26 +58,42 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         opened_row_id = document.getElementById("current_scrolldown_process").innerHTML;
         if (opened_row_id != '') {
             opened_row = document.getElementById(opened_row_id);
-            $(opened_row).next("tr").show();
-            ExpandedTabUpdate(document.getElementById("current_scrolldown_process").innerHTML,
+            if (opened_row != null) {
+                $(opened_row).next("tr").show();
+                ExpandedTabUpdate(document.getElementById("current_scrolldown_process").innerHTML,
                                     document.getElementById("msg_or_job").innerHTML,
                                      parseInt(document.getElementById("inside_page").innerHTML));
+            }
+            else {
+                document.getElementById("current_scrolldown_process").innerHTML = '';
+            }
         }
 
         $("#process_table tr.odd").click(function () {
             // Only allow at most one scroll down subtable 
-            // When we open one process tab, the openning tab will be close and all information inside it will be delete
-            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
-            $('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();
+            // When we open one process tab, the openning tab will be closed and all information inside it will be deleted
+            //$('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
+            //$('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();
+
+            // Close all tabs except the clicked row
             $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
             $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
             $("#process_table tr:first-child").show();
 
+            // Toggle the clicked row
             $(this).next("tr").toggle();
             $(this).find(".arrow").toggleClass("up");
 
-            document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
-            document.getElementById($(this).attr("id") + 'MsgBtn').click();
+            // Save currently opened tab into a label
+            // If the clicked row is currently open, close it
+            if (document.getElementById("current_scrolldown_process").innerHTML == $(this).attr("id")) {
+                document.getElementById("current_scrolldown_process").innerHTML = '';
+            }
+            // if not, open the row
+            else {
+                document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
+                document.getElementById($(this).attr("id") + 'MsgBtn').click();
+            }
         });
         //$("#report").jExpand();
 
@@ -107,7 +123,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <table id="process_table" class="display">
 
     <!-- Table header: Display column names, use checkboxes for Sorting -->
-    <thead>     
+    <thead id = "process_list_header">     
         <tr>
             <td>
                 ProcessName 
@@ -176,7 +192,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             
             <!-- If click on the process, expand the table, show process details -->
             <tr>
-                <td colspan="5" >
+                <td colspan="5" id = "expand_row">
                     <!-- Table of messages in current process -->
                     <input id="@(process.ProcessName)JobBtn" type="button" value="Show Jobs"
                             onclick="show_job('1', '@(process.ProcessName)')"/>
