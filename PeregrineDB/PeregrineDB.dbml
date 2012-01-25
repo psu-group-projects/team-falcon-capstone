@@ -186,4 +186,24 @@
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetJob" Method="GetJob">
+    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetJobResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetMessage" Method="GetMessage">
+    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetMessageResult">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

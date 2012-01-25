@@ -36,6 +36,7 @@ function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
     });
 }
 
+
 function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
     
     if (msg_or_job == 'Msg') {
