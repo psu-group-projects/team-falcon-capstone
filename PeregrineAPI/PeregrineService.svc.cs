@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using System.IO;
 
 namespace PeregrineAPI
 {
@@ -13,54 +14,71 @@ namespace PeregrineAPI
     {
         public Message getMessage(int msg_id)
         {
-            if (msg_id == 0)
-            {
-                return new Message(1,1,1321654332,"process has booted up", 0, 0);
-            }
-            else if (msg_id == 1)
-            {
-                return new Message(2,3,1541633011,"Process has stopped unexpectedly", -1, 10);
-            }
-
-            //List<Process> a = db.fetchProcess();
-
-            return null;
+            throw new NotImplementedException();
         }
 
         public List<Process> getAllProcesses()
         {
-            return new List<Process>()
-            {
-                new Process(1, "Compute PI", 0)
-            };
+            throw new NotImplementedException();
         }
 
-        public Job logJobStart(string process_name, string job_name, int job_count = 1)
+        public List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy)
         {
-            /* Use this expression to get the unix timestamp:
-             *
-             * (DateTime.UtcNow - new DateTime(1970,1,1,0,0,0)).TotalSeconds;
-             * 
-             * and to convert a unix timestamp to a .NET DateTime:
-             *     
-             * (new DateTime(1970,1,1,0,0,0)).AddSeconds(unixtimestamp)
-             * */
-            
-            return new Job(0, 0, (DateTime.UtcNow - new DateTime(1970,1,1,0,0,0)).TotalSeconds, job_name, job_count, 0);
+            List<ProcessSummary> processSummaries = new List<ProcessSummary>();
+            int i = 0;
+            while (i < 100)
+            {
+                processSummaries.Add( new ProcessSummary(
+                    new Process("falcon"+i, i, ProcessState.GREEN), 
+                    new Message(i-60000,i,DateTime.Now,Path.GetRandomFileName(),Category.PROGRESS,Priority.LOW) ) );
+                i++;
+            }
+            return processSummaries;
         }
 
-        public List<ProcessSummary> getProcessSummaryList(int start_id, int num_to_fetch, int sort_by)
+        public void logProcessMessage(string processName, string message, Category category, Priority priority)
         {
-            //this is where some fetch would happen to the database.
-            //execture stored proceedure.
+            throw new NotImplementedException();
+        }
 
-            //put results into List of ProcessSummaries.
+        public void logJobProgressAsPercentage(int jobID, string processName, int percent)
+        {
+            throw new NotImplementedException();
+        }
 
-            return new List<ProcessSummary>()
-            {
-                new ProcessSummary(new Process(0, "make candy", 1), new Message(1, 0, 1234, "starting up", 1, 1)),
-                new ProcessSummary(new Process(1, "solve world hunger", 1), new Message(2, 1, 12345, "error", -1, 1))
-            };
+        public void logJobProgress(int jobID, string processName, int total, int completed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void logJobStart(int jobID, string processName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void logJobStartWithTotalTasks(int jobID, string processName, int totalTasks)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void logJobComplete(int jobID, string processName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void logProcessStart(string processName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void logProcessShutdown(string processName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void logProcessStateChange(string processName, ProcessState state)
+        {
+            throw new NotImplementedException();
         }
     }
 }

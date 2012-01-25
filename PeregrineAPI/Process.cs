@@ -13,13 +13,13 @@ namespace PeregrineAPI
     {
         int process_id;
         string process_name;
-        int state;
+        ProcessState state;
 
-        public Process(int p_id, string p_name, int st)
+        public Process(string p_name, int p_id, ProcessState processState)
         {
             process_id = p_id;
             process_name = p_name;
-            state = st;
+            state = processState;
         }
 
         [DataMember]

@@ -13,19 +13,19 @@ namespace PeregrineAPI
     {
         int message_id;
         int process_id;
-        double timestamp; //we dont know what type this should be! need to figure this out.
+        DateTime timestamp; //we dont know what type this should be! need to figure this out.
         string message;
-        int type; //probly should be an enum (bootup, shutdown)
-        int priority;
+        Category category; //probly should be an enum (bootup, shutdown)
+        Priority priority;
 
-        public Message(int m_id, int p_id, double time, string msg, int type, int pri)
+        public Message(int m_id, int p_id, DateTime time, string msg,  Category category, Priority priority)
         {
             message_id = m_id;
             process_id = p_id;
             timestamp = time;
             message = msg;
-            this.type = type;
-            priority = pri;
+            this.category = category;
+            this.priority = priority;
         }
 
         
