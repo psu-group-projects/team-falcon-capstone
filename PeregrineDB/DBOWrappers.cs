@@ -5,6 +5,7 @@
 
 namespace PeregrineDB
 {
+    using System;
     using System.Data.Linq;
 
     public class ProcessWrapper : Process
@@ -48,12 +49,68 @@ namespace PeregrineDB
                 State = proc.State;
             }
         }
+
+        public void DeleteFromDatabase()
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            db.DeleteProcess(ProcessID);
+        }
     }
 
     public class JobWrapper : Job
     {
         public JobWrapper()
         {
+            JobID = -1;     // unassigned
+            JobName = "";
+            PlannedCount = 0;
+            CompletedCount = 0;
+            PercentComplete = 0;
+        }
+
+        public JobWrapper(string jName, int pCount, int cCount, double pComplete)
+        {
+            JobID = -1;     // unassigned
+            JobName = jName;
+            PlannedCount = pCount;
+            CompletedCount = cCount;
+            PercentComplete = pComplete;
+        }
+
+        public JobWrapper(int id)
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<GetJobResult> result = db.GetJob(id);
+            // should only have one job in result
+            foreach (GetJobResult job in result)
+            {
+                JobID = job.JobID;  
+                JobName = job.JobName;
+                PlannedCount = job.PlannedCount;
+                CompletedCount = job.CompletedCount;
+                PercentComplete = job.PercentComplete;
+            }
+        }
+
+        public void PutInDatabase()
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<InsertJobResult> result = db.InsertJob(null, JobName, PlannedCount, CompletedCount, PercentComplete);
+            // should only have one job in result
+            foreach (InsertJobResult job in result)
+            {
+                JobID = job.JobID;
+                JobName = job.JobName;
+                PlannedCount = job.PlannedCount;
+                CompletedCount = job.CompletedCount;
+                PercentComplete = job.PercentComplete;
+            }
+        }
+
+        public void DeleteFromDatabase()
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            db.DeleteJob(JobID);
         }
     }
 
@@ -61,6 +118,56 @@ namespace PeregrineDB
     {
         public MessageWrapper()
         {
+            MessageID = -1;     // not yet assigned
+            Message1 = "";      // Message1 is Message
+            Date = DateTime.Now;
+            Category = 0;
+            Priority = 0;
+        }
+
+        public MessageWrapper(string messText, DateTime messDate, int messCategory, int messPriority)
+        {
+            MessageID = -1;         // not yet assigned
+            Message1 = messText;    // Message1 is Message
+            Date = messDate;
+            Category = messCategory;
+            Priority = messPriority;
+        }
+    
+        public MessageWrapper(int id)
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<GetMessageResult> result = db.GetMessage(id);
+            // should only have one message in result
+            foreach (GetMessageResult mess in result)
+            {
+                MessageID = mess.MessageID;
+                Message1 = mess.Message;
+                Date = mess.Date;
+                Category = mess.Category;
+                Priority = mess.Priority;
+            }
+        }
+
+        public void PutInDatabase()
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<InsertMessageResult> result = db.InsertMessage(null, Message1, Date, Category, Priority);
+            // should only have one message in result
+            foreach (InsertMessageResult mess in result)
+            {
+                MessageID = mess.MessageID;
+                Message1 = mess.Message;
+                Date = mess.Date;
+                Category = mess.Category;
+                Priority = mess.Priority;
+            }
+        }
+
+        public void DeleteFromDatabase()
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            db.DeleteMessage(MessageID);
         }
     }
 }

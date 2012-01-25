@@ -29,7 +29,7 @@ namespace PeregrineDB
 
 
             //Get a typed table to run query
-            var processes = db..GetTable1();
+            var processes = db.GetTable1();
 
             //Attach log to sthow generated SQL
             db.Log = Console.Out;

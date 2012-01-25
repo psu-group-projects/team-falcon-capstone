@@ -217,6 +217,20 @@ namespace PeregrineDB
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID);
 			return ((ISingleResult<GetProcessResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetJob")]
+		public ISingleResult<GetJobResult> GetJob([global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobID", DbType="Int")] System.Nullable<int> jobID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), jobID);
+			return ((ISingleResult<GetJobResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetMessage")]
+		public ISingleResult<GetMessageResult> GetMessage([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID);
+			return ((ISingleResult<GetMessageResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Process")]
@@ -2101,6 +2115,202 @@ namespace PeregrineDB
 				if ((this._State != value))
 				{
 					this._State = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetJobResult
+	{
+		
+		private int _JobID;
+		
+		private string _JobName;
+		
+		private System.Nullable<int> _PlannedCount;
+		
+		private System.Nullable<int> _CompletedCount;
+		
+		private System.Nullable<double> _PercentComplete;
+		
+		public GetJobResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		public int JobID
+		{
+			get
+			{
+				return this._JobID;
+			}
+			set
+			{
+				if ((this._JobID != value))
+				{
+					this._JobID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string JobName
+		{
+			get
+			{
+				return this._JobName;
+			}
+			set
+			{
+				if ((this._JobName != value))
+				{
+					this._JobName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		public System.Nullable<int> PlannedCount
+		{
+			get
+			{
+				return this._PlannedCount;
+			}
+			set
+			{
+				if ((this._PlannedCount != value))
+				{
+					this._PlannedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		public System.Nullable<int> CompletedCount
+		{
+			get
+			{
+				return this._CompletedCount;
+			}
+			set
+			{
+				if ((this._CompletedCount != value))
+				{
+					this._CompletedCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		public System.Nullable<double> PercentComplete
+		{
+			get
+			{
+				return this._PercentComplete;
+			}
+			set
+			{
+				if ((this._PercentComplete != value))
+				{
+					this._PercentComplete = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetMessageResult
+	{
+		
+		private int _MessageID;
+		
+		private string _Message;
+		
+		private System.DateTime _Date;
+		
+		private int _Category;
+		
+		private int _Priority;
+		
+		public GetMessageResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
 				}
 			}
 		}
