@@ -3,15 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using PeregrineAPI;
 
 namespace PeregrineUI_2.Models.Repository
 {
     public class SummaryRepository
     {
-        public static PageData<Process> GetAllSummaryData(int page, int sortOption, string searchpattern, int pagesize)
+        public static PageData<Process> GetSummaryDataByPage(int page, int sortOption, string searchpattern, int pagesize)
         {
             List<Process> SummaryData = new List<Process>();
          
+            // API call will be here
+            PeregrineService service = new PeregrineService();
+            List<ProcessSummary> ProcessSummaryData = service.getSummaryByPage(1, pagesize, SortBy.PROCESS_STATE);
+
+            foreach ( ProcessSummary summary in ProcessSummaryData){
+                SummaryData.Add(new Process { ProcessName = summary._process.ProcessName, LastAction = summary._message.MessageStr, MsgDate = summary._message.Timestamp, ProcessState = summary._process.State.ToString() });
+            }
+
+            /*
             SummaryData.Add(new Process { ProcessName = "Falcon10", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon11", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon12", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
@@ -87,6 +97,7 @@ namespace PeregrineUI_2.Models.Repository
             SummaryData.Add(new Process { ProcessName = "Falcon82", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon83", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon84", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
+            */
 
             var pagingContext = new PageData<Process>();
 

@@ -44,7 +44,7 @@ namespace PeregrineAPI
         }
 
         [DataMember]
-        public double Timestamp
+        public DateTime Timestamp
         {
             get { return timestamp; }
             set { timestamp = value; }
@@ -60,7 +60,7 @@ namespace PeregrineAPI
         //type could be shutdown, startup, general etc...
         //might want to make an enum out of this....
         [DataMember]
-        public int Type
+        public int type
         {
             get { return type; }
             set { type = value; }
@@ -68,7 +68,7 @@ namespace PeregrineAPI
 
         //priority could be some int where the higher the number, the more important.
         [DataMember]
-        public int Priority
+        public Priority Priority
         {
             get { return priority; }
             set { priority = value; }
