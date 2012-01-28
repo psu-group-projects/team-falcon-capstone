@@ -39,7 +39,7 @@ namespace PeregrineAPI
         //state could be 0 for green, 1 for yellow or 2 for red.
         //this might need to be turned into an enum...
         [DataMember]
-        public int State
+        public ProcessState State
         {
             get { return state; }
             set { state = value; }

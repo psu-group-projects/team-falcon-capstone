@@ -32,7 +32,7 @@ namespace PeregrineUI_2.Controllers
         [HttpGet]
         public ActionResult MainPageAjaxUpdate(int page, int SortingType, string SearchPattern)
         {
-            var pagingContext = SummaryRepository.GetAllSummaryData(page, SortingType, SearchPattern, PageSize);
+            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, SortingType, SearchPattern, PageSize);
             return PartialView("ProcessList", pagingContext);
         }
 
