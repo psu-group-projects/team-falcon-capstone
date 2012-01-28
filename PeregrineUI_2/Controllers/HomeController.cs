@@ -21,7 +21,7 @@ namespace PeregrineUI_2.Controllers
         // Specify how many entries for one page
         // Will be added into config file in the future
         //
-        public const int PageSize = 5;
+        public const int PageSize = 10;
 
         [HttpGet]
         public ViewResult Index()

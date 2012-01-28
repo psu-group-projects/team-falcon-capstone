@@ -6,11 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB_WinForm", "Pere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB", "PeregrineDB\PeregrineDB.csproj", "{C785DAD0-7D82-41D5-A34B-2080E69FFB78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineAPI", "PeregrineAPI\PeregrineAPI.csproj", "{079C86A1-B7D3-4454-9153-007349500A7F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDbTesting", "TestingTools\PeregrineDbTesting\PeregrineDbTesting.csproj", "{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Peregine_nunit.test", "Peregine_nunit.test\Peregine_nunit.test.csproj", "{1908F63A-28AD-4359-AAC8-ABEB16205F95}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineServiceTestClient", "PeregrineServiceTestClient\PeregrineServiceTestClient.csproj", "{4C211B92-96BB-4585-81A3-30128A7000F6}"
 EndProject
@@ -56,16 +52,6 @@ Global
 		{C785DAD0-7D82-41D5-A34B-2080E69FFB78}.Release|Mixed Platforms.Build.0 = Release|x86
 		{C785DAD0-7D82-41D5-A34B-2080E69FFB78}.Release|x86.ActiveCfg = Release|x86
 		{C785DAD0-7D82-41D5-A34B-2080E69FFB78}.Release|x86.Build.0 = Release|x86
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|x86.ActiveCfg = Release|Any CPU
 		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -76,16 +62,6 @@ Global
 		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Mixed Platforms.Build.0 = Release|x86
 		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|x86.ActiveCfg = Release|x86
 		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|x86.Build.0 = Release|x86
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1908F63A-28AD-4359-AAC8-ABEB16205F95}.Release|x86.ActiveCfg = Release|Any CPU
 		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|x86.ActiveCfg = Debug|x86

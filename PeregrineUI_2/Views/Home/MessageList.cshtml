@@ -109,6 +109,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     }   
                 </td>
                 <td>
+                    Message Type
+                </td>
+                <td>
                     Date 
                     @if (Model.SortingType == 5)
                     {
@@ -129,7 +132,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     <td>@message.ProcessName </td>
                     <td>@message.Content </td>
                     <td>@message.Priority.ToString() </td>
-                    <td>@message.Date.ToString("yyyy-MM-dd HH:mm tt") </td>
+                    <td>@message.MsgType </td>
+                    <td>@message.Date.ToString("yyyy-MM-dd HH:mm tt") 
+                        <br /> ( : 
+                        @( ((int)(DateTime.Now.Subtract(message.Date).TotalMinutes)).ToString() ) minutes )
+                    </td>
                 </tr>
             }
         </tbody>

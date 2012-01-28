@@ -21,8 +21,9 @@ namespace PeregrineUI_2.Models.Repository
                     ProcessID = i,
                     ProcessName = "Falcon" + i,
                     Content = Path.GetRandomFileName(),
-                    Priority = random.Next(1, 5),
+                    Priority = random.Next(1, 10),
                     Category = random.Next(1, 5),
+                    MsgType = (random.Next(1, 3) == 1) ? "Normal Message" : "Startup and Shutdown Message",
                     Date = DateTime.Now
                 };
                 SummaryData.Add(element);
@@ -33,10 +34,7 @@ namespace PeregrineUI_2.Models.Repository
             // Filtering if searching is actived
             if (SU_SD_msg == 1)
             {
-                // Get startup and shutdown msg 
-                // Implement in database
-
-                // 
+                SummaryData = SummaryData.Where(p => p.MsgType == "Startup and Shutdown Message").ToList();   
             }
             
             // Filtering if searching is actived
