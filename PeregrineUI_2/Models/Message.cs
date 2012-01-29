@@ -19,6 +19,7 @@ namespace PeregrineUI_2.Models
         public string Content { get; set; }
         public int Priority { get; set; }
         public int Category { get; set; }
+        public string MsgType { get; set; }
         public DateTime Date { get; set; }
     }
 
