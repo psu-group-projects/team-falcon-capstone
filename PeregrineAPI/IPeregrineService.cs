@@ -69,10 +69,10 @@ namespace PeregrineAPI
          * UI Service Operations
          */
         [OperationContract]
-        Message getMessage(int msg_id);
+        MessageDTO getMessage(int msg_id);
 
         [OperationContract]
-        List<Process> getAllProcesses();
+        List<ProcessDTO> getAllProcesses();
 
         // This will be the main fetching method for the front page. gets summary objects.
         [OperationContract]

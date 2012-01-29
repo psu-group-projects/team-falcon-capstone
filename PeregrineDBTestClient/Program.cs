@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PeregrineDB;
+using PeregrineDBWrapper;
+using PeregrineAPI;
 
 namespace PeregrinDBTestClient
 {
@@ -12,32 +13,32 @@ namespace PeregrinDBTestClient
         {
             int id;
 
-            ProcessWrapper proc = new ProcessWrapper("TestClientProcess", 1);
+            ProcessWrapper proc = new ProcessWrapper("TestClientProcess", (ProcessState)1);
             proc.PutInDatabase();
-            Console.WriteLine("Put In Database: {0},{1},{2}", proc.ProcessID, proc.ProcessName, proc.State);
-            id = proc.ProcessID;
+            Console.WriteLine("Put In Database: {0},{1},{2}", proc.ProcessId, proc.ProcessName, proc.State);
+            id = proc.ProcessId;
             proc = new ProcessWrapper(id);
-            Console.WriteLine("Pulled From Database: {0},{1},{2}", proc.ProcessID, proc.ProcessName, proc.State);
+            Console.WriteLine("Pulled From Database: {0},{1},{2}", proc.ProcessId, proc.ProcessName, proc.State);
             proc.DeleteFromDatabase();
-            Console.WriteLine("Deleted From Database: {0},{1},{2}", proc.ProcessID, proc.ProcessName, proc.State);
+            Console.WriteLine("Deleted From Database: {0},{1},{2}", proc.ProcessId, proc.ProcessName, proc.State);
 
             JobWrapper job = new JobWrapper("TestClientJob", 1, 10, 0.1);
             job.PutInDatabase();
-            Console.WriteLine("Put In Database: {0},{1},{2},{3},{4}", job.JobID, job.JobName, job.PlannedCount, job.CompletedCount, job.PercentComplete);
-            id = job.JobID;
+            Console.WriteLine("Put In Database: {0},{1},{2},{3}", job.JobId, job.JobName, job.PlannedCount, job.PercentComplete);
+            id = job.JobId;
             job = new JobWrapper(id);
-            Console.WriteLine("Pulled From Database: {0},{1},{2},{3},{4}", job.JobID, job.JobName, job.PlannedCount, job.CompletedCount, job.PercentComplete);
+            Console.WriteLine("Pulled From Database: {0},{1},{2},{3}", job.JobId, job.JobName, job.PlannedCount, job.PercentComplete);
             job.DeleteFromDatabase();
-            Console.WriteLine("Deleted From Database: {0},{1},{2},{3},{4}", job.JobID, job.JobName, job.PlannedCount, job.CompletedCount, job.PercentComplete);
+            Console.WriteLine("Deleted From Database: {0},{1},{2},{3}", job.JobId, job.JobName, job.PlannedCount, job.PercentComplete);
 
-            MessageWrapper mess = new MessageWrapper("TestClientMessage", DateTime.Now, 1, 1);
+            MessageWrapper mess = new MessageWrapper("TestClientMessage", DateTime.Now, (Category)1, (Priority)1);
             mess.PutInDatabase();
-            Console.WriteLine("Put In Database: {0},{1},{2},{3},{4}", mess.MessageID, mess.Message1, mess.Date, mess.Category, mess.Priority);
-            id = mess.MessageID;
+            Console.WriteLine("Put In Database: {0},{1},{2},{3},{4}", mess.MessageId, mess.Message, mess.Date, mess.Category, mess.Priority);
+            id = mess.MessageId;
             mess = new MessageWrapper(id);
-            Console.WriteLine("Pulled From Database: {0},{1},{2},{3},{4}", mess.MessageID, mess.Message1, mess.Date, mess.Category, mess.Priority);
+            Console.WriteLine("Pulled From Database: {0},{1},{2},{3},{4}", mess.MessageId, mess.Message, mess.Date, mess.Category, mess.Priority);
             mess.DeleteFromDatabase();
-            Console.WriteLine("Deleted From Database: {0},{1},{2},{3},{4}", mess.MessageID, mess.Message1, mess.Date, mess.Category, mess.Priority);
+            Console.WriteLine("Deleted From Database: {0},{1},{2},{3},{4}", mess.MessageId, mess.Message, mess.Date, mess.Category, mess.Priority);
 
             Console.ReadLine();
         }

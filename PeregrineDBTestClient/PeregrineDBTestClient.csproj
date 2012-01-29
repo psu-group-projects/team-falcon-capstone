@@ -62,6 +62,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PeregrineAPI\PeregrineAPI.csproj">
+      <Project>{079C86A1-B7D3-4454-9153-007349500A7F}</Project>
+      <Name>PeregrineAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PeregrineDB\PeregrineDB.csproj">
       <Project>{C785DAD0-7D82-41D5-A34B-2080E69FFB78}</Project>
       <Name>PeregrineDB</Name>

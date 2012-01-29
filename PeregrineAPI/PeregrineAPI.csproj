@@ -65,13 +65,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Job.cs" />
-    <Compile Include="Message.cs" />
+    <Compile Include="JobDTO.cs" />
+    <Compile Include="MessageDTO.cs" />
     <Compile Include="PeregrineService.svc.cs">
       <DependentUpon>PeregrineService.svc</DependentUpon>
     </Compile>
     <Compile Include="IPeregrineService.cs" />
-    <Compile Include="Process.cs" />
+    <Compile Include="ProcessDTO.cs" />
     <Compile Include="ProcessSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
