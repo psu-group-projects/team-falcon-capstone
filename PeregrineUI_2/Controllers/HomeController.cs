@@ -25,7 +25,7 @@ namespace PeregrineUI_2.Controllers
 
         [HttpGet]
         public ViewResult Index()
-        {            
+        {
             return View();
         }
 
@@ -53,7 +53,7 @@ namespace PeregrineUI_2.Controllers
 
         [HttpGet]
         public ViewResult MsgInquiry()
-        {
+        {  
             return View();
         }
 
@@ -72,13 +72,13 @@ namespace PeregrineUI_2.Controllers
             else
                 input_msg_priority = Convert.ToInt32(msg_priority);
 
-
             var pagingContext = MsgInquiryRepo.GetMessages( Convert.ToInt32(page_number),
                                                             Convert.ToInt32(sort_option),
                                                             input_msg_priority,
                                                             process_name,
                                                             Convert.ToInt32(SU_SD_msg),
                                                             PageSize);
+
             return PartialView("MessageList", pagingContext);
         }
     }

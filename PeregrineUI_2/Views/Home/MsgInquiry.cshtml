@@ -4,7 +4,7 @@ Version  : 1.0.0
 Date     : 1/11/2012
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 *@
-
+                     
 @{
     ViewBag.Title = "Messages Summary";
 }
@@ -56,7 +56,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         // Set up the initial stage of the message inquiry page
         MsgInquiryUpdate(
                             "1",
-                            "4",
+                            "5",
                             "0",
                             "",
                             "0"
@@ -105,7 +105,27 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <br />
 
     <label>Search message by message priority:</label>
-    <input  id="process_prio_input" type="text" 
+    <select id="process_prio_input" 
+            onchange="Msg_inquiry_collect_info ( 
+                                                    '1',
+                                                    '1',                                      
+                                                    document.getElementById('process_prio_input').value,
+                                                    document.getElementById('process_name_input').value
+                                                )"/>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+    <br />
+
+    @*<input  id="process_prio_input" type="text" 
              onchange="Msg_inquiry_collect_info ( 
                                                     '1',
                                                     '1',                                      
@@ -113,7 +133,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                     document.getElementById('process_name_input').value
                                                 )"/>
 
-    <br />
+    <br />*@
 
     <label>Get all start up and shutdown msg: </label>
     <input id="SU_SD_Checkbox" type="checkbox" 
@@ -126,11 +146,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 </fieldset>
 
-@*<select>
-<option value="option1">Option 1</option>
-<option value="option2">Option 2</option>
-<option value="option3">Option 3</option>
-</select>*@
+<!-- Code development corner -->
 
 <div class="message-list"></div>
 
