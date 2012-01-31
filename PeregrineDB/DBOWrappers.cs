@@ -179,4 +179,62 @@ namespace PeregrineDBWrapper
             db.DeleteMessage(MessageId);
         }
     }
+
+    // for DB retrieval
+    class DBSearchWrapper
+    {
+        public DBSearchWrapper()
+        {
+        }
+
+        //MessageDTO getMessage(int msg_id);
+
+        //List<ProcessDTO> getAllProcesses();
+
+        //List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy);
+    }
+
+    // for DB insertion / alteration
+    class DBLogWrapper
+    {
+        public DBLogWrapper()
+        {
+        }
+
+        public void logProcessMessage(String processName, String message, Category category, Priority priority)
+        {
+        }
+
+        public void logJobProgressAsPercentage(String jobName, String processName, int percent)
+        {
+        }
+
+        public void logJobProgress(String jobName, String processName, int total, int completed)
+        {
+        }
+
+        public void logJobStart(String jobName, String processName)
+        {
+        }
+
+        public void logJobStartWithTotalTasks(String jobName, String processName, int totalTasks)
+        {
+        }
+
+        public void logJobComplete(String jobName, String processName)
+        {
+        }
+
+        public void logProcessStart(String processName)
+        {
+        }
+
+        public void logProcessShutdown(String processName)
+        {
+        }
+
+        public void logProcessStateChange(String processName, ProcessState state)
+        {
+        }
+    }
 }
