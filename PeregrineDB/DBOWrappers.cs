@@ -12,16 +12,19 @@ namespace PeregrineDBWrapper
 
     public class ProcessWrapper : ProcessDTO
     {
+        private const int UNASSIGNED_IDENTITY = -1;     // identity is assigned when
+                                                        // Process is created in DB
+
         public ProcessWrapper()
         {
-            ProcessId = -1; // should be null but int is not nullable
+            ProcessId = UNASSIGNED_IDENTITY;
             ProcessName = "";
             State = 0;
         }
 
         public ProcessWrapper(string procName, ProcessState procState)
         {
-            ProcessId = -1; // should be null but int is not nullable
+            ProcessId = UNASSIGNED_IDENTITY;
             ProcessName = procName;
             State = procState;
         }
@@ -61,9 +64,12 @@ namespace PeregrineDBWrapper
 
     public class JobWrapper : JobDTO
     {
+        private const int UNASSIGNED_IDENTITY = -1;     // identity is assigned when
+                                                        // Job is created in DB
+
         public JobWrapper()
         {
-            JobId = -1;     // unassigned
+            JobId = UNASSIGNED_IDENTITY;
             JobName = "";
             PlannedCount = 0;
             PercentComplete = 0;
@@ -72,7 +78,7 @@ namespace PeregrineDBWrapper
 
         public JobWrapper(string jName, int pCount, int cCount, double pComplete)
         {
-            JobId = -1;     // unassigned
+            JobId = UNASSIGNED_IDENTITY;
             JobName = jName;
             PlannedCount = pCount;
             PercentComplete = cCount;
@@ -116,10 +122,13 @@ namespace PeregrineDBWrapper
 
     public class MessageWrapper : MessageDTO
     {
+        private const int UNASSIGNED_IDENTITY = -1;     // identity is assigned when
+                                                        // Message is created in DB
+
         public MessageWrapper()
         {
-            MessageId = -1;     // not yet assigned
-            Message = "";      // Message1 is Message
+            MessageId = UNASSIGNED_IDENTITY;
+            Message = "";      
             Date = DateTime.Now;
             Category = 0;
             Priority = 0;
@@ -127,8 +136,8 @@ namespace PeregrineDBWrapper
 
         public MessageWrapper(string messText, DateTime messDate, Category messCategory, Priority messPriority)
         {
-            MessageId = -1;         // not yet assigned
-            Message = messText;    // Message1 is Message
+            MessageId = UNASSIGNED_IDENTITY;
+            Message = messText;
             Date = messDate;
             Category = messCategory;
             Priority = messPriority;
