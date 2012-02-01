@@ -245,6 +245,13 @@ namespace PeregrineDB
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID, processID, jobID);
 			return ((ISingleResult<LogRel>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetJobByName")]
+		public ISingleResult<Job> GetJobByName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobName", DbType="NChar(200)")] string jobName)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), jobName);
+			return ((ISingleResult<Job>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Process")]

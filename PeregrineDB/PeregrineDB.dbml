@@ -19,7 +19,7 @@
     </Type>
   </Table>
   <Table Name="dbo.Job" Member="Jobs">
-    <Type Name="Job">
+    <Type Name="Job" Id="ID3">
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -215,5 +215,9 @@
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
     <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
     <ElementType IdRef="ID2" />
+  </Function>
+  <Function Name="dbo.GetJobByName" Method="GetJobByName">
+    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NChar(200)" />
+    <ElementType IdRef="ID3" />
   </Function>
 </Database>

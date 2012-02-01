@@ -89,8 +89,11 @@ namespace PeregrineDBWrapper
 
     public class JobWrapper : JobDTO
     {
-        private const int UNASSIGNED_IDENTITY = -1;     // identity is assigned when
-                                                        // Job is created in DB
+        // identity is assigned when Job is created in DB
+        private const int UNASSIGNED_IDENTITY = -1;
+        private const int DEFAULT_PLANNED_COUNT = 100;
+        private const int DEFAULT_COMPLETED_COUNT = 0;
+        private const double DEFAULT_PERCENT_COUNT = 0.0;
 
         public JobWrapper()
         {
@@ -101,13 +104,34 @@ namespace PeregrineDBWrapper
             PercentComplete = 0;
         }
 
-        public JobWrapper(string jName, int pCount, int cCount, double pComplete)
+        public JobWrapper(string jobName)
         {
-            JobId = UNASSIGNED_IDENTITY;
-            JobName = jName;
-            PlannedCount = pCount;
-            PercentComplete = cCount;
-            PercentComplete = pComplete;
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            List<Job> result = db.GetJobByName(jobName).ToList<Job>();
+            int resultCount = result.Count();
+
+            if (resultCount == 0)       // add process to DB
+            {
+                InsertJobResult insResult = db.InsertJob(UNASSIGNED_IDENTITY, jobName, DEFAULT_PLANNED_COUNT, DEFAULT_COMPLETED_COUNT, DEFAULT_PERCENT_COUNT).First();
+                JobId = insResult.JobID;
+                JobName = insResult.JobName;
+                PlannedCount = (int)insResult.PlannedCount; // PlannedCount currently Nullable in DB
+                // CompletedCount not in DTO
+                PercentComplete = (double)insResult.PercentComplete;    // Nullable in DB?
+            }
+            else if (resultCount == 1)  // retrieve process from DB
+            {
+                Job job = result.First();
+                JobId = job.JobID;
+                JobName = job.JobName;
+                PlannedCount = (int)job.PlannedCount; // PlannedCount currently Nullable in DB
+                // CompletedCount not in DTO
+                PercentComplete = (double)job.PercentComplete;    // Nullable in DB?
+            }
+            else                        // BAD: multiple ID's for given process name
+            {
+                // throw exception or something
+            }
         }
 
         public JobWrapper(int id)
@@ -122,6 +146,15 @@ namespace PeregrineDBWrapper
                 PlannedCount = (int)job.PlannedCount;
                 PercentComplete = (double)job.PercentComplete;
             }
+        }
+
+        public void Update(double percent)
+        {
+            PercentComplete = percent;
+
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<UpdateJobResult> result = db.UpdateJob(JobId, JobName, PlannedCount, (int)((double)PlannedCount*PercentComplete*0.01), PercentComplete);
+            // repopulate Properties?
         }
 
         public void PutInDatabase()
@@ -292,6 +325,8 @@ namespace PeregrineDBWrapper
     // for DB insertion / alteration
     public class DBLogWrapper
     {
+        Priority DEFAULT_PRIORITY = Priority.MEDIUM;
+
         public DBLogWrapper()
         {
         }
@@ -303,8 +338,17 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId); 
         }
 
-        public void logJobProgressAsPercentage(String jobName, String processName, int percent)
+        public void logJobProgressAsPercentage(String jobName, String processName, double percent)
         {
+            String message = "generated JobProgressAsPercentage message";
+            Category category = Category.PROGRESS;
+            Priority priority = DEFAULT_PRIORITY;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            JobWrapper job = new JobWrapper(jobName);
+            job.Update(percent);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
 
         public void logJobProgress(String jobName, String processName, int total, int completed)

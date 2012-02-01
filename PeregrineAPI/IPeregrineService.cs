@@ -86,7 +86,7 @@ namespace PeregrineAPI
         void logProcessMessage(String processName, String message, Category category, Priority priority);
 
         [OperationContract]
-        void logJobProgressAsPercentage(int jobID, String processName, int percent);
+        void logJobProgressAsPercentage(int jobID, String processName, double percent);
 
         [OperationContract]
         void logJobProgress(int jobID, String processName, int total, int completed);

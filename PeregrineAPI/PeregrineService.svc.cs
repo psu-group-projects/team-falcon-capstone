@@ -41,7 +41,7 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
-        public void logJobProgressAsPercentage(int jobID, string processName, int percent)
+        public void logJobProgressAsPercentage(int jobID, string processName, double percent)
         {
             throw new NotImplementedException();
         }
