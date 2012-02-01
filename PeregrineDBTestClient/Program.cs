@@ -11,8 +11,11 @@ namespace PeregrinDBTestClient
     {
         static void Main(string[] args)
         {
-            int id;
+            // int id;
 
+            // NEED TO MAKE CHANGES
+
+            /*
             ProcessWrapper proc = new ProcessWrapper("TestClientProcess", (ProcessState)1);
             proc.PutInDatabase();
             Console.WriteLine("Put In Database: {0},{1},{2}", proc.ProcessId, proc.ProcessName, proc.State);
@@ -39,7 +42,7 @@ namespace PeregrinDBTestClient
             Console.WriteLine("Pulled From Database: {0},{1},{2},{3},{4}", mess.MessageId, mess.Message, mess.Date, mess.Category, mess.Priority);
             mess.DeleteFromDatabase();
             Console.WriteLine("Deleted From Database: {0},{1},{2},{3},{4}", mess.MessageId, mess.Message, mess.Date, mess.Category, mess.Priority);
-
+            */
             Console.ReadLine();
         }
     }

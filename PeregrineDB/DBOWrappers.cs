@@ -7,26 +7,48 @@ namespace PeregrineDBWrapper
 {
     using System;
     using System.Data.Linq;
+    using System.Linq;
     using PeregrineAPI;
     using PeregrineDB;
 
     public class ProcessWrapper : ProcessDTO
     {
-        private const int UNASSIGNED_IDENTITY = -1;     // identity is assigned when
-                                                        // Process is created in DB
+        // identity is assigned when Process is created or retrieved from DB
+        private const int           UNASSIGNED_IDENTITY = -1;     
+        private const ProcessState  DEFAULT_STATE = ProcessState.GREEN;
 
         public ProcessWrapper()
         {
             ProcessId = UNASSIGNED_IDENTITY;
             ProcessName = "";
-            State = 0;
+            State = DEFAULT_STATE;
         }
 
-        public ProcessWrapper(string procName, ProcessState procState)
+        // This constructor will retrieve a process from the DB by ProcessName or add it
+        // to the DB if it's not already there.
+        public ProcessWrapper(string procName)
         {
-            ProcessId = UNASSIGNED_IDENTITY;
-            ProcessName = procName;
-            State = procState;
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<Process> result = db.GetProcessByName(procName);
+            int resultCount = result.Count();
+
+            if (resultCount == 0)       // add process to DB
+            {
+                ISingleResult<InsertProcessResult> insResult = db.InsertProcess(UNASSIGNED_IDENTITY, procName, (int)DEFAULT_STATE);
+                ProcessId = insResult.First().ProcessID;
+                ProcessName = insResult.First().ProcessName;
+                State = (ProcessState)insResult.First().State;
+            }
+            else if (resultCount == 1)  // retrieve process from DB
+            {
+                ProcessId = result.First().ProcessID;
+                ProcessName = result.First().ProcessName;
+                State = (ProcessState)result.First().State;
+            }
+            else                        // BAD: multiple ID's for given process name
+            {
+                // throw exception or something
+            }
         }
 
         public ProcessWrapper(int id)
@@ -122,8 +144,10 @@ namespace PeregrineDBWrapper
 
     public class MessageWrapper : MessageDTO
     {
-        private const int UNASSIGNED_IDENTITY = -1;     // identity is assigned when
-                                                        // Message is created in DB
+        // identity is assigned when Message is created in DB
+        private const int UNASSIGNED_IDENTITY = -1;     
+        private const Category DEFAULT_CATEGORY = Category.INFORMATION;
+        private const Priority DEFAULT_PRIORITY = Priority.MEDIUM;
 
         public MessageWrapper()
         {
@@ -134,13 +158,16 @@ namespace PeregrineDBWrapper
             Priority = 0;
         }
 
-        public MessageWrapper(string messText, DateTime messDate, Category messCategory, Priority messPriority)
+        public MessageWrapper(String message, Category category, Priority priority)
         {
-            MessageId = UNASSIGNED_IDENTITY;
-            Message = messText;
-            Date = messDate;
-            Category = messCategory;
-            Priority = messPriority;
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<InsertMessageResult> result = db.InsertMessage(UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority);
+
+            MessageId = result.First().MessageID;
+            Message = result.First().Message;
+            Date = result.First().Date;
+            Category = (Category)result.First().Category;
+            Priority = (Priority)result.First().Priority;
         }
     
         public MessageWrapper(int id)
@@ -203,6 +230,9 @@ namespace PeregrineDBWrapper
 
         public void logProcessMessage(String processName, String message, Category category, Priority priority)
         {
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            //LogRelWrapper rel = new LogRelWrapper(mess.MessageID, proc.ProcessID); 
         }
 
         public void logJobProgressAsPercentage(String jobName, String processName, int percent)
@@ -236,5 +266,6 @@ namespace PeregrineDBWrapper
         public void logProcessStateChange(String processName, ProcessState state)
         {
         }
+
     }
 }

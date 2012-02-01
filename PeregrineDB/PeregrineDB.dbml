@@ -206,4 +206,8 @@
       <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetProcessByName" Method="GetProcessByName">
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="VarChar(200)" />
+    <ElementType IdRef="ID1" />
+  </Function>
 </Database>
