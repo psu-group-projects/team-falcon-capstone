@@ -10,6 +10,7 @@ namespace PeregrineDBWrapper
     using System.Linq;
     using PeregrineAPI;
     using PeregrineDB;
+    using System.Collections.Generic;
 
     public class ProcessWrapper : ProcessDTO
     {
@@ -29,21 +30,23 @@ namespace PeregrineDBWrapper
         public ProcessWrapper(string procName)
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
-            ISingleResult<Process> result = db.GetProcessByName(procName);
+            List<Process> result = db.GetProcessByName(procName).ToList<Process>();
             int resultCount = result.Count();
 
             if (resultCount == 0)       // add process to DB
             {
                 ISingleResult<InsertProcessResult> insResult = db.InsertProcess(UNASSIGNED_IDENTITY, procName, (int)DEFAULT_STATE);
-                ProcessId = insResult.First().ProcessID;
-                ProcessName = insResult.First().ProcessName;
-                State = (ProcessState)insResult.First().State;
+                InsertProcessResult proc = insResult.First();
+                ProcessId = proc.ProcessID;
+                ProcessName = proc.ProcessName;
+                State = (ProcessState)proc.State;
             }
             else if (resultCount == 1)  // retrieve process from DB
             {
-                ProcessId = result.First().ProcessID;
-                ProcessName = result.First().ProcessName;
-                State = (ProcessState)result.First().State;
+                Process proc = result.First();
+                ProcessId = proc.ProcessID;
+                ProcessName = proc.ProcessName;
+                State = (ProcessState)proc.State;
             }
             else                        // BAD: multiple ID's for given process name
             {
@@ -161,13 +164,13 @@ namespace PeregrineDBWrapper
         public MessageWrapper(String message, Category category, Priority priority)
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
-            ISingleResult<InsertMessageResult> result = db.InsertMessage(UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority);
+            InsertMessageResult result = db.InsertMessage(UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority).First();
 
-            MessageId = result.First().MessageID;
-            Message = result.First().Message;
-            Date = result.First().Date;
-            Category = (Category)result.First().Category;
-            Priority = (Priority)result.First().Priority;
+            MessageId = result.MessageID;
+            Message = result.Message;
+            Date = result.Date;
+            Category = (Category)result.Category;
+            Priority = (Priority)result.Priority;
         }
     
         public MessageWrapper(int id)
@@ -207,8 +210,73 @@ namespace PeregrineDBWrapper
         }
     }
 
+    public class LogRelWrapper
+    {
+        private const int UNASSIGNED_IDENTITY = -1;     
+
+        private int messageId;
+        private int processId;
+        private int jobId;
+
+        public LogRelWrapper(int messageId, int processId)
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            LogRel result = db.InsertLogRel(messageId, processId, null).First();
+
+            MessageId = result.MessageID;
+            ProcessId = result.ProcessID;
+            JobId = UNASSIGNED_IDENTITY;
+        }
+
+        public LogRelWrapper(int messageId, int processId, int jobId)
+        {
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            LogRel result = db.InsertLogRel(messageId, processId, jobId).First();
+
+            MessageId = result.MessageID;
+            ProcessId = result.ProcessID;
+            JobId = (int)result.JobID;      //JobID is nullable in DB
+        }
+
+        public int MessageId
+        {
+            get
+            {
+                return messageId;
+            }
+            set
+            {
+                messageId = value;
+            }
+        }
+
+        public int ProcessId
+        {
+            get
+            {
+                return processId;
+            }
+            set
+            {
+                processId = value;
+            }
+        }
+
+        public int JobId
+        {
+            get
+            {
+                return jobId;
+            }
+            set
+            {
+                jobId = value;
+            }
+        }
+    }
+
     // for DB retrieval
-    class DBSearchWrapper
+    public class DBSearchWrapper
     {
         public DBSearchWrapper()
         {
@@ -222,7 +290,7 @@ namespace PeregrineDBWrapper
     }
 
     // for DB insertion / alteration
-    class DBLogWrapper
+    public class DBLogWrapper
     {
         public DBLogWrapper()
         {
@@ -232,7 +300,7 @@ namespace PeregrineDBWrapper
         {
             ProcessWrapper proc = new ProcessWrapper(processName);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
-            //LogRelWrapper rel = new LogRelWrapper(mess.MessageID, proc.ProcessID); 
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId); 
         }
 
         public void logJobProgressAsPercentage(String jobName, String processName, int percent)

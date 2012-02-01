@@ -9,7 +9,7 @@
     </Type>
   </Table>
   <Table Name="dbo.LogRel" Member="LogRels">
-    <Type Name="LogRel">
+    <Type Name="LogRel" Id="ID2">
       <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="JobID" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -209,5 +209,11 @@
   <Function Name="dbo.GetProcessByName" Method="GetProcessByName">
     <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="VarChar(200)" />
     <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="dbo.InsertLogRel" Method="InsertLogRel">
+    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID2" />
   </Function>
 </Database>

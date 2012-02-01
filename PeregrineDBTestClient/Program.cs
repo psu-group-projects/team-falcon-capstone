@@ -11,6 +11,17 @@ namespace PeregrinDBTestClient
     {
         static void Main(string[] args)
         {
+            String testProcessName = "Test Process Name 1";
+            String testProcessMessage = "Test Process Message 1";
+            Category testProcessCategory = Category.INFORMATION;
+            Priority testProcessPriority = Priority.MEDIUM;
+
+            DBLogWrapper log = new DBLogWrapper();
+
+            log.logProcessMessage(testProcessName, testProcessMessage, testProcessCategory, testProcessPriority);
+
+            ProcessWrapper testProcess = new ProcessWrapper(testProcessName);
+
             // int id;
 
             // NEED TO MAKE CHANGES
