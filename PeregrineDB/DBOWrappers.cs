@@ -18,6 +18,7 @@ namespace PeregrineDBWrapper
         private const int           UNASSIGNED_IDENTITY = -1;     
         private const ProcessState  DEFAULT_STATE = ProcessState.GREEN;
 
+        [Obsolete]
         public ProcessWrapper()
         {
             ProcessId = UNASSIGNED_IDENTITY;
@@ -67,6 +68,7 @@ namespace PeregrineDBWrapper
             }
         }
 
+        [Obsolete]
         public void PutInDatabase()
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
@@ -95,6 +97,7 @@ namespace PeregrineDBWrapper
         private const int DEFAULT_COMPLETED_COUNT = 0;
         private const double DEFAULT_PERCENT_COUNT = 0.0;
 
+        [Obsolete]
         public JobWrapper()
         {
             JobId = UNASSIGNED_IDENTITY;
@@ -157,6 +160,17 @@ namespace PeregrineDBWrapper
             // repopulate Properties?
         }
 
+        public void Update(int total, int completed)
+        {
+            PercentComplete = ((double)completed/(double)total) * 100.0;
+            PlannedCount = total;
+
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<UpdateJobResult> result = db.UpdateJob(JobId, JobName, PlannedCount, completed, PercentComplete);
+            // repopulate Properties?
+        }
+
+        [Obsolete]
         public void PutInDatabase()
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
@@ -185,6 +199,7 @@ namespace PeregrineDBWrapper
         private const Category DEFAULT_CATEGORY = Category.INFORMATION;
         private const Priority DEFAULT_PRIORITY = Priority.MEDIUM;
 
+        [Obsolete]
         public MessageWrapper()
         {
             MessageId = UNASSIGNED_IDENTITY;
@@ -221,6 +236,7 @@ namespace PeregrineDBWrapper
             }
         }
 
+        [Obsolete]
         public void PutInDatabase()
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
@@ -353,6 +369,15 @@ namespace PeregrineDBWrapper
 
         public void logJobProgress(String jobName, String processName, int total, int completed)
         {
+            String message = "generated JobProgress message";
+            Category category = Category.PROGRESS;
+            Priority priority = DEFAULT_PRIORITY;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            JobWrapper job = new JobWrapper(jobName);
+            job.Update(total, completed);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
 
         public void logJobStart(String jobName, String processName)
