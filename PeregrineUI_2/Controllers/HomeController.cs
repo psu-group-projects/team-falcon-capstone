@@ -57,6 +57,7 @@ namespace PeregrineUI_2.Controllers
             return View();
         }
 
+        // Message inquriy page
         [HttpGet]
         public ActionResult MsgInquiryUpdate(   string page_number,
                                                 string sort_option,
@@ -80,6 +81,13 @@ namespace PeregrineUI_2.Controllers
                                                             PageSize);
 
             return PartialView("MessageList", pagingContext);
+        }
+
+        [HttpGet]
+        public string MsgInq_getfulldetail(string msg_id)
+        {
+            string result = msg_id;
+            return result;
         }
     }
 }
