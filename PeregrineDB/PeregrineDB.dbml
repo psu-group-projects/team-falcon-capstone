@@ -29,7 +29,7 @@
     </Type>
   </Table>
   <Table Name="dbo.Message" Member="Messages">
-    <Type Name="Message">
+    <Type Name="Message" Id="ID4">
       <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Message" Member="Message1" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
       <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -238,5 +238,9 @@
       <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.GetMessagesWithProcessID" Method="GetMessagesWithProcessID">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID4" />
   </Function>
 </Database>
