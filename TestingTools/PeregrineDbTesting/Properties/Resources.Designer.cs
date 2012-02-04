@@ -63,6 +63,30 @@ namespace PeregrineDBTesting.Properties {
         /// <summary>
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
+        ////****** Object:  User [CAPSTONEBB\kpaulsen]    Script Date: 02/04/2012 12:38:11 ******/
+        ///CREATE USER [CAPSTONEBB\kpaulsen] FOR LOGIN [CAPSTONEBB\kpaulsen] WITH DEFAULT_SCHEMA=[dbo]
+        ///GO
+        ////****** Object:  Table [dbo].[Job]    Script Date: 02/04/2012 12:38:12 ******/
+        ///SET ANSI_NULLS ON
+        ///GO
+        ///SET QUOTED_IDENTIFIER ON
+        ///GO
+        ///CREATE TABLE [dbo].[Job](
+        ///	[JobID] [int] IDENTITY(1,1) NOT NULL,
+        ///	[JobName] [nchar](200) NOT NULL,
+        ///	[PlannedCount] [int] NULL,
+        ///	[CompletedCount] [int] NULL,
+        ///	[Percen [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CreateDatabaseSql {
+            get {
+                return ResourceManager.GetString("CreateDatabaseSql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [PeregrineDB]
+        ///GO
         ///
         ////****** Object:  Table [dbo].[Job]    Script Date: 12/28/2011 16:15:44 ******/
         ///IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N&apos;[dbo].[Job]&apos;) AND type in (N&apos;U&apos;))

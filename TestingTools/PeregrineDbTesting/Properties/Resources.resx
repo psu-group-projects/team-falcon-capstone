@@ -117,6 +117,1458 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CreateDatabaseSql" xml:space="preserve">
+    <value>USE [PeregrineDB]
+GO
+/****** Object:  User [CAPSTONEBB\kpaulsen]    Script Date: 02/04/2012 12:38:11 ******/
+CREATE USER [CAPSTONEBB\kpaulsen] FOR LOGIN [CAPSTONEBB\kpaulsen] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[Job]    Script Date: 02/04/2012 12:38:12 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Job](
+	[JobID] [int] IDENTITY(1,1) NOT NULL,
+	[JobName] [nchar](200) NOT NULL,
+	[PlannedCount] [int] NULL,
+	[CompletedCount] [int] NULL,
+	[PercentComplete] [float] NULL,
+ CONSTRAINT [PK_Job] PRIMARY KEY CLUSTERED 
+(
+	[JobID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Process]    Script Date: 02/04/2012 12:38:12 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Process](
+	[ProcessID] [int] IDENTITY(1,1) NOT NULL,
+	[ProcessName] [nchar](200) NOT NULL,
+	[State] [int] NOT NULL,
+ CONSTRAINT [PK_Process_1] PRIMARY KEY CLUSTERED 
+(
+	[ProcessID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Message]    Script Date: 02/04/2012 12:38:12 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Message](
+	[MessageID] [int] IDENTITY(1,1) NOT NULL,
+	[Message] [nvarchar](500) NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[Category] [int] NOT NULL,
+	[Priority] [int] NOT NULL,
+ CONSTRAINT [PK_Message] PRIMARY KEY CLUSTERED 
+(
+	[MessageID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[LogRel]    Script Date: 02/04/2012 12:38:12 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LogRel](
+	[MessageID] [int] NOT NULL,
+	[ProcessID] [int] NOT NULL,
+	[JobID] [int] NULL,
+ CONSTRAINT [PK_LogRel] PRIMARY KEY CLUSTERED 
+(
+	[MessageID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+
+CREATE PROCEDURE [dbo].[GetTable1]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+	/* SET NOCOUNT ON */
+	
+	Select *
+	from Process 
+	where State = 2
+	RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessByName] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessName varchar(200)
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+    WHERE (ProcessName = @ProcessName)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-12
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcess] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+    WHERE (ProcessID = @ProcessID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetPageOfProcess] 
+	-- Add the parameters for the stored procedure here
+	(
+		@From int,
+		@To int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+WITH NumberedProcess AS
+(
+    SELECT
+        ProcessID,
+        ProcessName,
+        State,
+        ROW_NUMBER() OVER (ORDER BY ProcessName) AS RowNumber
+    FROM
+        Process
+)
+SELECT
+    ProcessID,
+    ProcessName,
+    State
+FROM
+    NumberedProcess
+WHERE
+    RowNumber BETWEEN @From AND @To
+
+RETURN
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-12
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetMessage] 
+	-- Add the parameters for the stored procedure here
+	(
+		@MessageID int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT MessageID, Message, Date, Category, Priority
+    FROM dbo.Message
+    WHERE (MessageID = @MessageID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetJobByName] 
+	-- Add the parameters for the stored procedure here
+	(
+		@JobName nchar(200)
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT JobID, JobName, PlannedCount, CompletedCount, PercentComplete
+    FROM dbo.Job
+    WHERE (JobName = @JobName)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-12
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetJob] 
+	-- Add the parameters for the stored procedure here
+	(
+		@JobID int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT JobID, JobName, PlannedCount, CompletedCount, PercentComplete
+    FROM dbo.Job
+    WHERE (JobID = @JobID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson /Weixiong Lu
+-- Create date: 2012-01-04
+-- Modify date: 2012-01-08
+-- Description:	Create a new process
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertProcess2] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int OUTPUT,
+		@ProcessName varchar(200) = NULL, 
+		@State int = 0
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    -- Insert statements for procedure here
+	
+	INSERT INTO dbo.Process (ProcessName, State)
+       VALUES (@ProcessName, @State)
+       SET @ProcessID = SCOPE_IDENTITY();
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson /Weixiong Lu
+-- Create date: 2012-01-04
+-- Modify date: 2012-01-08
+-- Description:	Create a new process
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertProcess] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int,
+		@ProcessName varchar(200) = NULL, 
+		@State int = 0
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    -- Insert statements for procedure here
+	
+	INSERT INTO dbo.Process (ProcessName, State)
+       VALUES (@ProcessName, @State)
+       SET @ProcessID = IDENT_CURRENT('dbo.Process');
+
+	 SELECT ProcessID, ProcessName, State FROM dbo.Process WHERE (ProcessID = @ProcessID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[InsertMessage]
+(
+    @MessageID int,
+    @Message nvarchar(500),
+    @Date datetime,
+	@Category int,
+	@Priority int
+)
+
+AS
+    SET NOCOUNT OFF;
+	
+	INSERT INTO [dbo].[Message] (Message,Date,Category,Priority)
+	VALUES (@Message,@Date,@Category,@Priority)
+	SET @MessageID = IDENT_CURRENT('dbo.Message');
+
+	SELECT * FROM dbo.Message WHERE (MessageID = @MessageID)
+
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[InsertJob]
+(
+	@JobID int,
+    @JobName nchar(200),
+    @PlannedCount int,
+	@CompletedCount int,
+	@PercentComplete float
+)
+
+AS
+    SET NOCOUNT OFF;
+	
+	INSERT INTO [dbo].[Job] (JobName,PlannedCount,CompletedCount,PercentComplete)
+	VALUES (@JobName,@PlannedCount,@CompletedCount,@PercentComplete)
+	SET @JobID = IDENT_CURRENT('dbo.Job');
+
+	SELECT * FROM dbo.Job WHERE (JobID = @JobID)
+
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+CREATE PROCEDURE [dbo].[ShowJobs]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+	/* SET NOCOUNT ON */
+	
+	SELECT     JobID, JobName, PlannedCount, CompletedCount, PercentComplete
+	FROM         dbo.Job
+
+	RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.1
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[UpdateProcess]
+(
+    @ProcessID int,
+    @ProcessName nchar(200),
+    @State int
+)
+
+AS
+    SET NOCOUNT OFF;
+	UPDATE [dbo].[Process] SET [ProcessName] = @ProcessName, [State] = @State 
+	WHERE (([ProcessID] = @ProcessID));
+
+
+	SELECT ProcessID, ProcessName, State FROM dbo.Process WHERE (ProcessID = @ProcessID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.1
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[UpdateMessage]
+(
+    @MessageID int,
+    @Message nvarchar(500),
+    @Date datetime,
+	@Category int,
+	@Priority int
+)
+
+AS
+    SET NOCOUNT OFF;
+	UPDATE [dbo].[Message] SET [Message] = @Message, [Date] = @Date, [Category] = @Category, [Priority] = @Priority   
+	WHERE (([MessageID] = @MessageID));
+
+
+	SELECT * FROM dbo.Message WHERE (MessageID = @MessageID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.1
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[UpdateJob]
+(
+    @JobID int,
+    @JobName nchar(200),
+    @PlannedCount int,
+	@CompletedCount int,
+	@PercentComplete float
+)
+
+AS
+    SET NOCOUNT OFF;
+	UPDATE [dbo].[Job] SET [JobName] = @JobName, [PlannedCount] = @PlannedCount, [CompletedCount] = @CompletedCount, [PercentComplete] = @PercentComplete   
+	WHERE (([JobID] = @JobID));
+
+
+	SELECT * FROM dbo.Job WHERE (JobID = @JobID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+CREATE PROCEDURE [dbo].[ShowProcesses]
+AS
+    SET NOCOUNT ON;
+SELECT     ProcessID, ProcessName, State
+FROM         dbo.Process
+GO
+/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/04/2012 12:38:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[ShowMessages]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+	/* SET NOCOUNT ON */
+	SELECT     MessageID, Message, Date, Category, Priority
+	FROM         dbo.Message
+
+	RETURN
+GO
+/****** Object:  View [dbo].[ViewJob]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ViewJob]
+AS
+SELECT     dbo.Job.*
+FROM         dbo.Job
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "Job"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 114
+               Right = 200
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewJob'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewJob'
+GO
+/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ViewProcess]
+AS
+SELECT     dbo.Process.*
+FROM         dbo.Process
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "Process"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 99
+               Right = 189
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewProcess'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewProcess'
+GO
+/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ViewMessage]
+AS
+SELECT     MessageID, Message, Date, Category, Priority
+FROM         dbo.Message
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "Message"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 114
+               Right = 189
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewMessage'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewMessage'
+GO
+/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ViewLogRel]
+AS
+SELECT     MessageID, ProcessID, JobID
+FROM         dbo.LogRel
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "LogRel"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 99
+               Right = 189
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewLogRel'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewLogRel'
+GO
+/****** Object:  View [dbo].[ViewAll]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[ViewAll]
+AS
+SELECT     dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority, dbo.Process.ProcessID, 
+                      dbo.Process.ProcessName, dbo.Process.State, dbo.Job.JobID, dbo.Job.JobName, dbo.Job.PlannedCount, dbo.Job.CompletedCount, dbo.Job.PercentComplete
+FROM         dbo.Job INNER JOIN
+                      dbo.LogRel ON dbo.Job.JobID = dbo.LogRel.JobID INNER JOIN
+                      dbo.Message ON dbo.LogRel.MessageID = dbo.Message.MessageID INNER JOIN
+                      dbo.Process ON dbo.LogRel.ProcessID = dbo.Process.ProcessID
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "Job"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 114
+               Right = 200
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "LogRel"
+            Begin Extent = 
+               Top = 6
+               Left = 238
+               Bottom = 99
+               Right = 389
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "Message"
+            Begin Extent = 
+               Top = 6
+               Left = 427
+               Bottom = 114
+               Right = 578
+            End
+            DisplayFlags = 280
+            TopColumn = 1
+         End
+         Begin Table = "Process"
+            Begin Extent = 
+               Top = 6
+               Left = 616
+               Bottom = 99
+               Right = 767
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewAll'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewAll'
+GO
+/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[ShowLogRel]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+	/* SET NOCOUNT ON */
+
+	SELECT     MessageID, ProcessID, JobID
+	FROM         dbo.LogRel
+
+	RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+CREATE PROCEDURE [dbo].[ShowAll]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+	/* SET NOCOUNT ON */
+	SELECT     dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority, dbo.Process.ProcessID, 
+                      dbo.Process.ProcessName, dbo.Process.State, dbo.Job.JobID, dbo.Job.JobName, dbo.Job.PlannedCount, dbo.Job.CompletedCount, dbo.Job.PercentComplete
+	FROM         dbo.Job INNER JOIN
+						  dbo.LogRel ON dbo.Job.JobID = dbo.LogRel.JobID INNER JOIN
+						  dbo.Message ON dbo.LogRel.MessageID = dbo.Message.MessageID INNER JOIN
+						  dbo.Process ON dbo.LogRel.ProcessID = dbo.Process.ProcessID
+
+	RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetTopMessageFromProcessId] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessId int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT 
+        TOP 1 
+        Message.Category,
+        Message.Date,
+        Message.Message,
+        Message.MessageID,
+        Message.Priority
+    FROM
+        LogRel logRel INNER JOIN Message message
+        on logRel.MessageID = message.MessageID
+    WHERE
+		LogRel.ProcessID = @ProcessId 
+RETURN
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[InsertLogRel]
+(
+    @MessageID int,
+	@ProcessID int,
+	@JobID int
+)
+
+AS
+    SET NOCOUNT OFF;
+	
+	INSERT INTO [dbo].[LogRel] (MessageID,ProcessID,JobID)
+	VALUES (@MessageID,@ProcessID,@JobID)
+
+
+	SELECT * FROM dbo.LogRel WHERE (MessageID = @MessageID)
+
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[DeleteProcess]
+	
+	(
+		@ProcessID int = 0
+	)
+	
+AS
+	/* SET NOCOUNT ON */
+	DELETE FROM Process
+	WHERE ProcessID=@ProcessID
+	
+	UPDATE [dbo].[LogRel] SET [ProcessID] = NULL
+	WHERE (([ProcessID] = @ProcessID));
+
+	RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved?????????????????????PrimeKey could not be NULL
+*/
+
+
+CREATE PROCEDURE [dbo].[DeleteMessage]
+	
+	(
+		@MessageID int = 0
+	)
+	
+AS
+	/* SET NOCOUNT ON */
+	DELETE FROM dbo.Message
+	WHERE MessageID=@MessageID
+
+	UPDATE [dbo].[LogRel] SET [MessageID] = NULL
+	WHERE (([MessageID] = @MessageID));
+
+	RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/04/2012 12:38:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[DeleteJob]
+	
+	(
+		@JobID int = 0
+	)
+	
+AS
+	/* SET NOCOUNT ON */
+	DELETE FROM Job
+	WHERE JobID=@JobID
+
+	UPDATE [dbo].[LogRel] SET [JobID] = NULL
+	WHERE (([JobID] = @JobID));
+
+	RETURN
+GO
+/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/04/2012 12:38:12 ******/
+ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Job] FOREIGN KEY([JobID])
+REFERENCES [dbo].[Job] ([JobID])
+GO
+ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Job]
+GO
+/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/04/2012 12:38:12 ******/
+ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Message] FOREIGN KEY([MessageID])
+REFERENCES [dbo].[Message] ([MessageID])
+GO
+ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Message]
+GO
+/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/04/2012 12:38:12 ******/
+ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Process] FOREIGN KEY([ProcessID])
+REFERENCES [dbo].[Process] ([ProcessID])
+GO
+ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Process]
+GO</value>
+    <comment>SQL script to create entire Peregrine DB</comment>
+  </data>
   <data name="CreateJobTable_sql" xml:space="preserve">
     <value>USE [PeregrineDB]
 GO
