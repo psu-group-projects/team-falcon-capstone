@@ -10,6 +10,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 }
 
 <h2>Message Inquiry</h2>
+<h3>Note: Show all messages from all processes</h3>
 
 <script type="text/javascript">
 
@@ -52,7 +53,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             if (el != 'layerX' && el != 'layerY') res.push(el);
         }
         $.event.props = res;
-         
+
         // Set up the initial stage of the message inquiry page
         MsgInquiryUpdate(
                             "1",
@@ -60,27 +61,40 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             "0",
                             "",
                             "0"
-                        );
+                        );     
 
         // Handle clicking page number 
         $(".msg_inquiry_page-number").live("click", function () {
             Msg_inquiry_collect_info(
                                         $(this).html(),
-                                        document.getElementById("msg_inquiry_current_sort").innerHTML,
+                                        msg_current_sort,
                                         document.getElementById("process_prio_input").value,
                                         document.getElementById("process_name_input").value
                                     );
         });
 
-        //Automatic update
-//        setInterval(function () {
-//            Msg_inquiry_collect_info(
-//                                        document.getElementById("msg_inquiry_current_page").innerHTML,
-//                                        document.getElementById("msg_inquiry_current_sort").innerHTML,
-//                                        document.getElementById("process_prio_input").value,
-//                                        document.getElementById("process_name_input").value
-//                                    );
-//        }, 5000);
+        // Automatic update
+        //        setInterval(function () {
+        //            Msg_inquiry_collect_info(
+        //                                        msg_inquiry_current_page,
+        //                                        msg_inquiry_current_sort,
+        //                                        document.getElementById("process_prio_input").value,
+        //                                        document.getElementById("process_name_input").value
+        //                                    );
+        //        }, 5000);
+
+        // Use enter to send value in input box. Work for IE, Firefox and Chrome
+        $('#process_name_input').keypress(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                Msg_inquiry_collect_info(
+                                            '1',
+                                            '1',
+                                            document.getElementById('process_prio_input').value,
+                                            document.getElementById('process_name_input').value
+                                         )
+            }
+        });
     });
 
 </script>
@@ -91,60 +105,44 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     </ul>
 </nav>
 
-<fieldset>
+<label>Search message by process name:</label>
+<input  id="process_name_input" type="text"/>
 
-    <label>Search message by process name:</label>
-    <input  id="process_name_input" type="text" 
-            onchange="Msg_inquiry_collect_info  ( 
-                                                    '1',
-                                                    '1',                                      
-                                                    document.getElementById('process_prio_input').value,
-                                                    document.getElementById('process_name_input').value 
-                                                )"/>
+<br />
 
-    <br />
+<label>Search message by message priority:</label>
+<select id="process_prio_input" 
+        onchange="Msg_inquiry_collect_info ( 
+                                                '1',
+                                                '1',                                      
+                                                document.getElementById('process_prio_input').value,
+                                                document.getElementById('process_name_input').value
+                                            )">
+    <option value="0">0</option>                                            
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+</select>
 
-    <label>Search message by message priority:</label>
-    <select id="process_prio_input" 
-            onchange="Msg_inquiry_collect_info ( 
-                                                    '1',
-                                                    '1',                                      
-                                                    document.getElementById('process_prio_input').value,
-                                                    document.getElementById('process_name_input').value
-                                                )"/>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-    </select>
-    <br />
+<br />
 
-    @*<input  id="process_prio_input" type="text" 
-             onchange="Msg_inquiry_collect_info ( 
-                                                    '1',
-                                                    '1',                                      
-                                                    document.getElementById('process_prio_input').value,
-                                                    document.getElementById('process_name_input').value
-                                                )"/>
-
-    <br />*@
-
-    <label>Get all start up and shutdown msg: </label>
-    <input id="SU_SD_Checkbox" type="checkbox" 
-            onclick="Change_SU_SD_Status (
-                                            '1',
-                                            document.getElementById('process_prio_input').value,
-                                            document.getElementById('process_name_input').value  
-                                         )"/>
-                                                                               
-
-</fieldset>
+<label>Get all start up and shutdown msg: </label>
+<input id="SU_SD_Checkbox" type="checkbox" 
+        onclick="Change_SU_SD_Status (
+                                        '1',
+                                        document.getElementById('process_prio_input').value,
+                                        document.getElementById('process_name_input').value  
+                                        )"/>
+   
+                                                                            
+<hr />
 
 <!-- Code development corner -->
 

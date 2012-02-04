@@ -5,13 +5,19 @@ Date     : 1/11/2012
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 *@
 
-@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Msg_inq>
-
-<style type="text/css">       
-        @@import url(../../Content/Table.css);         
-</style>
+@model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Message>
 
 <script type="text/javascript">
+
+    var msg_inquiry_current_page;
+    var msg_inquiry_current_sort;
+
+    /**/
+    // Update page and sort val
+    $(document).ready(function () {   
+        msg_current_page = @(Model.CurrentPage);
+        msg_current_sort = @(Model.SortingType);
+    });
 
     /**/
     function Msg_inquiry_sorting(chkboxname) {
@@ -21,27 +27,27 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         // If we check this checkbox, turnoff the other sorting checkbox
         if (state) {
             // Make ajax call to controller to update the table
-            if (chkboxname == "Process_ID_Sort")
+            if (chkboxname == "Msg_inq_pro_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "1",
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
-            else if (chkboxname == "Process_Name_Sort")
+            else if (chkboxname == "Msg_inq_name_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "2",
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_Context_Sort")
+            else if (chkboxname == "Msg_inq_context_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "3",
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_Priority_Sort")
+            else if (chkboxname == "Msg_inq_prio_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "4",
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_Date_Sort")
+            else if (chkboxname == "Msg_inq_date_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "5",
                                             document.getElementById("process_prio_input").value,
@@ -55,72 +61,65 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         }
     }
 
-</script>
+    // Show full message
+    function showfullmsgdetail(msg_id) {          
+        // Use ajax call to get the full message detail
 
-<!-- Hidden labels to keep track of values -->
-<label id="msg_inquiry_current_page" hidden="true">@Model.CurrentPage</label>
-<label id="msg_inquiry_current_sort" hidden="true">@Model.SortingType</label>
+        // Show to the window
+        var content = msg_id;
+        top.consoleRef = window.open('', 'myconsole',
+                                        'width=350,height=250'
+                                        + ',menubar=0'
+                                        + ',toolbar=1'
+                                        + ',status=0'
+                                        + ',scrollbars=1'
+                                        + ',resizable=1')
+        top.consoleRef.document.writeln('<html><head><title>Console</title></head>'
+                                            + '<body bgcolor=white onLoad="self.focus()">'
+                                            + content
+                                            + '</body></html>')
+        top.consoleRef.document.close()
+    }
+
+    $(document).ready(function () {
+        if ( @(Model.SortingType) == 1 )
+            document.getElementById("Msg_inq_pro_sort").checked = true;
+        else if ( @(Model.SortingType) == 2) 
+            document.getElementById("Msg_inq_name_sort").checked = true;
+        else if ( @(Model.SortingType) == 3) 
+            document.getElementById("Msg_inq_context_sort").checked = true;
+        else if ( @(Model.SortingType) == 4) 
+            document.getElementById("Msg_inq_prio_sort").checked = true;
+        else if ( @(Model.SortingType) == 5) 
+            document.getElementById("Msg_inq_date_sort").checked = true;
+    });       
+</script>
 
 <table id ="msg_list_table" class="display">
         <thead>
-            <tr>
+            <tr>            
                 <td>
                     Process ID 
-                    @if (Model.SortingType == 1)
-                    {
-                        <input id="Process_ID_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)" checked="checked"/>
-                    }
-                    else
-                    {
-                        <input id="Process_ID_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>
-                    }              
+                    <input id="Msg_inq_pro_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>            
                 </td>
                 <td>
                     Process Name 
-                    @if (Model.SortingType == 2)
-                    {
-                        <input id="Process_Name_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)" checked="checked"/>
-                    }
-                    else
-                    {
-                        <input id="Process_Name_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>
-                    }   
+                    <input id="Msg_inq_name_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>  
                 </td>
                 <td>
                     Message Context 
-                    @if (Model.SortingType == 3)
-                    {
-                        <input id="Msg_Context_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)" checked="checked"/>
-                    }
-                    else
-                    {
-                        <input id="Msg_Context_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>
-                    }   
+                    <input id="Msg_inq_context_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>                 
                 </td>
                 <td>
-                    Priority 
-                    @if (Model.SortingType == 4)
-                    {
-                        <input id="Msg_Priority_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)" checked="checked"/>
-                    }
-                    else
-                    {
-                        <input id="Msg_Priority_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>
-                    }   
+                    Priority                    
+                    <input id="Msg_inq_prio_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>   
                 </td>
                 <td>
                     Message Type
                 </td>
                 <td>
                     Date 
-                    @if (Model.SortingType == 5)
-                    {
-                        <input id="Msg_Date_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)" checked="checked"/>
-                    }
-                    else
-                    {
-                        <input id="Msg_Date_Sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>
-                    }   
+                    <input id="Msg_inq_date_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/> 
                 </td>
             </tr>
         </thead>     
@@ -128,14 +127,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             @foreach (var message in Model.Data)
             {
                 <tr>
-                    <td>@message.ProcessID.ToString() </td>
-                    <td>@message.ProcessName </td>
-                    <td>@message.Content </td>
-                    <td>@message.Priority.ToString() </td>
-                    <td>@message.MsgType </td>
-                    <td>@message.Date.ToString("yyyy-MM-dd HH:mm tt") 
-                        <br /> ( : 
-                        @( ((int)(DateTime.Now.Subtract(message.Date).TotalMinutes)).ToString() ) minutes )
+                    <td> @message.ProcessID.ToString() </td>
+                    <td>
+                         <img src="..\..\Content\images\@(message.ProcessState.Trim()).png" alt=""/>
+                         @message.ProcessName 
+                    </td>
+                    <td> <a class="msg_inquiry_process_id" href="javascript:void(0)" onclick="showfullmsgdetail(@(message.ProcessID))">@message.Content</a> </td>
+                    <td> @message.Priority.ToString() </td>
+                    <td> @message.MsgType </td>
+                    <td> @message.Date.ToString("yyyy-MM-dd HH:mm tt") 
+                         <br /> ( : 
+                         @( ((int)(DateTime.Now.Subtract(message.Date).TotalMinutes)).ToString()) minutes )
                     </td>
                 </tr>
             }
@@ -215,7 +217,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     <input  id="msg_inquiry_page_number" type="text" style="width: 40px" 
                             onchange="Msg_inquiry_collect_info  (     
                                                                     document.getElementById(this.id).value,
-                                                                    document.getElementById('msg_inquiry_current_sort').innerHTML,
+                                                                    msg_inquiry_current_sort,
                                                                     document.getElementById('process_prio_input').value,
                                                                     document.getElementById('process_name_input').value     
                                                                 )" />

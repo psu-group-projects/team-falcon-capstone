@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using PeregrineAPI;
 
 namespace PeregrineUI_2.Models.Repository
 {
     public class MsgInquiryRepo
     {
-        public static PageData<Msg_inq> GetMessages(int page, int sortOption, int searchpriority, string searchprocess, int SU_SD_msg, int pagesize)
+        public static PageData<Message> GetMessages(int page, int sortOption, int searchpriority, string searchprocess, int SU_SD_msg, int pagesize)
         {
-            List<Msg_inq> SummaryData = new List<Msg_inq>();
+            List<Message> SummaryData = new List<Message>();
             Random random = new Random();
 
             // Populate the SummaryData
             for (int i = 0; i < 200; i++)
             {
-                Msg_inq element = new Msg_inq
+                Message element = new Message
                 {
                     ProcessID = i,
+                    ProcessState = (random.Next(1,3) == 2) ? "red" : "green",
                     ProcessName = "Falcon" + i,
                     Content = Path.GetRandomFileName(),
                     Priority = random.Next(1, 10),
@@ -29,7 +31,7 @@ namespace PeregrineUI_2.Models.Repository
                 SummaryData.Add(element);
             }
 
-            var pagingContext = new PageData<Msg_inq>();
+            var pagingContext = new PageData<Message>();
 
             // Filtering if searching is actived
             if (SU_SD_msg == 1)

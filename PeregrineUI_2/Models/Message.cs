@@ -16,16 +16,13 @@ namespace PeregrineUI_2.Models
     public class Message
     {
         public string ProcessName { get; set; }
+        public string ProcessState { get; set; }
+        public int ProcessID { get; set; }
         public string Content { get; set; }
         public int Priority { get; set; }
         public int Category { get; set; }
         public string MsgType { get; set; }
         public DateTime Date { get; set; }
+        // public int MessageID { get; set; }
     }
-
-    public class Msg_inq : Message
-    {
-        public int ProcessID { get; set; }
-    }
-
 }
