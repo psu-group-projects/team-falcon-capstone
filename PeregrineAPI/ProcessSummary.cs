@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Web;
+using PeregrineDB;
 
 namespace PeregrineAPI
 {
@@ -15,24 +16,24 @@ namespace PeregrineAPI
          * ProcessSummary will contain: Process process, Message msg
          */
 
-        ProcessDTO process;
-        MessageDTO msg;
+        Process process;
+        Message msg;
 
-        public ProcessSummary(ProcessDTO p, MessageDTO m)
+        public ProcessSummary(Process p, Message m)
         {
             process = p;
             msg = m;
         }
 
         [DataMember]
-        public ProcessDTO _process
+        public Process _process
         {
             get { return process; }
             set { }
         }
 
         [DataMember]
-        public MessageDTO _message
+        public Message _message
         {
             get { return msg; }
             set { }
