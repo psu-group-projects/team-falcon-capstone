@@ -408,6 +408,16 @@ namespace PeregrineDBWrapper
 
         public void logJobComplete(String jobName, String processName)
         {
+            String message = "generated JobComplete message";
+            Category category = Category.STOP;
+            Priority priority = DEFAULT_PRIORITY;
+            double percent = 100.0;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            JobWrapper job = new JobWrapper(jobName);
+            job.Update(percent);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId);
         }
 
         public void logProcessStart(String processName)

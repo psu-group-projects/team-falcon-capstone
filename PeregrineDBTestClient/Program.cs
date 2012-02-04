@@ -23,6 +23,7 @@ namespace PeregrinDBTestClient
             String testJobName3 = "Test Job Name 3";
             String testJobName4 = "Test Job Name 4";
             int testTotalTasks = 70;
+            String testJobName5 = "Test Job Name 5";
 
             DBLogWrapper log = new DBLogWrapper();
 
@@ -35,6 +36,9 @@ namespace PeregrinDBTestClient
             log.logJobStart(testJobName3, testProcessName);
 
             log.logJobStartWithTotalTasks(testJobName4, testProcessName, testTotalTasks);
+
+            log.logJobStartWithTotalTasks(testJobName5, testProcessName, testTotalTasks);
+            log.logJobComplete(testJobName5, testProcessName);
 
             // int id;
 
