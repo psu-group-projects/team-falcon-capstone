@@ -68,6 +68,15 @@ namespace PeregrineDBWrapper
             }
         }
 
+        public void Update(ProcessState state)
+        {
+            State = state;
+
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            ISingleResult<UpdateProcessResult> result = db.UpdateProcess(ProcessId, ProcessName, (int)State);
+            // repopulate Properties?
+        }
+
         [Obsolete]
         public void PutInDatabase()
         {
@@ -422,14 +431,36 @@ namespace PeregrineDBWrapper
 
         public void logProcessStart(String processName)
         {
+            String message = "generated ProcessStart message";
+            Category category = Category.START;
+            Priority priority = DEFAULT_PRIORITY;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
         public void logProcessShutdown(String processName)
         {
+            String message = "generated ProcessShutdown message";
+            Category category = Category.STOP;
+            Priority priority = DEFAULT_PRIORITY;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
         public void logProcessStateChange(String processName, ProcessState state)
         {
+            String message = "generated ProcessStateChange message";
+            Category category = Category.STATE_CHANGE;
+            Priority priority = DEFAULT_PRIORITY;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            proc.Update(state);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
     }

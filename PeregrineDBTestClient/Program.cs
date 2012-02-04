@@ -12,6 +12,7 @@ namespace PeregrinDBTestClient
         static void Main(string[] args)
         {
             String testProcessName = "Test Process Name 1";
+            ProcessState testState = ProcessState.RED;
             String testProcessMessage = "Test Process Message 1";
             Category testProcessCategory = Category.INFORMATION;
             Priority testProcessPriority = Priority.MEDIUM;
@@ -27,6 +28,8 @@ namespace PeregrinDBTestClient
 
             DBLogWrapper log = new DBLogWrapper();
 
+            log.logProcessStart(testProcessName);
+
             log.logProcessMessage(testProcessName, testProcessMessage, testProcessCategory, testProcessPriority);
 
             log.logJobProgressAsPercentage(testJobName1, testProcessName, testPercent);
@@ -39,6 +42,11 @@ namespace PeregrinDBTestClient
 
             log.logJobStartWithTotalTasks(testJobName5, testProcessName, testTotalTasks);
             log.logJobComplete(testJobName5, testProcessName);
+
+            log.logProcessStateChange(testProcessName, testState);
+
+            log.logProcessShutdown(testProcessName);
+
 
             // int id;
 
