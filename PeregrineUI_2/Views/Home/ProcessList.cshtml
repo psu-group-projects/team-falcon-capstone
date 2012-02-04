@@ -8,11 +8,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
 
-<style type="text/css">       
-        @@import url(../../Content/Table.css);         
-</style>
-
 <script type="text/javascript">
+
+    var main_page_main_current_page;
+    var main_page_main_current_sort;
 
     /**/
     function sorting(chkboxname) {
@@ -24,21 +23,21 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
             // Make ajax call to controller to update the table
             if (chkboxname == "ProcessName_checkbox")
-                MainPageAjaxSearch( parseInt("1"),
-                                    parseInt("1"), 
-                                    document.getElementById("search_input_id").value    );
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("1"),
+                                    document.getElementById("main_page_search_input").value);
             else if (chkboxname == "LastMsg_checkbox")
-                MainPageAjaxSearch(parseInt("1"),
-                                    parseInt("2"), 
-                                    document.getElementById("search_input_id").value    );
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("2"),
+                                    document.getElementById("main_page_search_input").value);
             else if (chkboxname == "MsgDate_checkbox")
-                MainPageAjaxSearch(parseInt("1"),
-                                    parseInt("3"), 
-                                    document.getElementById("search_input_id").value    );
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("3"),
+                                    document.getElementById("main_page_search_input").value);
             else if (chkboxname == "ProcessState_checkbox")
-                MainPageAjaxSearch(parseInt("1"),
-                                    parseInt("4"), 
-                                    document.getElementById("search_input_id").value    );
+                MainPageAjaxUpdate( parseInt("1"),
+                                    parseInt("4"),
+                                    document.getElementById("main_page_search_input").value);
             else
                 alert("SORTING ERROR");
         }
@@ -50,7 +49,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
     // Expand process detail
     //$("#process_table").jExpand();
-    $(document).ready(function () {
+    $(document).ready(function () { 
+
+        main_page_main_current_page = @(Model.CurrentPage);
+        main_page_main_current_sort = @(Model.SortingType);
+
         $("#process_table tr:odd").addClass("odd");
         $("#process_table tr:not(.odd)").hide();
         $("#process_table tr:first-child").show();
@@ -60,8 +63,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             opened_row = document.getElementById(opened_row_id);
             if (opened_row != null) {
                 $(opened_row).next("tr").show();
-                ExpandedTabUpdate(document.getElementById("current_scrolldown_process").innerHTML,
-                                    document.getElementById("msg_or_job").innerHTML,
+                ExpandedTabUpdate(   document.getElementById("current_scrolldown_process").innerHTML,
+                                     document.getElementById("msg_or_job").innerHTML,
                                      parseInt(document.getElementById("inside_page").innerHTML));
             }
             else {
@@ -99,25 +102,19 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
         // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
-            show_message(parseInt($(this).html()),
+            show_message(   parseInt($(this).html()),
                             document.getElementById("current_scrolldown_process").innerHTML);
         });
 
-        // Handle clicking msg page number 
+        // Handle clicking job page number 
         $(".process_job_page-number").live("click", function () {
-            show_job(parseInt($(this).html()),
+            show_job(   parseInt($(this).html()),
                         document.getElementById("current_scrolldown_process").innerHTML);
         });
     });
 
     
 </script>
-
-<!-- Hidden labels to keep track of values -->
-<label id="current_page_label" hidden="true">@Model.CurrentPage</label>
-<label id="current_sorting_label" hidden="true">@Model.SortingType</label>
-
-
 
 <!-- Main table -->
 <table id="process_table" class="display">
@@ -288,8 +285,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <label>Go to page:</label>                       
                 <input  id="page_target" type="text" style="width: 40px" 
                         onchange="MainPageAjaxUpdate(   parseInt(document.getElementById(this.id).value), 
-                                                        parseInt(document.getElementById('current_sorting_label').innerHTML), 
-                                                        document.getElementById('search_input_id').value)"/>
+                                                        main_page_main_current_sort, 
+                                                        document.getElementById('main_page_search_input').value)"/>
             </td>
         </tr>              
     </tfoot>
