@@ -27,21 +27,21 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         // If we check this checkbox, turnoff the other sorting checkbox
         if (state) {
             // Make ajax call to controller to update the table
-            if (chkboxname == "Msg_inq_pro_sort")
+            if (chkboxname == "Msg_inq_msg_id_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "1",
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_inq_name_sort")
+            else if (chkboxname == "Msg_inq_context_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "2",
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_inq_context_sort")
+            else if (chkboxname == "Msg_inq_name_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "3",
                                             document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value );
+                                            document.getElementById("process_name_input").value );       
             else if (chkboxname == "Msg_inq_prio_sort")
                 Msg_inquiry_collect_info(   "1",
                                             "4",
@@ -83,11 +83,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
     $(document).ready(function () {
         if ( @(Model.SortingType) == 1 )
-            document.getElementById("Msg_inq_pro_sort").checked = true;
-        else if ( @(Model.SortingType) == 2) 
-            document.getElementById("Msg_inq_name_sort").checked = true;
-        else if ( @(Model.SortingType) == 3) 
+            document.getElementById("Msg_inq_msg_id_sort").checked = true;
+          else if ( @(Model.SortingType) == 2) 
             document.getElementById("Msg_inq_context_sort").checked = true;
+        else if ( @(Model.SortingType) == 3) 
+            document.getElementById("Msg_inq_name_sort").checked = true;     
         else if ( @(Model.SortingType) == 4) 
             document.getElementById("Msg_inq_prio_sort").checked = true;
         else if ( @(Model.SortingType) == 5) 
@@ -99,17 +99,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         <thead>
             <tr>            
                 <td>
-                    Process ID 
-                    <input id="Msg_inq_pro_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>            
-                </td>
-                <td>
-                    Process Name 
-                    <input id="Msg_inq_name_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>  
+                    Message ID 
+                    <input id="Msg_inq_msg_id_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>            
                 </td>
                 <td>
                     Message Context 
                     <input id="Msg_inq_context_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>                 
                 </td>
+                <td>
+                    Process Name 
+                    <input id="Msg_inq_name_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>  
+                </td>           
                 <td>
                     Priority                    
                     <input id="Msg_inq_prio_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>   
@@ -127,12 +127,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             @foreach (var message in Model.Data)
             {
                 <tr>
-                    <td> @message.ProcessID.ToString() </td>
+                    <td> @message.MessageID.ToString() </td>                 
+                    <td> <a class="msg_inquiry_process_id" href="javascript:void(0)" onclick="showfullmsgdetail(@(message.ProcessID))">@message.Content</a> </td>
                     <td>
                          <img src="..\..\Content\images\@(message.ProcessState.Trim()).png" alt=""/>
                          @message.ProcessName 
                     </td>
-                    <td> <a class="msg_inquiry_process_id" href="javascript:void(0)" onclick="showfullmsgdetail(@(message.ProcessID))">@message.Content</a> </td>
                     <td> @message.Priority.ToString() </td>
                     <td> @message.MsgType </td>
                     <td> @message.Date.ToString("yyyy-MM-dd HH:mm tt") 

@@ -19,6 +19,7 @@ namespace PeregrineUI_2.Models.Repository
             {
                 Message element = new Message
                 {
+                    MessageID = i,
                     ProcessID = i,
                     ProcessState = (random.Next(1,3) == 2) ? "red" : "green",
                     ProcessName = "Falcon" + i,
@@ -57,14 +58,14 @@ namespace PeregrineUI_2.Models.Repository
             switch (sortOption)
             {
                 case 1:
-                    SummaryData = SummaryData.OrderBy(p => p.ProcessID).ToList();
+                    SummaryData = SummaryData.OrderBy(p => p.MessageID).ToList();
                     break;
                 case 2:
-                    SummaryData = SummaryData.OrderBy(p => p.ProcessName).ToList();
-                    break;
-                case 3:
                     SummaryData = SummaryData.OrderBy(p => p.Content).ToList();
                     break;
+                case 3:
+                    SummaryData = SummaryData.OrderBy(p => p.ProcessName).ToList();
+                    break;               
                 case 4:
                     SummaryData = SummaryData.OrderBy(p => p.Priority).ToList();
                     break;

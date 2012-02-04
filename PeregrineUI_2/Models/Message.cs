@@ -23,6 +23,6 @@ namespace PeregrineUI_2.Models
         public int Category { get; set; }
         public string MsgType { get; set; }
         public DateTime Date { get; set; }
-        // public int MessageID { get; set; }
+        public int MessageID { get; set; }
     }
 }
