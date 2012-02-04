@@ -382,6 +382,14 @@ namespace PeregrineDBWrapper
 
         public void logJobStart(String jobName, String processName)
         {
+            String message = "generated JobStart message";
+            Category category = Category.START;
+            Priority priority = DEFAULT_PRIORITY;
+
+            ProcessWrapper proc = new ProcessWrapper(processName);
+            JobWrapper job = new JobWrapper(jobName);
+            MessageWrapper mess = new MessageWrapper(message, category, priority);
+            LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
 
         public void logJobStartWithTotalTasks(String jobName, String processName, int totalTasks)
