@@ -9,7 +9,7 @@ using System.Web;
 namespace PeregrineAPI
 {
     [DataContract]
-    public class Message
+    public class MessageDTO
     {
         int message_id;
         int process_id;
@@ -18,7 +18,9 @@ namespace PeregrineAPI
         Category category; //probly should be an enum (bootup, shutdown)
         Priority priority;
 
-        public Message(int m_id, int p_id, DateTime time, string msg,  Category category, Priority priority)
+        public MessageDTO() { }
+
+        public MessageDTO(int m_id, int p_id, DateTime time, string msg,  Category category, Priority priority)
         {
             message_id = m_id;
             process_id = p_id;
@@ -44,14 +46,14 @@ namespace PeregrineAPI
         }
 
         [DataMember]
-        public DateTime Timestamp
+        public DateTime Date
         {
             get { return timestamp; }
             set { timestamp = value; }
         }
 
         [DataMember]
-        public string MessageStr
+        public string Message
         {
             get { return message; }
             set { message = value; }
@@ -72,6 +74,13 @@ namespace PeregrineAPI
         {
             get { return priority; }
             set { priority = value; }
+        }
+
+        [DataMember]
+        public Category Category
+        {
+            get { return category; }
+            set { category = value; }
         }
     }
 }

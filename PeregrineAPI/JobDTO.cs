@@ -9,23 +9,27 @@ using System.Web;
 namespace PeregrineAPI
 {
     [DataContract]
-    public class Job
+    public class JobDTO
     {
         int job_id;
         int process_id;
         double timestamp;
         string job_name;
-        int completed_count;
-        int planned_count;
+        double percentComplete;
+        int plannedCount;
 
-        public Job(int j_id, int p_id, double time, string j_name, int complete, int planned)
+        public JobDTO()
+        {
+        }
+
+        public JobDTO(int j_id, int p_id, double time, string j_name, double complete, int planned)
         {
             job_id = j_id;
             process_id = p_id;
             timestamp = time;
             job_name = j_name;
-            completed_count = complete;
-            planned_count = planned;
+            percentComplete = complete;
+            plannedCount = planned;
         }
         
         [DataMember]
@@ -59,15 +63,15 @@ namespace PeregrineAPI
         [DataMember]
         public int PlannedCount
         {
-            get { return planned_count; }
-            set { planned_count = value; }
+            get { return plannedCount; }
+            set { plannedCount = value; }
         }
 
         [DataMember]
-        public int CompletedCount
+        public double PercentComplete
         {
-            get { return completed_count; }
-            set { completed_count = value; }
+            get { return percentComplete; }
+            set { percentComplete = value; }
         }
     }
 }

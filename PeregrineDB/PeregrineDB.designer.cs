@@ -231,6 +231,41 @@ namespace PeregrineDB
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID);
 			return ((ISingleResult<GetMessageResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetProcessByName")]
+		public ISingleResult<Process> GetProcessByName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="VarChar(200)")] string processName)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processName);
+			return ((ISingleResult<Process>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertLogRel")]
+		public ISingleResult<LogRel> InsertLogRel([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobID", DbType="Int")] System.Nullable<int> jobID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID, processID, jobID);
+			return ((ISingleResult<LogRel>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetJobByName")]
+		public ISingleResult<Job> GetJobByName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="JobName", DbType="NChar(200)")] string jobName)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), jobName);
+			return ((ISingleResult<Job>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetTopMessageFromProcessId")]
+		public ISingleResult<GetTopMessageFromProcessIdResult> GetTopMessageFromProcessId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessId", DbType="Int")] System.Nullable<int> processId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processId);
+			return ((ISingleResult<GetTopMessageFromProcessIdResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfProcess")]
+		public ISingleResult<GetPageOfProcessResult> GetPageOfProcess([global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="Int")] System.Nullable<int> from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="Int")] System.Nullable<int> to)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), from, to);
+			return ((ISingleResult<GetPageOfProcessResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Process")]
@@ -2311,6 +2346,166 @@ namespace PeregrineDB
 				if ((this._Priority != value))
 				{
 					this._Priority = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetTopMessageFromProcessIdResult
+	{
+		
+		private int _Category;
+		
+		private System.DateTime _Date;
+		
+		private string _Message;
+		
+		private int _MessageID;
+		
+		private int _Priority;
+		
+		public GetTopMessageFromProcessIdResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetPageOfProcessResult
+	{
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		public GetPageOfProcessResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
 				}
 			}
 		}

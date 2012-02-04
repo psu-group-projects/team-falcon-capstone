@@ -9,7 +9,7 @@
     </Type>
   </Table>
   <Table Name="dbo.LogRel" Member="LogRels">
-    <Type Name="LogRel">
+    <Type Name="LogRel" Id="ID2">
       <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="JobID" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -19,7 +19,7 @@
     </Type>
   </Table>
   <Table Name="dbo.Job" Member="Jobs">
-    <Type Name="Job">
+    <Type Name="Job" Id="ID3">
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -204,6 +204,39 @@
       <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetProcessByName" Method="GetProcessByName">
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="VarChar(200)" />
+    <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="dbo.InsertLogRel" Method="InsertLogRel">
+    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID2" />
+  </Function>
+  <Function Name="dbo.GetJobByName" Method="GetJobByName">
+    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NChar(200)" />
+    <ElementType IdRef="ID3" />
+  </Function>
+  <Function Name="dbo.GetTopMessageFromProcessId" Method="GetTopMessageFromProcessId">
+    <Parameter Name="ProcessId" Parameter="processId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetTopMessageFromProcessIdResult">
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetPageOfProcess" Method="GetPageOfProcess">
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetPageOfProcessResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>

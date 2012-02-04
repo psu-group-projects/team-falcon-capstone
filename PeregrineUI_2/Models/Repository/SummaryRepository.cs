@@ -18,7 +18,7 @@ namespace PeregrineUI_2.Models.Repository
             List<ProcessSummary> ProcessSummaryData = service.getSummaryByPage(1, pagesize, SortBy.PROCESS_STATE);
 
             foreach ( ProcessSummary summary in ProcessSummaryData){
-                SummaryData.Add(new Process { ProcessName = summary._process.ProcessName, LastAction = summary._message.MessageStr, MsgDate = summary._message.Timestamp, ProcessState = summary._process.State.ToString() });
+                SummaryData.Add(new Process { ProcessName = summary._process.ProcessName, LastAction = summary._message.Message, MsgDate = summary._message.Date, ProcessState = summary._process.State.ToString() });
             }
 
             /*

@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -65,18 +66,25 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Job.cs" />
-    <Compile Include="Message.cs" />
+    <Compile Include="DBOWrappers.cs" />
+    <Compile Include="JobDTO.cs" />
+    <Compile Include="MessageDTO.cs" />
     <Compile Include="PeregrineService.svc.cs">
       <DependentUpon>PeregrineService.svc</DependentUpon>
     </Compile>
     <Compile Include="IPeregrineService.cs" />
-    <Compile Include="Process.cs" />
+    <Compile Include="ProcessDTO.cs" />
     <Compile Include="ProcessSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PeregrineDB\PeregrineDB.csproj">
+      <Project>{C785DAD0-7D82-41D5-A34B-2080E69FFB78}</Project>
+      <Name>PeregrineDB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

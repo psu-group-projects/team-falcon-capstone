@@ -9,13 +9,17 @@ using System.Web;
 namespace PeregrineAPI
 {
     [DataContract]
-    public class Process
+    public class ProcessDTO
     {
         int process_id;
         string process_name;
         ProcessState state;
 
-        public Process(string p_name, int p_id, ProcessState processState)
+        public ProcessDTO()
+        {
+        }
+
+        public ProcessDTO(string p_name, int p_id, ProcessState processState)
         {
             process_id = p_id;
             process_name = p_name;

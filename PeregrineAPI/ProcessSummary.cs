@@ -15,24 +15,24 @@ namespace PeregrineAPI
          * ProcessSummary will contain: Process process, Message msg
          */
 
-        Process process;
-        Message msg;
+        ProcessDTO process;
+        MessageDTO msg;
 
-        public ProcessSummary(Process p, Message m)
+        public ProcessSummary(ProcessDTO p, MessageDTO m)
         {
             process = p;
             msg = m;
         }
 
         [DataMember]
-        public Process _process
+        public ProcessDTO _process
         {
             get { return process; }
             set { }
         }
 
         [DataMember]
-        public Message _message
+        public MessageDTO _message
         {
             get { return msg; }
             set { }
