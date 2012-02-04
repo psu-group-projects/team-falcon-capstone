@@ -229,4 +229,8 @@
     <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
     <ElementType IdRef="ID1" />
   </Function>
+  <Function Name="dbo.GetMessagesWithProcessID" Method="GetMessagesWithProcessID">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID4" />
+  </Function>
 </Database>
