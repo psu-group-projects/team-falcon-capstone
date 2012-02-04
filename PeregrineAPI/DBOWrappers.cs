@@ -351,6 +351,8 @@ namespace PeregrineDBWrapper
 
         public void logProcessMessage(String processName, String message, Category category, Priority priority)
         {
+            message = processName + ": " + message;
+            
             ProcessWrapper proc = new ProcessWrapper(processName);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId); 
@@ -358,12 +360,15 @@ namespace PeregrineDBWrapper
 
         public void logJobProgressAsPercentage(String jobName, String processName, double percent)
         {
-            String message = "generated JobProgressAsPercentage message";
             Category category = Category.PROGRESS;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
+
+            String message = processName + ", " + jobName
+                + ": Job " + ((int)percent).ToString() + "% complete";
+
             job.Update(percent);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
@@ -371,12 +376,15 @@ namespace PeregrineDBWrapper
 
         public void logJobProgress(String jobName, String processName, int total, int completed)
         {
-            String message = "generated JobProgress message";
             Category category = Category.PROGRESS;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
+
+            String message = processName + ", " + jobName
+                + ": " + completed.ToString() + " of " + total.ToString() + " job tasks completed";
+
             job.Update(total, completed);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
@@ -384,12 +392,15 @@ namespace PeregrineDBWrapper
 
         public void logJobStart(String jobName, String processName)
         {
-            String message = "generated JobStart message";
             Category category = Category.START;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
+
+            String message = processName + ", " + jobName
+                + ": Job started";
+
             // Reset progress, just in case the job is already in the database.
             job.Update(GlobVar.DEFAULT_PLANNED_COUNT, GlobVar.DEFAULT_COMPLETED_COUNT);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
@@ -398,13 +409,16 @@ namespace PeregrineDBWrapper
 
         public void logJobStartWithTotalTasks(String jobName, String processName, int totalTasks)
         {
-            String message = "generated JobStartWithTotalTasks message";
             Category category = Category.START;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
             int completed = 0;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
+
+            String message = processName + ", " + jobName
+                + ": Job started with " + totalTasks.ToString() + " total tasks";
+
             job.Update(totalTasks, completed);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId);
@@ -412,13 +426,15 @@ namespace PeregrineDBWrapper
 
         public void logJobComplete(String jobName, String processName)
         {
-            String message = "generated JobComplete message";
             Category category = Category.STOP;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
             double percent = 100.0;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
+
+            String message = processName + ", " + jobName + ": Job Completed";
+
             job.Update(percent);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId);
@@ -426,25 +442,30 @@ namespace PeregrineDBWrapper
 
         public void logProcessStart(String processName)
         {
-            String message = "generated ProcessStart message";
             Category category = Category.START;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
             ProcessState startState = GlobVar.DEFAULT_PROCESS_STATE;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
+
+            String message = processName + ": Process Started";
+
             // Reset state, just in case the process is already in the database.
             proc.Update(startState);
+
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
         public void logProcessShutdown(String processName)
         {
-            String message = "generated ProcessShutdown message";
             Category category = Category.STOP;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
+
+            String message = processName + ": Process shut down";
+            
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
@@ -456,7 +477,7 @@ namespace PeregrineDBWrapper
 
             ProcessWrapper proc = new ProcessWrapper(processName);
 
-            String message = processName + " State Change: from " + ProcessStateToString(proc.State)
+            String message = processName + ": Process state changed from " + ProcessStateToString(proc.State)
                 + " to " + ProcessStateToString(state);
             
             proc.Update(state);
