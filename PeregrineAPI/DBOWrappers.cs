@@ -12,18 +12,26 @@ namespace PeregrineDBWrapper
     using PeregrineDB;
     using System.Collections.Generic;
 
+    public static class GlobVar
+    {
+        // identity is assigned when an Object is created or retrieved in DB
+        public const int UNASSIGNED_IDENTITY = -1;
+        public const ProcessState DEFAULT_PROCESS_STATE = ProcessState.GREEN;
+        public const Priority DEFAULT_PRIORITY = Priority.MEDIUM;
+        public const Category DEFAULT_CATEGORY = Category.INFORMATION;
+        public const int DEFAULT_PLANNED_COUNT = 100;
+        public const int DEFAULT_COMPLETED_COUNT = 0;
+        public const double DEFAULT_PERCENT_COUNT = 0.0;
+    }
+
     public class ProcessWrapper : ProcessDTO
     {
-        // identity is assigned when Process is created or retrieved from DB
-        private const int           UNASSIGNED_IDENTITY = -1;     
-        private const ProcessState  DEFAULT_STATE = ProcessState.GREEN;
-
         [Obsolete]
         public ProcessWrapper()
         {
-            ProcessId = UNASSIGNED_IDENTITY;
+            ProcessId = GlobVar.UNASSIGNED_IDENTITY;
             ProcessName = "";
-            State = DEFAULT_STATE;
+            State = GlobVar.DEFAULT_PROCESS_STATE;
         }
 
         // This constructor will retrieve a process from the DB by ProcessName or add it
@@ -36,7 +44,7 @@ namespace PeregrineDBWrapper
 
             if (resultCount == 0)       // add process to DB
             {
-                ISingleResult<InsertProcessResult> insResult = db.InsertProcess(UNASSIGNED_IDENTITY, procName, (int)DEFAULT_STATE);
+                ISingleResult<InsertProcessResult> insResult = db.InsertProcess(GlobVar.UNASSIGNED_IDENTITY, procName, (int)GlobVar.DEFAULT_PROCESS_STATE);
                 InsertProcessResult proc = insResult.First();
                 ProcessId = proc.ProcessID;
                 ProcessName = proc.ProcessName;
@@ -100,16 +108,10 @@ namespace PeregrineDBWrapper
 
     public class JobWrapper : JobDTO
     {
-        // identity is assigned when Job is created in DB
-        private const int UNASSIGNED_IDENTITY = -1;
-        private const int DEFAULT_PLANNED_COUNT = 100;
-        private const int DEFAULT_COMPLETED_COUNT = 0;
-        private const double DEFAULT_PERCENT_COUNT = 0.0;
-
         [Obsolete]
         public JobWrapper()
         {
-            JobId = UNASSIGNED_IDENTITY;
+            JobId = GlobVar.UNASSIGNED_IDENTITY;
             JobName = "";
             PlannedCount = 0;
             PercentComplete = 0;
@@ -124,7 +126,7 @@ namespace PeregrineDBWrapper
 
             if (resultCount == 0)       // add process to DB
             {
-                InsertJobResult insResult = db.InsertJob(UNASSIGNED_IDENTITY, jobName, DEFAULT_PLANNED_COUNT, DEFAULT_COMPLETED_COUNT, DEFAULT_PERCENT_COUNT).First();
+                InsertJobResult insResult = db.InsertJob(GlobVar.UNASSIGNED_IDENTITY, jobName, GlobVar.DEFAULT_PLANNED_COUNT, GlobVar.DEFAULT_COMPLETED_COUNT, GlobVar.DEFAULT_PERCENT_COUNT).First();
                 JobId = insResult.JobID;
                 JobName = insResult.JobName;
                 PlannedCount = (int)insResult.PlannedCount; // PlannedCount currently Nullable in DB
@@ -203,15 +205,10 @@ namespace PeregrineDBWrapper
 
     public class MessageWrapper : MessageDTO
     {
-        // identity is assigned when Message is created in DB
-        private const int UNASSIGNED_IDENTITY = -1;     
-        private const Category DEFAULT_CATEGORY = Category.INFORMATION;
-        private const Priority DEFAULT_PRIORITY = Priority.MEDIUM;
-
         [Obsolete]
         public MessageWrapper()
         {
-            MessageId = UNASSIGNED_IDENTITY;
+            MessageId = GlobVar.UNASSIGNED_IDENTITY;
             Message = "";      
             Date = DateTime.Now;
             Category = 0;
@@ -221,7 +218,7 @@ namespace PeregrineDBWrapper
         public MessageWrapper(String message, Category category, Priority priority)
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
-            InsertMessageResult result = db.InsertMessage(UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority).First();
+            InsertMessageResult result = db.InsertMessage(GlobVar.UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority).First();
 
             MessageId = result.MessageID;
             Message = result.Message;
@@ -270,8 +267,6 @@ namespace PeregrineDBWrapper
 
     public class LogRelWrapper
     {
-        private const int UNASSIGNED_IDENTITY = -1;     
-
         private int messageId;
         private int processId;
         private int jobId;
@@ -283,7 +278,7 @@ namespace PeregrineDBWrapper
 
             MessageId = result.MessageID;
             ProcessId = result.ProcessID;
-            JobId = UNASSIGNED_IDENTITY;
+            JobId = GlobVar.UNASSIGNED_IDENTITY;
         }
 
         public LogRelWrapper(int messageId, int processId, int jobId)
@@ -350,8 +345,6 @@ namespace PeregrineDBWrapper
     // for DB insertion / alteration
     public class DBLogWrapper
     {
-        Priority DEFAULT_PRIORITY = Priority.MEDIUM;
-
         public DBLogWrapper()
         {
         }
@@ -367,7 +360,7 @@ namespace PeregrineDBWrapper
         {
             String message = "generated JobProgressAsPercentage message";
             Category category = Category.PROGRESS;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
@@ -380,7 +373,7 @@ namespace PeregrineDBWrapper
         {
             String message = "generated JobProgress message";
             Category category = Category.PROGRESS;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
@@ -393,10 +386,12 @@ namespace PeregrineDBWrapper
         {
             String message = "generated JobStart message";
             Category category = Category.START;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             JobWrapper job = new JobWrapper(jobName);
+            // Reset progress, just in case the job is already in the database.
+            job.Update(GlobVar.DEFAULT_PLANNED_COUNT, GlobVar.DEFAULT_COMPLETED_COUNT);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
@@ -405,7 +400,7 @@ namespace PeregrineDBWrapper
         {
             String message = "generated JobStartWithTotalTasks message";
             Category category = Category.START;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
             int completed = 0;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
@@ -419,7 +414,7 @@ namespace PeregrineDBWrapper
         {
             String message = "generated JobComplete message";
             Category category = Category.STOP;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
             double percent = 100.0;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
@@ -433,9 +428,12 @@ namespace PeregrineDBWrapper
         {
             String message = "generated ProcessStart message";
             Category category = Category.START;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
+            ProcessState startState = GlobVar.DEFAULT_PROCESS_STATE;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
+            // Reset state, just in case the process is already in the database.
+            proc.Update(startState);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
@@ -444,7 +442,7 @@ namespace PeregrineDBWrapper
         {
             String message = "generated ProcessShutdown message";
             Category category = Category.STOP;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
             MessageWrapper mess = new MessageWrapper(message, category, priority);
@@ -454,7 +452,7 @@ namespace PeregrineDBWrapper
         public void logProcessStateChange(String processName, ProcessState state)
         {
             Category category = Category.STATE_CHANGE;
-            Priority priority = DEFAULT_PRIORITY;
+            Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
 
