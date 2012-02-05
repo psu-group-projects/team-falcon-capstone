@@ -24,16 +24,18 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $.event.props = res;
 
         // Set up the initial stage of the main page
-        MainPageAjaxUpdate( parseInt("1"),
+        MainPageAjaxUpdate(parseInt("1"),
                             parseInt("4"),
                             "");
 
-        // Handle clicking page number 
-        $(".page-number").live("click", function () {          
-            MainPageAjaxUpdate( parseInt($(this).html()),
-                                main_page_main_current_sort,
-                                document.getElementById("main_page_search_input").value);
-        });
+        // Handle clicking page number       
+//        $(".page-number").live("click", function () {       
+//            //            alert("Go to change page");
+//            //            MainPageAjaxSearch( parseInt($(this).html()),
+//            //                                main_page_main_current_sort,
+//            //                                document.getElementById("main_page_search_input").value);
+//            //            alert("Exit to change page");
+//        });
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#main_page_search_input').keypress(function (e) {
