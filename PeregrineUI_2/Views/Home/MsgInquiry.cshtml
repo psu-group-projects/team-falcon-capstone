@@ -38,7 +38,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             GetFullDetailMessage(msg_id);
             document.getElementById("popwindow").className = 'popperShow';
         } else {
-            document.getElementById("popwindow").className = 'popperHid';
+            if (msg_id == "-1")
+                document.getElementById("popwindow").className = 'popperHid';
+            else {
+                // Update the div
+                GetFullDetailMessage(msg_id);
+            }
         }
         return false;
     }
@@ -111,6 +116,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                          );
             }
         });
+
+        // Quick way to quit message detail window
+        $('#popwindow').dblclick(function () {
+            showpopup("-1");
+        });
     });
 
 </script>
@@ -164,7 +174,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <div id="popwindow" class="popperHid">
     <div id="popwindow_message"> </div>
-    <div id="closebutton"><input type="button" value="Close this message" onClick="showpopup();"></div>
+    <div id="closebutton"><input type="button" value="Close" onClick="showpopup('-1');"></div>
 </div>
 
 <!-- Code development corner -->

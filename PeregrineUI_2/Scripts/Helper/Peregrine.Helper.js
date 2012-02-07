@@ -135,24 +135,12 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
     });
 }
 
-function GetFullDetailMessage(msg_id) {
+function GetFullDetailMessage(msg_id, pro_name) {
     $.ajax({
         type: "POST",
         url: '/Home/MsgInq_getfulldetail',
         data: { "msg_id": msg_id },
         success: function (data) {
-//            top.consoleRef = window.open('', 'myconsole',
-//                                                'width=350,height=250'
-//                                                + ',menubar=0'
-//                                                + ',toolbar=1'
-//                                                + ',status=0'
-//                                                + ',scrollbars=1'
-//                                                + ',resizable=1')
-//            top.consoleRef.document.writeln('<html><head><title>Console</title></head>'
-//                                                + '<body bgcolor=white onLoad="self.focus()">'
-//                                                + data
-//                                                + '</body></html>')
-            //            top.consoleRef.document.close()
             document.getElementById("popwindow_message").innerHTML = data;
         },
         error: function (result) {
