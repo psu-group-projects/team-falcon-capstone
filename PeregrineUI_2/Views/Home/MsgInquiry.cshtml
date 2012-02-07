@@ -10,9 +10,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 }
 
 <h2>Message Inquiry</h2>
-<h3>Note: Show all messages from all processes</h3>
+<h3>Note: Show all messages from all processes</h3> 
 
 <script type="text/javascript">
+
+    var msg_inquiry_current_page;
+    var msg_inquiry_current_sort;
 
     /**/
     function Msg_inquiry_collect_info(page_number, sort_option, process_priority, process_name) {
@@ -28,6 +31,19 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         }
     }
 
+    /**/
+    function showpopup(msg_id) {
+        if (document.getElementById("popwindow").className == 'popperHid') {
+            // Update the div
+            GetFullDetailMessage(msg_id);
+            document.getElementById("popwindow").className = 'popperShow';
+        } else {
+            document.getElementById("popwindow").className = 'popperHid';
+        }
+        return false;
+    }
+
+    /**/
     function Change_SU_SD_Status(sort_option, process_priority, process_name) 
     {
         // Getting the current state of the SU_SD_Checkbox checkbox
@@ -61,38 +77,38 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             "0",
                             "",
                             "0"
-                        );     
+                        );
 
         // Handle clicking page number 
         $(".msg_inquiry_page-number").live("click", function () {
             Msg_inquiry_collect_info(
                                         $(this).html(),
-                                        msg_current_sort,
+                                        msg_inquiry_current_sort,
                                         document.getElementById("process_prio_input").value,
                                         document.getElementById("process_name_input").value
                                     );
         });
 
         // Automatic update
-        //        setInterval(function () {
-        //            Msg_inquiry_collect_info(
-        //                                        msg_inquiry_current_page,
-        //                                        msg_inquiry_current_sort,
-        //                                        document.getElementById("process_prio_input").value,
-        //                                        document.getElementById("process_name_input").value
-        //                                    );
-        //        }, 5000);
+        setInterval(function () {
+            Msg_inquiry_collect_info(
+                                        msg_inquiry_current_page,
+                                        msg_inquiry_current_sort,
+                                        document.getElementById("process_prio_input").value,
+                                        document.getElementById("process_name_input").value
+                                    );
+        }, 5000);
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#process_name_input').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
+            if (code == 13) {           
                 Msg_inquiry_collect_info(
                                             '1',
                                             '1',
-                                            document.getElementById('process_prio_input').value,
-                                            document.getElementById('process_name_input').value
-                                         )
+                                            document.getElementById("process_prio_input").value,
+                                            document.getElementById("process_name_input").value
+                                         );
             }
         });
     });
@@ -144,7 +160,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                                             
 <hr />
 
-<!-- Code development corner -->
-
 <div class="message-list"></div>
 
+<div id="popwindow" class="popperHid">
+    <div id="popwindow_message"> </div>
+    <div id="closebutton"><input type="button" value="Close this message" onClick="showpopup();"></div>
+</div>
+
+<!-- Code development corner -->

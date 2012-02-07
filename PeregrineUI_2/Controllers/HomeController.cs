@@ -29,7 +29,7 @@ namespace PeregrineUI_2.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult MainPageAjaxUpdate(int page, int SortingType, string SearchPattern)
         {
             var pagingContext = SummaryRepository.GetSummaryDataByPage(page, SortingType, SearchPattern, PageSize);
@@ -37,14 +37,14 @@ namespace PeregrineUI_2.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult ProcessMsgUpdate(int page, string processName)
         {
             var pagingContext = MessageRepository.GetMessageByProcess(page, PageSize, processName);
             return PartialView("Message", pagingContext);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult ProcessJobUpdate(int page, string processName)
         {
             var pagingContext = JobRepository.GetJobByProcess(page, PageSize, processName);
@@ -58,7 +58,7 @@ namespace PeregrineUI_2.Controllers
         }
 
         // Message inquriy page
-        [HttpGet]
+        [HttpPost]
         public ActionResult MsgInquiryUpdate(   string page_number,
                                                 string sort_option,
                                                 string msg_priority,
@@ -83,7 +83,7 @@ namespace PeregrineUI_2.Controllers
             return PartialView("MessageList", pagingContext);
         }
 
-        [HttpGet]
+        [HttpPost]
         public string MsgInq_getfulldetail(string msg_id)
         {
             string result = msg_id;

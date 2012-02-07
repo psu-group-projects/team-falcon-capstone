@@ -12,6 +12,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <script type="text/javascript">
 
+    var main_page_main_current_page;
+    var main_page_main_current_sort;
+
     $(document).ready(function () {
         // Fix event.layerx and layery broken warning, work like a charm
         var all = $.event.props,
@@ -24,18 +27,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $.event.props = res;
 
         // Set up the initial stage of the main page
-        MainPageAjaxUpdate(parseInt("1"),
+        MainPageAjaxUpdate( parseInt("1"),
                             parseInt("4"),
                             "");
-
-        // Handle clicking page number       
-//        $(".page-number").live("click", function () {       
-//            //            alert("Go to change page");
-//            //            MainPageAjaxSearch( parseInt($(this).html()),
-//            //                                main_page_main_current_sort,
-//            //                                document.getElementById("main_page_search_input").value);
-//            //            alert("Exit to change page");
-//        });
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#main_page_search_input').keypress(function (e) {
@@ -48,11 +42,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         });
 
         // Automatic refresh the page        
-        //        setInterval(function () {
-        //            MainPageAjaxUpdate( main_page_main_current_page, 
-        //                                main_page_main_current_sort, 
-        //                                document.getElementById("main_page_search_input").value    );        
-        //        }, 15000);        
+        setInterval(function () {
+            MainPageAjaxUpdate( main_page_main_current_page,
+                                main_page_main_current_sort,
+                                document.getElementById("main_page_search_input").value);
+        }, 5000);
 
     });
 
@@ -73,6 +67,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 </fieldset>
 
 <div class="process-list"></div>
+
 <label id="current_scrolldown_process" hidden="false"></label>
 <label id="msg_or_job" hidden="true"></label>
 <label id="inside_page" hidden="true"></label>

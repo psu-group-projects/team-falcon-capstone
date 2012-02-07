@@ -8,6 +8,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 function MainPageAjaxSearch(page, SortingType, SearchPattern) {
     $.ajax({
+        type: "POST",
         url: '/Home/MainPageAjaxUpdate',
         data: { "page": page, "SortingType": SortingType, "SearchPattern": SearchPattern },
         success: function (data) {
@@ -24,6 +25,7 @@ function MainPageAjaxSearch(page, SortingType, SearchPattern) {
 
 function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
     $.ajax({
+        type: "POST",
         url: '/Home/MainPageAjaxUpdate',
         data: { "page": page, "SortingType": SortingType, "SearchPattern": SearchPattern },
         success: function (data) {
@@ -49,6 +51,7 @@ function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
 
 function ProcessMsgUpdate(page, process_name) {
     $.ajax({
+        type: "POST",
         url: '/Home/ProcessMsgUpdate',
         data: { "page": page, "processName": process_name },
         success: function (data) {
@@ -63,6 +66,7 @@ function ProcessMsgUpdate(page, process_name) {
 
 function ProcessJobUpdate(page, process_name) {
     $.ajax({
+        type: "POST",
         url: '/Home/ProcessJobUpdate',
         data: { "page": page, "processName": process_name },
         success: function (data) {
@@ -112,6 +116,7 @@ function show_message(page, process_name) {
 // Message inquiry page helper api
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
     $.ajax({
+        type: "POST",
         url: '/Home/MsgInquiryUpdate',
         data:
             { "page_number": page_number,
@@ -132,21 +137,23 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
 
 function GetFullDetailMessage(msg_id) {
     $.ajax({
+        type: "POST",
         url: '/Home/MsgInq_getfulldetail',
         data: { "msg_id": msg_id },
         success: function (data) {
-            top.consoleRef = window.open('', 'myconsole',
-                                                'width=350,height=250'
-                                                + ',menubar=0'
-                                                + ',toolbar=1'
-                                                + ',status=0'
-                                                + ',scrollbars=1'
-                                                + ',resizable=1')
-            top.consoleRef.document.writeln('<html><head><title>Console</title></head>'
-                                                + '<body bgcolor=white onLoad="self.focus()">'
-                                                + data
-                                                + '</body></html>')
-            top.consoleRef.document.close()
+//            top.consoleRef = window.open('', 'myconsole',
+//                                                'width=350,height=250'
+//                                                + ',menubar=0'
+//                                                + ',toolbar=1'
+//                                                + ',status=0'
+//                                                + ',scrollbars=1'
+//                                                + ',resizable=1')
+//            top.consoleRef.document.writeln('<html><head><title>Console</title></head>'
+//                                                + '<body bgcolor=white onLoad="self.focus()">'
+//                                                + data
+//                                                + '</body></html>')
+            //            top.consoleRef.document.close()
+            document.getElementById("popwindow_message").innerHTML = data;
         },
         error: function (result) {
             alert(result);
