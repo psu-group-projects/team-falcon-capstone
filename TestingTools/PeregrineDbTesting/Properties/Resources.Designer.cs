@@ -63,20 +63,12 @@ namespace PeregrineDBTesting.Properties {
         /// <summary>
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
-        ////****** Object:  User [CAPSTONEBB\kpaulsen]    Script Date: 02/04/2012 12:38:11 ******/
-        ///CREATE USER [CAPSTONEBB\kpaulsen] FOR LOGIN [CAPSTONEBB\kpaulsen] WITH DEFAULT_SCHEMA=[dbo]
+        ////****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/05/2012 16:30:09 ******/
+        ///IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N&apos;[dbo].[FK_LogRel_Job]&apos;) AND parent_object_id = OBJECT_ID(N&apos;[dbo].[LogRel]&apos;))
+        ///ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Job]
         ///GO
-        ////****** Object:  Table [dbo].[Job]    Script Date: 02/04/2012 12:38:12 ******/
-        ///SET ANSI_NULLS ON
-        ///GO
-        ///SET QUOTED_IDENTIFIER ON
-        ///GO
-        ///CREATE TABLE [dbo].[Job](
-        ///	[JobID] [int] IDENTITY(1,1) NOT NULL,
-        ///	[JobName] [nchar](200) NOT NULL,
-        ///	[PlannedCount] [int] NULL,
-        ///	[CompletedCount] [int] NULL,
-        ///	[Percen [rest of string was truncated]&quot;;.
+        ////****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/05/2012 16:30:09 ******/
+        ///IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N&apos;[dbo].[FK_LogRel_Me [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CreateDatabaseSql {
             get {
@@ -252,7 +244,7 @@ namespace PeregrineDBTesting.Properties {
         ///   Looks up a localized string similar to USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 02/05/2012 16:20:20 ******/
         ///IF  EXISTS (SELECT name FROM sys.databases WHERE name = N&apos;PeregrineDB&apos;)
         ///DROP DATABASE [PeregrineDB]
         ///GO
@@ -260,7 +252,7 @@ namespace PeregrineDBTesting.Properties {
         ///USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 02/05/2012 16:20:20 ******/
         ///CREATE DATABASE [PeregrineDB] ON  PRIMARY 
         ///( NAME = N&apos;PeregrineDB&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf&apos; , SIZE = 2048KB , MAXSIZE  [rest of string was truncated]&quot;;.
         /// </summary>

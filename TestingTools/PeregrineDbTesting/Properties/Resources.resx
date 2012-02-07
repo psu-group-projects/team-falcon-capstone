@@ -120,14 +120,170 @@
   <data name="CreateDatabaseSql" xml:space="preserve">
     <value>USE [PeregrineDB]
 GO
-/****** Object:  User [CAPSTONEBB\kpaulsen]    Script Date: 02/04/2012 12:38:11 ******/
-CREATE USER [CAPSTONEBB\kpaulsen] FOR LOGIN [CAPSTONEBB\kpaulsen] WITH DEFAULT_SCHEMA=[dbo]
+/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Job]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Job]
 GO
-/****** Object:  Table [dbo].[Job]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Message]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Message]
+GO
+/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Process]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Process]
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteJob]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[DeleteJob]
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteMessage]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[DeleteMessage]
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteProcess]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[DeleteProcess]
+GO
+/****** Object:  StoredProcedure [dbo].[GetMessagesWithProcessID]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetMessagesWithProcessID]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetMessagesWithProcessID]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertLogRel]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[InsertLogRel]
+GO
+/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTopMessageFromProcessId]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetTopMessageFromProcessId]
+GO
+/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowAll]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ShowAll]
+GO
+/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowLogRel]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ShowLogRel]
+GO
+/****** Object:  View [dbo].[ViewAll]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewAll]'))
+DROP VIEW [dbo].[ViewAll]
+GO
+/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewLogRel]'))
+DROP VIEW [dbo].[ViewLogRel]
+GO
+/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewMessage]'))
+DROP VIEW [dbo].[ViewMessage]
+GO
+/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewProcess]'))
+DROP VIEW [dbo].[ViewProcess]
+GO
+/****** Object:  View [dbo].[ViewJob]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewJob]'))
+DROP VIEW [dbo].[ViewJob]
+GO
+/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowMessages]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ShowMessages]
+GO
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowProcesses]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ShowProcesses]
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UpdateJob]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UpdateJob]
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UpdateMessage]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UpdateMessage]
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UpdateProcess]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UpdateProcess]
+GO
+/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowJobs]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[ShowJobs]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertJob]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[InsertJob]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertMessage]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[InsertMessage]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertProcess]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[InsertProcess]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertProcess2]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[InsertProcess2]
+GO
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetPageOfProcess]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetPageOfProcess]
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetProcess]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetProcess]
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetProcessByName]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetProcessByName]
+GO
+/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTable1]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetTable1]
+GO
+/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetJob]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetJob]
+GO
+/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetJobByName]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetJobByName]
+GO
+/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/05/2012 16:30:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetMessage]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[GetMessage]
+GO
+/****** Object:  Table [dbo].[LogRel]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Job]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Job]
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Message]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Message]
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Process]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
+ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Process]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LogRel]') AND type in (N'U'))
+DROP TABLE [dbo].[LogRel]
+GO
+/****** Object:  Table [dbo].[Message]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Message]') AND type in (N'U'))
+DROP TABLE [dbo].[Message]
+GO
+/****** Object:  Table [dbo].[Process]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Process]') AND type in (N'U'))
+DROP TABLE [dbo].[Process]
+GO
+/****** Object:  Table [dbo].[Job]    Script Date: 02/05/2012 16:30:09 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Job]') AND type in (N'U'))
+DROP TABLE [dbo].[Job]
+GO
+/****** Object:  Table [dbo].[Job]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Job]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[Job](
 	[JobID] [int] IDENTITY(1,1) NOT NULL,
 	[JobName] [nchar](200) NOT NULL,
@@ -139,12 +295,15 @@ CREATE TABLE [dbo].[Job](
 	[JobID] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+END
 GO
-/****** Object:  Table [dbo].[Process]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  Table [dbo].[Process]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Process]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[Process](
 	[ProcessID] [int] IDENTITY(1,1) NOT NULL,
 	[ProcessName] [nchar](200) NOT NULL,
@@ -154,12 +313,15 @@ CREATE TABLE [dbo].[Process](
 	[ProcessID] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+END
 GO
-/****** Object:  Table [dbo].[Message]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  Table [dbo].[Message]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Message]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[Message](
 	[MessageID] [int] IDENTITY(1,1) NOT NULL,
 	[Message] [nvarchar](500) NOT NULL,
@@ -171,12 +333,15 @@ CREATE TABLE [dbo].[Message](
 	[MessageID] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+END
 GO
-/****** Object:  Table [dbo].[LogRel]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  Table [dbo].[LogRel]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LogRel]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[LogRel](
 	[MessageID] [int] NOT NULL,
 	[ProcessID] [int] NOT NULL,
@@ -186,13 +351,120 @@ CREATE TABLE [dbo].[LogRel](
 	[MessageID] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+END
 GO
-/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-12
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetMessage] 
+	-- Add the parameters for the stored procedure here
+	(
+		@MessageID int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT MessageID, Message, Date, Category, Priority
+    FROM dbo.Message
+    WHERE (MessageID = @MessageID)
+
+RETURN
+
+' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/05/2012 16:30:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetJobByName]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetJobByName] 
+	-- Add the parameters for the stored procedure here
+	(
+		@JobName nchar(200)
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT JobID, JobName, PlannedCount, CompletedCount, PercentComplete
+    FROM dbo.Job
+    WHERE (JobName = @JobName)
+
+RETURN
+
+
+' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/05/2012 16:30:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetJob]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-12
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetJob] 
+	-- Add the parameters for the stored procedure here
+	(
+		@JobID int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT JobID, JobName, PlannedCount, CompletedCount, PercentComplete
+    FROM dbo.Job
+    WHERE (JobID = @JobID)
+
+RETURN
+
+' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/05/2012 16:30:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTable1]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/06/2012
@@ -215,12 +487,19 @@ AS
 	from Process 
 	where State = 2
 	RETURN
+
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetProcessByName]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
 -- =============================================
 -- Author:		Nicholas Benson / Weixiong Lu
 -- Create date: 2012-01-31
@@ -242,12 +521,18 @@ AS
     WHERE (ProcessName = @ProcessName)
 
 RETURN
+
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetProcess]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
 -- =============================================
 -- Author:		Nicholas Benson / Weixiong Lu
 -- Create date: 2012-01-12
@@ -269,12 +554,19 @@ AS
     WHERE (ProcessID = @ProcessID)
 
 RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetPageOfProcess]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+
 -- =============================================
 -- Author:		Nicholas Benson / Weixiong Lu
 -- Create date: 2012-01-31
@@ -314,93 +606,19 @@ WHERE
 RETURN
 
 RETURN
+
+
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-01-12
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetMessage] 
-	-- Add the parameters for the stored procedure here
-	(
-		@MessageID int
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT MessageID, Message, Date, Category, Priority
-    FROM dbo.Message
-    WHERE (MessageID = @MessageID)
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/04/2012 12:38:13 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-01-31
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetJobByName] 
-	-- Add the parameters for the stored procedure here
-	(
-		@JobName nchar(200)
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT JobID, JobName, PlannedCount, CompletedCount, PercentComplete
-    FROM dbo.Job
-    WHERE (JobName = @JobName)
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/04/2012 12:38:13 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-01-12
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetJob] 
-	-- Add the parameters for the stored procedure here
-	(
-		@JobID int
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT JobID, JobName, PlannedCount, CompletedCount, PercentComplete
-    FROM dbo.Job
-    WHERE (JobID = @JobID)
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/04/2012 12:38:13 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertProcess2]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
 -- =============================================
 -- Author:		Nicholas Benson /Weixiong Lu
 -- Create date: 2012-01-04
@@ -427,13 +645,17 @@ AS
        SET @ProcessID = SCOPE_IDENTITY();
 
 RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertProcess]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'-- =============================================
 -- Author:		Nicholas Benson /Weixiong Lu
 -- Create date: 2012-01-04
 -- Modify date: 2012-01-08
@@ -456,18 +678,21 @@ AS
 	
 	INSERT INTO dbo.Process (ProcessName, State)
        VALUES (@ProcessName, @State)
-       SET @ProcessID = IDENT_CURRENT('dbo.Process');
+       SET @ProcessID = IDENT_CURRENT(''dbo.Process'');
 
 	 SELECT ProcessID, ProcessName, State FROM dbo.Process WHERE (ProcessID = @ProcessID)
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
@@ -489,19 +714,22 @@ AS
 	
 	INSERT INTO [dbo].[Message] (Message,Date,Category,Priority)
 	VALUES (@Message,@Date,@Category,@Priority)
-	SET @MessageID = IDENT_CURRENT('dbo.Message');
+	SET @MessageID = IDENT_CURRENT(''dbo.Message'');
 
 	SELECT * FROM dbo.Message WHERE (MessageID = @MessageID)
 
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertJob]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
@@ -523,19 +751,22 @@ AS
 	
 	INSERT INTO [dbo].[Job] (JobName,PlannedCount,CompletedCount,PercentComplete)
 	VALUES (@JobName,@PlannedCount,@CompletedCount,@PercentComplete)
-	SET @JobID = IDENT_CURRENT('dbo.Job');
+	SET @JobID = IDENT_CURRENT(''dbo.Job'');
 
 	SELECT * FROM dbo.Job WHERE (JobID = @JobID)
 
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowJobs]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/06/2012
@@ -556,13 +787,17 @@ AS
 	FROM         dbo.Job
 
 	RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UpdateProcess]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.1
 Date     : 01/08/2012
@@ -585,14 +820,17 @@ AS
 
 	SELECT ProcessID, ProcessName, State FROM dbo.Process WHERE (ProcessID = @ProcessID)
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UpdateMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.1
 Date     : 01/08/2012
@@ -617,14 +855,17 @@ AS
 
 	SELECT * FROM dbo.Message WHERE (MessageID = @MessageID)
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UpdateJob]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.1
 Date     : 01/08/2012
@@ -649,14 +890,17 @@ AS
 
 	SELECT * FROM dbo.Job WHERE (JobID = @JobID)
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowProcesses]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/06/2012
@@ -668,13 +912,18 @@ AS
     SET NOCOUNT ON;
 SELECT     ProcessID, ProcessName, State
 FROM         dbo.Process
+
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/04/2012 12:38:13 ******/
+/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowMessages]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/06/2012
@@ -695,17 +944,22 @@ AS
 	FROM         dbo.Message
 
 	RETURN
+' 
+END
 GO
-/****** Object:  View [dbo].[ViewJob]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  View [dbo].[ViewJob]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[ViewJob]
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewJob]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[ViewJob]
 AS
 SELECT     dbo.Job.*
 FROM         dbo.Job
+'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPane1' , N'SCHEMA',N'dbo', N'VIEW',N'ViewJob', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -815,18 +1069,22 @@ Begin DesignProperties =
 End
 ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewJob'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPaneCount' , N'SCHEMA',N'dbo', N'VIEW',N'ViewJob', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewJob'
 GO
-/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[ViewProcess]
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewProcess]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[ViewProcess]
 AS
 SELECT     dbo.Process.*
 FROM         dbo.Process
+'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPane1' , N'SCHEMA',N'dbo', N'VIEW',N'ViewProcess', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -936,18 +1194,22 @@ Begin DesignProperties =
 End
 ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewProcess'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPaneCount' , N'SCHEMA',N'dbo', N'VIEW',N'ViewProcess', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewProcess'
 GO
-/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[ViewMessage]
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewMessage]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[ViewMessage]
 AS
 SELECT     MessageID, Message, Date, Category, Priority
 FROM         dbo.Message
+'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPane1' , N'SCHEMA',N'dbo', N'VIEW',N'ViewMessage', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -1057,18 +1319,22 @@ Begin DesignProperties =
 End
 ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewMessage'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPaneCount' , N'SCHEMA',N'dbo', N'VIEW',N'ViewMessage', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewMessage'
 GO
-/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[ViewLogRel]
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewLogRel]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[ViewLogRel]
 AS
 SELECT     MessageID, ProcessID, JobID
 FROM         dbo.LogRel
+'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPane1' , N'SCHEMA',N'dbo', N'VIEW',N'ViewLogRel', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -1178,14 +1444,16 @@ Begin DesignProperties =
 End
 ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewLogRel'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPaneCount' , N'SCHEMA',N'dbo', N'VIEW',N'ViewLogRel', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewLogRel'
 GO
-/****** Object:  View [dbo].[ViewAll]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  View [dbo].[ViewAll]    Script Date: 02/05/2012 16:30:09 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[ViewAll]
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[ViewAll]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[ViewAll]
 AS
 SELECT     dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority, dbo.Process.ProcessID, 
                       dbo.Process.ProcessName, dbo.Process.State, dbo.Job.JobID, dbo.Job.JobName, dbo.Job.PlannedCount, dbo.Job.CompletedCount, dbo.Job.PercentComplete
@@ -1193,7 +1461,9 @@ FROM         dbo.Job INNER JOIN
                       dbo.LogRel ON dbo.Job.JobID = dbo.LogRel.JobID INNER JOIN
                       dbo.Message ON dbo.LogRel.MessageID = dbo.Message.MessageID INNER JOIN
                       dbo.Process ON dbo.LogRel.ProcessID = dbo.Process.ProcessID
+'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPane1' , N'SCHEMA',N'dbo', N'VIEW',N'ViewAll', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
 Begin DesignProperties = 
    Begin PaneConfigurations = 
@@ -1333,14 +1603,17 @@ Begin DesignProperties =
 End
 ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewAll'
 GO
+IF NOT EXISTS (SELECT * FROM ::fn_listextendedproperty(N'MS_DiagramPaneCount' , N'SCHEMA',N'dbo', N'VIEW',N'ViewAll', NULL,NULL))
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewAll'
 GO
-/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowLogRel]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
@@ -1362,13 +1635,17 @@ AS
 	FROM         dbo.LogRel
 
 	RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShowAll]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
@@ -1392,12 +1669,20 @@ AS
 						  dbo.Process ON dbo.LogRel.ProcessID = dbo.Process.ProcessID
 
 	RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetTopMessageFromProcessId]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+
+
 -- =============================================
 -- Author:		Nicholas Benson / Weixiong Lu
 -- Create date: 2012-01-31
@@ -1429,13 +1714,20 @@ AS
 RETURN
 
 RETURN
+
+
+
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertLogRel]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
@@ -1460,13 +1752,69 @@ AS
 	SELECT * FROM dbo.LogRel WHERE (MessageID = @MessageID)
 
 
-RETURN
+RETURN' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessagesWithProcessID]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetMessagesWithProcessID]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+-- =============================================
+-- Author:		Kyle P. / Weixiong Lu
+-- Create date: 2012-02-04
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetMessagesWithProcessID] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int,
+		@sortby int = 1
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+	IF(@sortby = 1) 
+
+		SELECT dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority
+		FROM dbo.LogRel
+		LEFT JOIN dbo.Message on dbo.LogRel.MessageID = dbo.Message.MessageID
+		WHERE (dbo.LogRel.ProcessID = @ProcessID)
+		ORDER BY dbo.Message.Date
+
+	ELSE 
+	IF(@sortby = 2)
+
+		SELECT dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority
+		FROM dbo.LogRel
+		LEFT JOIN dbo.Message on dbo.LogRel.MessageID = dbo.Message.MessageID
+		WHERE (dbo.LogRel.ProcessID = @ProcessID)
+		ORDER BY dbo.Message.Category
+	
+
+	
+
+
+RETURN
+
+' 
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/05/2012 16:30:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteProcess]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
 /*
 Author   : Weixiong Lu
 Version  : 1.0.0
@@ -1490,17 +1838,21 @@ AS
 	WHERE (([ProcessID] = @ProcessID));
 
 	RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteMessage]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
-Copyright: Capstone Project Team Falcon 2012 All right reserved?????????????????????PrimeKey could not be NULL
+Copyright: Capstone Project Team Falcon 2012 All right reserved
 */
 
 
@@ -1519,13 +1871,17 @@ AS
 	WHERE (([MessageID] = @MessageID));
 
 	RETURN
+' 
+END
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/04/2012 12:38:14 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/05/2012 16:30:08 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteJob]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'/*
 Author   : Weixiong Lu
 Version  : 1.0.0
 Date     : 01/08/2012
@@ -1548,23 +1904,31 @@ AS
 	WHERE (([JobID] = @JobID));
 
 	RETURN
+' 
+END
 GO
-/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/05/2012 16:30:09 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Job]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Job] FOREIGN KEY([JobID])
 REFERENCES [dbo].[Job] ([JobID])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Job]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Job]
 GO
-/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/05/2012 16:30:09 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Message]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Message] FOREIGN KEY([MessageID])
 REFERENCES [dbo].[Message] ([MessageID])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Message]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Message]
 GO
-/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/04/2012 12:38:12 ******/
+/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/05/2012 16:30:09 ******/
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Process]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Process] FOREIGN KEY([ProcessID])
 REFERENCES [dbo].[Process] ([ProcessID])
 GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_LogRel_Process]') AND parent_object_id = OBJECT_ID(N'[dbo].[LogRel]'))
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Process]
 GO</value>
     <comment>SQL script to create entire Peregrine DB</comment>
@@ -1809,7 +2173,7 @@ GO</value>
     <value>USE [master]
 GO
 
-/****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+/****** Object:  Database [PeregrineDB]    Script Date: 02/05/2012 16:20:20 ******/
 IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'PeregrineDB')
 DROP DATABASE [PeregrineDB]
 GO
@@ -1817,7 +2181,7 @@ GO
 USE [master]
 GO
 
-/****** Object:  Database [PeregrineDB]    Script Date: 12/28/2011 16:18:08 ******/
+/****** Object:  Database [PeregrineDB]    Script Date: 02/05/2012 16:20:20 ******/
 CREATE DATABASE [PeregrineDB] ON  PRIMARY 
 ( NAME = N'PeregrineDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf' , SIZE = 2048KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
  LOG ON 
