@@ -69,19 +69,11 @@ namespace PeregrineDBTesting
                 SqlConnection connection = new SqlConnection(builder.ConnectionString);
                 connection.Open();
 
-                Console.WriteLine("Creating {0} database...", dbName);
+                Console.WriteLine("Dropping old and creating empty {0} database...", dbName);
                 executeScript(connection, dbName, Properties.Resources.DropCreatePeregrineDB_sql);
 
-                Console.WriteLine("Creating tables...");
-                executeScript(connection, dbName, Properties.Resources.CreateProcessTable_sql);
-                executeScript(connection, dbName, Properties.Resources.CreateJobTable_sql);
-                executeScript(connection, dbName, Properties.Resources.CreateMessagesTable_sql);
-                executeScript(connection, dbName, Properties.Resources.CreateLogRelTable_sql);
-                // I'm not sure the following table is needed.
-                executeScript(connection, dbName, Properties.Resources.CreateSysdiagramsTable_sql);
-
-                Console.WriteLine("Creating stored procedures...");
-                executeScript(connection, dbName, Properties.Resources.CreateSP_ShowProcesses_sql);
+                Console.WriteLine("Creating {0} database tables, views, and stored procedures...", dbName);
+                executeScript(connection, dbName, Properties.Resources.CreateDatabaseSql);
 
                 Console.WriteLine("Closing connection to SQL server...");
                 connection.Close();

@@ -9,10 +9,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
 
 <script type="text/javascript">
-
-    var main_page_main_current_page;
-    var main_page_main_current_sort;
-
+  
     /**/
     function sorting(chkboxname) {
         // Getting the state of the chose checkbox
@@ -50,7 +47,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     // Expand process detail
     //$("#process_table").jExpand();
     $(document).ready(function () { 
-
+       
         main_page_main_current_page = @(Model.CurrentPage);
         main_page_main_current_sort = @(Model.SortingType);
 
@@ -73,33 +70,37 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         }
 
         $("#process_table tr.odd").click(function () {
-            // Only allow at most one scroll down subtable 
-            // When we open one process tab, the openning tab will be closed and all information inside it will be deleted
-            //$('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
-            //$('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();
+         
+            if ($(this).attr("id") != "")
+            {
+                // Only allow at most one scroll down subtable 
+                // When we open one process tab, the openning tab will be closed and all information inside it will be deleted
+                //$('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'message').empty();
+                //$('div.' + document.getElementById("current_scrolldown_process").innerHTML + 'job').empty();
 
-            // Close all tabs except the clicked row
-            $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
-            $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
-            $("#process_table tr:first-child").show();
+                // Close all tabs except the clicked row
+                $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
+                $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
+                $("#process_table tr:first-child").show();
 
-            // Toggle the clicked row
-            $(this).next("tr").toggle();
-            $(this).find(".arrow").toggleClass("up");
+                // Toggle the clicked row
+                $(this).next("tr").toggle();
+                $(this).find(".arrow").toggleClass("up");
 
-            // Save currently opened tab into a label
-            // If the clicked row is currently open, close it
-            if (document.getElementById("current_scrolldown_process").innerHTML == $(this).attr("id")) {
-                document.getElementById("current_scrolldown_process").innerHTML = '';
-            }
-            // if not, open the row
-            else {
-                document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
-                document.getElementById($(this).attr("id") + 'MsgBtn').click();
-            }
+                // Save currently opened tab into a label
+                // If the clicked row is currently open, close it
+                if (document.getElementById("current_scrolldown_process").innerHTML == $(this).attr("id")) {
+                    document.getElementById("current_scrolldown_process").innerHTML = '';
+                }
+                // if not, open the row
+                else {
+                    document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
+                    //document.getElementById($(this).attr("id") + 'MsgBtn').click();  
+                    show_message('1', $(this).attr("id"));              
+                }
+             }
         });
-        //$("#report").jExpand();
-
+       
         // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
             show_message(   parseInt($(this).html()),
@@ -249,7 +250,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         {
                             if (i == 1)
                             {
-                                <a class="page-number" href="javascript:void(0)">@i</a>   
+                                <a  class="page-number" href="javascript:void(0)"  
+                                    onclick="MainPageAjaxSearch(    parseInt($(this).html()),
+                                                                    main_page_main_current_sort,
+                                                                    document.getElementById('main_page_search_input').value)">@i</a>   
                             }
                             else
                             {
@@ -261,7 +265,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         {
                             if (i == Model.NumberOfPages)
                             {
-                                <a class="page-number" href="javascript:void(0)">@i</a>
+                                 <a  class="page-number" href="javascript:void(0)"  
+                                     onclick="MainPageAjaxSearch(   parseInt($(this).html()),
+                                                                    main_page_main_current_sort,
+                                                                    document.getElementById('main_page_search_input').value)">@i</a> 
                             }
                             else
                             {
@@ -275,7 +282,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         }
                         else
                         {
-                            <a class="page-number" href="javascript:void(0)">@i</a>
+                             <a  class="page-number" href="javascript:void(0)"  
+                                onclick="MainPageAjaxSearch(    parseInt($(this).html()),
+                                                                main_page_main_current_sort,
+                                                                document.getElementById('main_page_search_input').value)">@i</a> 
                         }
                     }    
                                                                

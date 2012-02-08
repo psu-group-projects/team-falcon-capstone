@@ -154,3 +154,32 @@ table.job_table tbody tr:nth-child(odd) td
     background:#D1EEEE;
 }
 
+/*
+---For popup window--------------*/
+
+.popperHid {
+    display:none;
+}
+.popperShow {
+    position: absolute;
+    z-index: 99;
+    padding: 10px;
+    border: 1px solid #600;
+    width: 385px;
+    left: 46%;
+    top: 360px;
+    margin: 0 0 0 -200px;
+    background: #ffc;
+    display:block;
+    font-size: 90%;
+}
+.popperShow #closebutton {
+    display: block;
+    text-align: center;
+    clear: both;
+    margin: .5em 0 0 0;
+    }
+.popperShow #closebutton input {
+    font-size: 70%;
+    }
+

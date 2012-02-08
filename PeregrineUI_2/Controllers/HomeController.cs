@@ -21,7 +21,7 @@ namespace PeregrineUI_2.Controllers
         // Specify how many entries for one page
         // Will be added into config file in the future
         //
-        public const int PageSize = 10;
+        public const int PageSize = 5;
 
         [HttpGet]
         public ViewResult Index()
@@ -29,7 +29,7 @@ namespace PeregrineUI_2.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult MainPageAjaxUpdate(int page, int SortingType, string SearchPattern)
         {
             var pagingContext = SummaryRepository.GetSummaryDataByPage(page, SortingType, SearchPattern, PageSize);
@@ -37,14 +37,14 @@ namespace PeregrineUI_2.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult ProcessMsgUpdate(int page, string processName)
         {
             var pagingContext = MessageRepository.GetMessageByProcess(page, PageSize, processName);
             return PartialView("Message", pagingContext);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult ProcessJobUpdate(int page, string processName)
         {
             var pagingContext = JobRepository.GetJobByProcess(page, PageSize, processName);
@@ -57,7 +57,8 @@ namespace PeregrineUI_2.Controllers
             return View();
         }
 
-        [HttpGet]
+        // Message inquriy page
+        [HttpPost]
         public ActionResult MsgInquiryUpdate(   string page_number,
                                                 string sort_option,
                                                 string msg_priority,
@@ -80,6 +81,124 @@ namespace PeregrineUI_2.Controllers
                                                             PageSize);
 
             return PartialView("MessageList", pagingContext);
+        }
+
+        [HttpPost]
+        public string MsgInq_getfulldetail(string msg_id)
+        {
+            string result = "asdfsdfsdfsdfsdfsafdsdfsdfsdfsdfsdfsdf" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
+                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
+                            " askdjflskdjflkjsdlkfjsl222222222222222";
+            return result;
         }
     }
 }
