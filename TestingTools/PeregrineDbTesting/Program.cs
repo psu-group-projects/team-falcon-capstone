@@ -36,7 +36,7 @@ namespace PeregrineDBTesting
 
         static void createDB()
         {
-            string dbName = "TestDB";           // name of db to be created
+            string dbName = "PeregrineDB";           // name of db to be created
             string reply;                       // for user input
             Boolean okayToGo;                   // for input loop
 
@@ -45,12 +45,13 @@ namespace PeregrineDBTesting
             {
                 Console.Write("Enter a database name (Enter for {0}): ", dbName);
                 reply = Console.ReadLine();
-                // make sure user doesn't enter 'master' or name of our master PeregrineDB
-                if (reply.ToLower() == Properties.Resources.OldDBName.ToLower()) Console.WriteLine("{0} is the name of the master database and cannot be used.", Properties.Resources.OldDBName);
-                else if (reply == "master") Console.WriteLine("The database cannot be named master.");
+                // make sure user doesn't enter 'master' and give extra warning
+                // for name of our master PeregrineDB
+                if (reply == "master") Console.WriteLine("The database cannot be named master.");
                 else
                 {
                     if (reply != "") dbName = reply;
+                    if (String.Compare(dbName, Properties.Resources.OldDBName, true) == 0) Console.WriteLine("\nWarning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDBName);
                     okayToGo = true;
                 }
             }
