@@ -32,17 +32,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     }
 
     /**/
-    function showpopup(msg_id) {
+    function showpopup(msg_id, process_name) {
         if (document.getElementById("popwindow").className == 'popperHid') {
             // Update the div
-            GetFullDetailMessage(msg_id);
+            GetFullDetailMessage(msg_id, process_name);
             document.getElementById("popwindow").className = 'popperShow';
         } else {
             if (msg_id == "-1")
                 document.getElementById("popwindow").className = 'popperHid';
             else {
                 // Update the div
-                GetFullDetailMessage(msg_id);
+                GetFullDetailMessage(msg_id, process_name);
             }
         }
         return false;
@@ -77,11 +77,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
         // Set up the initial stage of the message inquiry page
         MsgInquiryUpdate(
-                            "1",
-                            "5",
-                            "0",
-                            "",
-                            "0"
+                            "1",    // current page number = 1
+                            "5",    // sort_option = 5 which is sort by date
+                            "0",    // msg_priority = 0 which will show every message with every possible priority
+                            "",     // processname = "" which will search for all message
+                            "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
                         );
 
         // Handle clicking page number 
@@ -109,17 +109,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {           
                 Msg_inquiry_collect_info(
-                                            '1',
-                                            '1',
-                                            document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value
+                                            '1',    //  Page number
+                                            '1',    //  Sort option
+                                            document.getElementById("process_prio_input").value,    // priority value
+                                            document.getElementById("process_name_input").value     // process name value
                                          );
             }
         });
 
         // Quick way to quit message detail window
         $('#popwindow').dblclick(function () {
-            showpopup("-1");
+            showpopup("-1", "");
         });
     });
 
@@ -173,8 +173,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <div class="message-list"></div>
 
 <div id="popwindow" class="popperHid">
-    <div id="popwindow_message"> </div>
-    <div id="closebutton"><input type="button" value="Close" onClick="showpopup('-1');"></div>
+    <hr />
+    <div id="popwindow_header"></div>
+    <hr />
+    <div id="popwindow_message"></div>
+    <div id="closebutton" ><input type="button" value="Close" onClick="showpopup('-1', '');"></div>
 </div>
 
 <!-- Code development corner -->

@@ -157,10 +157,13 @@ table.job_table tbody tr:nth-child(odd) td
 /*
 ---For popup window--------------*/
 
-.popperHid {
+.popperHid 
+{
     display:none;
 }
-.popperShow {
+
+.popperShow 
+{
     position: absolute;
     z-index: 99;
     padding: 10px;
@@ -173,13 +176,40 @@ table.job_table tbody tr:nth-child(odd) td
     display:block;
     font-size: 90%;
 }
-.popperShow #closebutton {
+
+.popperShow #closebutton 
+{
     display: block;
     text-align: center;
     clear: both;
     margin: .5em 0 0 0;
     }
-.popperShow #closebutton input {
+    
+.popperShow #closebutton input 
+{
     font-size: 70%;
-    }
+}
+    
+#popwindow 
+{
+    height: 230px;
+}
 
+#popwindow_header
+{
+    height: 15px;
+    background: #D1EEEE;
+    font-weight: bold;
+    font-size: 150%;
+}
+
+#popwindow_message
+{
+    height: 170px; 
+    overflow-y: scroll;
+}
+
+#closebutton
+{
+    height: 15px;
+}

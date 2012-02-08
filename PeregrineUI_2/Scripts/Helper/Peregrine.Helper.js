@@ -140,7 +140,8 @@ function GetFullDetailMessage(msg_id, pro_name) {
         type: "POST",
         url: '/Home/MsgInq_getfulldetail',
         data: { "msg_id": msg_id },
-        success: function (data) {
+        success: function (data) {        
+            document.getElementById("popwindow_header").innerHTML = pro_name;
             document.getElementById("popwindow_message").innerHTML = data;
         },
         error: function (result) {

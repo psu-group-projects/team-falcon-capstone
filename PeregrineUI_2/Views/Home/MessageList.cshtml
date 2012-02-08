@@ -25,28 +25,28 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         if (state) {
             // Make ajax call to controller to update the table
             if (chkboxname == "Msg_inq_msg_id_sort")
-                Msg_inquiry_collect_info(   "1",
-                                            "1",
+                Msg_inquiry_collect_info(   "1",    // Page number
+                                            "1",    // Sort option
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
             else if (chkboxname == "Msg_inq_context_sort")
-                Msg_inquiry_collect_info(   "1",
-                                            "2",
+                Msg_inquiry_collect_info(   "1",    // Page number
+                                            "2",    // Sort option
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
             else if (chkboxname == "Msg_inq_name_sort")
-                Msg_inquiry_collect_info(   "1",
-                                            "3",
+                Msg_inquiry_collect_info(   "1",    // Page number
+                                            "3",    // Sort option
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );       
             else if (chkboxname == "Msg_inq_prio_sort")
-                Msg_inquiry_collect_info(   "1",
-                                            "4",
+                Msg_inquiry_collect_info(   "1",    // Page number
+                                            "4",    // Sort option
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
             else if (chkboxname == "Msg_inq_date_sort")
-                Msg_inquiry_collect_info(   "1",
-                                            "5",
+                Msg_inquiry_collect_info(   "1",    // Page number
+                                            "5",    // Sort option
                                             document.getElementById("process_prio_input").value,
                                             document.getElementById("process_name_input").value );
             else
@@ -111,7 +111,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             {
                                 // Call function in Helper.js to get the full version of message content
                                 //<a class="msg_inquiry_process_id" style="text-decoration:none" href="javascript:void(0)" onclick="GetFullDetailMessage(@(message.ProcessID))"> .....</a> 
-                                <a href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID));'>...</a> 
+                                <a href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID), "falcon");'>...</a> 
                             }                                                              
                     </td>
                     <td>
