@@ -76,7 +76,15 @@ namespace PeregrineAPI
 
         // This will be the main fetching method for the front page. gets summary objects.
         [OperationContract]
-        List <ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy); 
+        List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy); 
+
+        //This hooks into the MsgInquryRepo
+        List<MessageDTO> getMessagesByProcessId(
+            int processId, 
+            int pageSize, 
+            int pageNumber, 
+            SortBy sortBy, 
+            bool isShowStartUpAndShutdownCheckMarkEnabled);
 
 
         /**

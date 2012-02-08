@@ -6,6 +6,8 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.IO;
+using PeregrineDBWrapper;
+using PeregrineDB;
 
 namespace PeregrineAPI
 {
@@ -22,18 +24,35 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
-        public List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy)
+        public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy)
         {
+            int start = getStartIndex(pageNumber, numToFetch);
+            int end = getEndIndex(pageNumber, numToFetch);
+            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            List<Process> processes = db.GetPageOfProcess(start, end).ToList<Process>();
+
             List<ProcessSummary> processSummaries = new List<ProcessSummary>();
-            int i = 0;
-            while (i < 100)
+
+            foreach (Process process in processes)
             {
-                processSummaries.Add( new ProcessSummary(
-                    new ProcessDTO("falcon"+i, i, ProcessState.GREEN), 
-                    new MessageDTO(i-60000,i,DateTime.Now,Path.GetRandomFileName(),Category.PROGRESS,Priority.LOW) ) );
-                i++;
+                processSummaries.Add(
+                    new ProcessSummary(
+                        process,
+                        db.GetTopMessageFromProcessId(process.ProcessID).First<Message>()
+                    )
+                );
             }
             return processSummaries;
+        }
+
+        private static int getEndIndex(int pageNumber, int numToFetch)
+        {
+            return (pageNumber * numToFetch) - 1;
+        }
+
+        private static int getStartIndex(int pageNumber, int numToFetch)
+        {
+            return (pageNumber - 1) * numToFetch;
         }
 
         public void logProcessMessage(string processName, string message, Category category, Priority priority)
