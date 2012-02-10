@@ -8,15 +8,21 @@ using System.Text;
 using System.IO;
 using PeregrineDBWrapper;
 using PeregrineDB;
+using System.Configuration;
 
 namespace PeregrineAPI
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     public class PeregrineService : IPeregrineService
     {
-        public MessageDTO getMessage(int msg_id)
+        private PeregrineDBDataContext db = new PeregrineDBDataContext();
+        
+        public Message getMessage(int msg_id)
         {
-            throw new NotImplementedException();
+            var message_result = db.GetMessage(msg_id).ToList();
+
+            Message message = message_result[0];
+            return message;
         }
 
         public List<ProcessDTO> getAllProcesses()
@@ -24,11 +30,28 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
+        public List<Message> getMessagesByProcessId(int processId, int pageSize, int pageNumber, SortBy sortBy, bool isShowStartUpAndShutdownCheckMarkEnabled)
+        {
+            List<Message> messages;
+
+            if (isShowStartUpAndShutdownCheckMarkEnabled)
+            {
+                messages = db.GetStartStopMessagesWithProcessID(processId, (int)sortBy, 0, getStartIndex(pageNumber, pageSize), getEndIndex(pageNumber, pageSize)).ToList();
+            }
+            else
+            {
+                messages = db.GetMessagesWithProcessID(processId, (int)sortBy, 0, getStartIndex(pageNumber, pageSize), getEndIndex(pageNumber, pageSize)).ToList();
+            }
+
+            return messages;
+        }
+
+        
         public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy)
         {
             int start = getStartIndex(pageNumber, numToFetch);
             int end = getEndIndex(pageNumber, numToFetch);
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
+            //PeregrineDBDataContext db = new PeregrineDBDataContext();
             List<Process> processes = db.GetPageOfProcess(start, end).ToList<Process>();
 
             List<ProcessSummary> processSummaries = new List<ProcessSummary>();
@@ -98,6 +121,20 @@ namespace PeregrineAPI
         public void logProcessStateChange(string processName, ProcessState state)
         {
             throw new NotImplementedException();
+        }
+
+
+        //This method will be called automatically on some callback.
+        //http://www.mikesdotnetting.com/Article/129/Simple-task-Scheduling-using-Global.asax
+        public void cleanUpDatabase()
+        {
+            int interval = int.Parse(ConfigurationManager.AppSettings.Get("DB_Cleanup_Interval"));
+            int process_min_life = int.Parse(ConfigurationManager.AppSettings.Get("Process_Min_Life_Time"));
+
+            //call some stored proceedure to fetch the last cleanup datetime. (we will need to store this somewhere. maybe a file or a new table?)
+            //if ((now time) - (last cleanup time) > interval){
+            //  call stored proceedure to delete processes that are in a done state and (now - their datetime) > process_min_life
+            //}
         }
     }
 }

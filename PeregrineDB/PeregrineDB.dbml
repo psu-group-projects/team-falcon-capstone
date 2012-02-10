@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PeregrineDB" Class="PeregrineDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PeregrineDB" Class="PeregrineDBDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=CAPSTONEBB;Initial Catalog=PeregrineDB;Integrated Security=True" SettingsObjectName="PeregrineDB.Properties.Settings" SettingsPropertyName="PeregrineDBConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Process" Member="Processes">
     <Type Name="Process" Id="ID1">
@@ -196,16 +196,6 @@
       <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.GetMessage" Method="GetMessage">
-    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="GetMessageResult">
-      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.GetProcessByName" Method="GetProcessByName">
     <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="VarChar(200)" />
     <ElementType IdRef="ID1" />
@@ -229,8 +219,24 @@
     <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
     <ElementType IdRef="ID1" />
   </Function>
+  <Function Name="dbo.GetMessage" Method="GetMessage">
+    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID4" />
+  </Function>
   <Function Name="dbo.GetMessagesWithProcessID" Method="GetMessagesWithProcessID">
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID4" />
+  </Function>
+  <Function Name="dbo.GetStartStopMessagesWithProcessID" Method="GetStartStopMessagesWithProcessID">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
     <ElementType IdRef="ID4" />
   </Function>
 </Database>

@@ -5,59 +5,71 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using PeregrineDB;
 
 namespace PeregrineAPI
 {
+
+    //By default, stored proceedures order desc. This keeps most recent entrys up top.
+    //Thus, order enums from lowset importance to highest (except for sortby).
     [DataContract]
     public enum Category
     {
         [EnumMember]
-        ERROR,
+        START, //0
         [EnumMember]
-        INFORMATION,
+        STOP, //1
         [EnumMember]
-        STATE_CHANGE,
+        INFORMATION, //2
         [EnumMember]
-        START,
+        STATE_CHANGE, //3
         [EnumMember]
-        STOP,
+        PROGRESS, //4
         [EnumMember]
-        PROGRESS
+        ERROR //5
     }
 
     [DataContract]
     public enum Priority
     {
         [EnumMember]
-        HIGH,
+        LOW,
         [EnumMember]
         MEDIUM,
         [EnumMember]
-        LOW
+        HIGH
     }
 
     [DataContract]
     public enum ProcessState
     {
         [EnumMember]
-        RED,
-        [EnumMember]
         GREEN,
         [EnumMember]
-        YELLOW
+        YELLOW,
+        [EnumMember]
+        RED
     }
 
     [DataContract]
     public enum SortBy
     {
         [EnumMember]
-        PROCESS_NAME,
+        PROCESS_NAME, //0
         [EnumMember]
-        LAST_MESSAGE,
+        PROCESS_STATE, //1
         [EnumMember]
-        MESSAGE_DATE,
+        MESSAGE_CONTENT, //2
         [EnumMember]
-        PROCESS_STATE
+        MESSAGE_DATE, //3
+        [EnumMember]
+        MESSAGE_CATEGORY, //4
+        [EnumMember]
+        MESSAGE_PRIORITY, //5
+        [EnumMember]
+        JOB_NAME, //6
+        [EnumMember]
+        JOB_PERCENT_COMPLETE //7
     }
 
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
@@ -69,7 +81,7 @@ namespace PeregrineAPI
          * UI Service Operations
          */
         [OperationContract]
-        MessageDTO getMessage(int msg_id);
+        Message getMessage(int msg_id);
 
         [OperationContract]
         List<ProcessDTO> getAllProcesses();
@@ -79,7 +91,8 @@ namespace PeregrineAPI
         List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy); 
 
         //This hooks into the MsgInquryRepo
-        List<MessageDTO> getMessagesByProcessId(
+        [OperationContract]
+        List<Message> getMessagesByProcessId(
             int processId, 
             int pageSize, 
             int pageNumber, 

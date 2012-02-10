@@ -226,7 +226,8 @@ namespace PeregrineDBWrapper
             Category = (Category)result.Category;
             Priority = (Priority)result.Priority;
         }
-    
+        
+        /*
         public MessageWrapper(int id)
         {
             PeregrineDBDataContext db = new PeregrineDBDataContext();
@@ -240,7 +241,7 @@ namespace PeregrineDBWrapper
                 Category = (Category)mess.Category;
                 Priority = (Priority)mess.Priority;
             }
-        }
+        }*/
 
         [Obsolete]
         public void PutInDatabase()
