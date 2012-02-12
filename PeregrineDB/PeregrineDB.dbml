@@ -242,6 +242,7 @@
   <Function Name="dbo.GetPageOfJobs" Method="GetPageOfJobs">
     <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
     <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <Parameter Name="processID" Type="System.Int32" DbType="Int" />
     <ElementType IdRef="ID3" />
   </Function>
 </Database>
