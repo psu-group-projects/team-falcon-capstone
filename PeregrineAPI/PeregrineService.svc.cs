@@ -15,6 +15,8 @@ namespace PeregrineAPI
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     public class PeregrineService : IPeregrineService
     {
+        private DBLogWrapper logWrapper = new DBLogWrapper();
+
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
         
         public Message getMessage(int msg_id)
@@ -80,47 +82,47 @@ namespace PeregrineAPI
 
         public void logProcessMessage(string processName, string message, Category category, Priority priority)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessMessage(processName, message, category, priority);
         }
 
-        public void logJobProgressAsPercentage(int jobID, string processName, double percent)
+        public void logJobProgressAsPercentage(String jobName, string processName, double percent)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobProgressAsPercentage(jobName, processName, percent);
         }
 
-        public void logJobProgress(int jobID, string processName, int total, int completed)
+        public void logJobProgress(String jobName, string processName, int total, int completed)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobProgress(jobName, processName, total, completed);
         }
 
-        public void logJobStart(int jobID, string processName)
+        public void logJobStart(String jobName, string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobStart(jobName, processName);
         }
 
-        public void logJobStartWithTotalTasks(int jobID, string processName, int totalTasks)
+        public void logJobStartWithTotalTasks(String jobName, string processName, int totalTasks)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobStartWithTotalTasks(jobName, processName, totalTasks);
         }
 
-        public void logJobComplete(int jobID, string processName)
+        public void logJobComplete(String jobName, string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobComplete(jobName, processName);
         }
 
         public void logProcessStart(string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessStart(processName);
         }
 
         public void logProcessShutdown(string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessShutdown(processName);
         }
 
         public void logProcessStateChange(string processName, ProcessState state)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessStateChange(processName, state);
         }
 
 
