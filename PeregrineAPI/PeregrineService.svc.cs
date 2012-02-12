@@ -32,7 +32,7 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
-        public List<Message> getMessagesByProcessId(
+        public List<Message> getMessagesForMessageInq(
             int processId, 
             int pageSize, 
             int pageNumber, 
@@ -75,16 +75,18 @@ namespace PeregrineAPI
             return processSummaries;
         }
 
-        public List<Job> getListOfJobsByProcessName(int pageNumber, int numToFetch, string processName)
+        public List<Job> getPageOfJobsByProcessId(int processId, int pageNumber, int numToFetch)
         {
             int start = getStartIndex(pageNumber, numToFetch);
             int end = getEndIndex(pageNumber, numToFetch);
-            return null;   
+            return db.GetPageOfJobs(start, end, processId).ToList<Job>();   
         }
 
-        public List<MessageDTO> getMessagesByProcessName(string searchpattern, int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection)
+        public List<Message> getPageOfMessagesByProcessId(int processId, int pageNumber, int numToFetch)
         {
-            throw new NotImplementedException();
+            int start = getStartIndex(pageNumber, numToFetch);
+            int end = getEndIndex(pageNumber, numToFetch);
+            return db.GetPageOfMessagesByProcessId(start, end, processId).ToList<Message>();
         }
 
         private static int getEndIndex(int pageNumber, int numToFetch)
