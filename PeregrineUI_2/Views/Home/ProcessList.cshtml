@@ -61,8 +61,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             if (opened_row != null) {
                 $(opened_row).next("tr").show();
                 ExpandedTabUpdate(   current_scrolldown_process,
-                                     document.getElementById("msg_or_job").innerHTML,
-                                     parseInt(document.getElementById("inside_page").innerHTML));
+                                     msg_or_job,
+                                     parseInt(inside_page));
             }
             else {
                 current_scrolldown_process = '*_*';

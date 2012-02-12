@@ -15,6 +15,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var main_page_main_current_page;
     var main_page_main_current_sort;
     var current_scrolldown_process;
+    var msg_or_job;
+    var inside_page;
 
     $(document).ready(function () {
         // Fix event.layerx and layery broken warning, work like a charm
@@ -38,10 +40,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $('#main_page_search_input').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {
-                MainPageAjaxUpdate('1',
-                                        '1',
-                                        document.getElementById("main_page_search_input").value);
-                document.getElementById("current_scrolldown_process").innerHTML = '';
+                MainPageAjaxUpdate( '1',
+                                    '1',
+                                    document.getElementById("main_page_search_input").value);
+                current_scrolldown_process = '*_*';
             }
         });
 
@@ -71,6 +73,3 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 </fieldset>
 
 <div class="process-list"></div>
-
-<label id="msg_or_job" hidden="true"></label>
-<label id="inside_page" hidden="true"></label>

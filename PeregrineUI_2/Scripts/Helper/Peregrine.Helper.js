@@ -68,8 +68,8 @@ function show_job(page, process_name) {
     //document.getElementById("current_scrolldown_process").innerHTML = process_name;
 
     // Save info of the opened tab
-    document.getElementById("msg_or_job").innerHTML = 'Job';
-    document.getElementById("inside_page").innerHTML = page;
+    msg_or_job = 'Job';
+    inside_page = page;
 
     // Show jobs and hide messages
     document.getElementById(process_name + 'message').style.display = 'none';
@@ -84,8 +84,8 @@ function show_message(page, process_name) {
     // Update the current value of current_scrolldown_process
 
     // Save info of the opened tab
-    document.getElementById("msg_or_job").innerHTML = 'Msg';
-    document.getElementById("inside_page").innerHTML = page;
+    msg_or_job = 'Msg';
+    inside_page = page;
 
     // Show messages and hide jobs
     document.getElementById(process_name + 'job').style.display = 'none';
@@ -104,7 +104,7 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
         type: "POST",
         url: '/Home/MsgInquiryUpdate',
         data:
-            { "page_number": page_number,
+            {   "page_number": page_number,
                 "sort_option": sort_option,
                 "msg_priority": msg_priority,
                 "process_name": process_name,
