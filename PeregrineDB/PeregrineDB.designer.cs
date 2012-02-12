@@ -288,6 +288,13 @@ namespace PeregrineDB
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), from, to, processID);
 			return ((ISingleResult<Job>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfMessagesByProcessId")]
+		public ISingleResult<Message> GetPageOfMessagesByProcessId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="Int")] System.Nullable<int> from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="Int")] System.Nullable<int> to, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> processID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), from, to, processID);
+			return ((ISingleResult<Message>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Process")]
