@@ -32,7 +32,13 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
-        public List<Message> getMessagesByProcessId(int processId, int pageSize, int pageNumber, SortBy sortBy, bool isShowStartUpAndShutdownCheckMarkEnabled)
+        public List<Message> getMessagesByProcessId(
+            int processId, 
+            int pageSize, 
+            int pageNumber, 
+            SortBy sortBy, 
+            SortDirection sortDirection, 
+            bool isShowStartUpAndShutdownCheckMarkEnabled)
         {
             List<Message> messages;
 
@@ -49,7 +55,7 @@ namespace PeregrineAPI
         }
 
         
-        public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy)
+        public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection)
         {
             int start = getStartIndex(pageNumber, numToFetch);
             int end = getEndIndex(pageNumber, numToFetch);

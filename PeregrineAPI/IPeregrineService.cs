@@ -72,6 +72,15 @@ namespace PeregrineAPI
         JOB_PERCENT_COMPLETE //7
     }
 
+    [DataContract]
+    public enum SortDirection
+    {
+        [EnumMember]
+        ASSENDING,
+        [EnumMember]
+        DESENDING
+    }
+
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
     public interface IPeregrineService
@@ -88,7 +97,7 @@ namespace PeregrineAPI
 
         // This will be the main fetching method for the front page. gets summary objects.
         [OperationContract]
-        List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy); 
+        List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy, SortDirection sortDirection); 
 
         //This hooks into the MsgInquryRepo
         [OperationContract]
@@ -97,6 +106,7 @@ namespace PeregrineAPI
             int pageSize, 
             int pageNumber, 
             SortBy sortBy, 
+            SortDirection sortDirection,
             bool isShowStartUpAndShutdownCheckMarkEnabled);
 
 
