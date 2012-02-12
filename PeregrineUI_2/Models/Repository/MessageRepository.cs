@@ -8,18 +8,6 @@ namespace PeregrineUI_2.Models.Repository
 {
     public class MessageRepository
     {
-        // This function is for MessagePage
-        public static PageData<Message> GetMessages(int page, int sortOption, string searchpattern, int pagesize)
-        {
-            /*
-             * Get 1 page of messages from API, fetch it into pagingContext, then return
-             */
-
-            var pagingContext = new PageData<Message>();
-            return pagingContext;
-        }
-
-
         /**-- This function is for Message Partial View in HomePage **/
         public static PageData<Message> GetMessageByProcess(int page, int pagesize, string processName)
         {

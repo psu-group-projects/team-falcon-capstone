@@ -9,11 +9,18 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <script type="text/javascript">
    
+    var img = new Image();
+    var up = new Image();
+    var down = new Image();
+
     /**/
     // Update page and sort val
     $(document).ready(function () {   
         msg_inquiry_current_page = @(Model.CurrentPage);
-        msg_inquiry_current_sort = @(Model.SortingType);
+        msg_inquiry_current_sort = @(Model.SortingType);  
+        down.scr = "..\..\Content\images\down.png";
+        img.scr = "..\..\Content\images\sad.jpg";
+        up.scr = "..\..\Content\images\up.png";
     });
 
 </script>
@@ -21,50 +28,63 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <table id ="msg_list_table" class="display">
         <thead>
             <tr>            
-                <td>
-                    <center>                 
-                        <img id="Msg_inq_msg_id_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />  
-                        <img  id="Msg_inq_msg_id_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />        
-                        <br /> 
-                        Message ID 
-                    </center>                      
+                <td>     
+                    <div style="float: left">Message ID</div> 
+                    <div style="float: right">              
+                        <img    id="Msg_inq_msg_id_sort_acc" 
+                                src="..\..\Content\images\up.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                        <img    id="Msg_inq_msg_id_sort_desc" 
+                                src="..\..\Content\images\down.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                    </div>                           
                 </td>
-                <td>
-                    <center>               
-                        <img id="Msg_inq_context_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
-                        <img id="Msg_inq_context_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />                         
-                        <br />
-                        Message Context 
-                    </center>
+                <td>     
+                    <div style="float: left">Message Context</div> 
+                    <div style="float: right">      
+                        <img    id="Msg_inq_context_sort_acc" 
+                                src="..\..\Content\images\up.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        <img    id="Msg_inq_context_sort_desc" 
+                                src="..\..\Content\images\down.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />                         
+                    </div> 
                 </td>
-                <td>
-                    <center>                                    
-                        <img id="Msg_inq_name_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />
-                        <img id="Msg_inq_name_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />             
-                        <br />
-                        Process Name 
-                    </center>
+                <td>       
+                    <div style="float: left">Process Name</div>  
+                    <div style="float: right">                         
+                        <img    id="Msg_inq_name_sort_acc" 
+                                src="..\..\Content\images\up.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                        <img    id="Msg_inq_name_sort_desc" 
+                                src="..\..\Content\images\down.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />             
+                    </div> 
                 </td>           
                 <td>
-                    <center>
-                        <img id="Msg_inq_prio_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
-                        <img id="Msg_inq_prio_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />                   
-                        <br />
-                        Priority
-                    </center>
+                    <div style="float: left">Priority</div> 
+                    <div style="float: right">   
+                        <img    id="Msg_inq_prio_sort_acc" 
+                                src="..\..\Content\images\up.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        <img    id="Msg_inq_prio_sort_desc" 
+                                src="..\..\Content\images\down.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />                   
+                    </div>
                 </td>
                 <td>
-                    <center>
-                        Message Type
-                    </center>
+                    <div style="float: left">Message Type</div> 
                 </td>
-                <td>
-                    <center>                                      
-                        <img id="Msg_inq_date_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />
-                        <img id="Msg_inq_date_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
-                        <br />
-                        Date 
-                    </center>
+                <td> 
+                    <div style="float: left">Date</div>  
+                    <div style="float: right">                                     
+                        <img    id="Msg_inq_date_sort_acc" 
+                                src="..\..\Content\images\up.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                        <img    id="Msg_inq_date_sort_desc" 
+                                src="..\..\Content\images\down.png" 
+                                alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                    </div> 
                 </td>
             </tr>
         </thead>     
