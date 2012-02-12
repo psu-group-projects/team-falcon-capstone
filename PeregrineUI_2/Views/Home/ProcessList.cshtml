@@ -183,7 +183,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
-                <td><center><img src="..\..\Content\images\@(process.ProcessState.Trim()).png" alt=""/></center> </td>
+                <td><center><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/></center> </td>
                 <td><div class="arrow"></div></td>
                            
             </tr>
@@ -251,9 +251,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             if (i == 1)
                             {
                                 <a  class="page-number" href="javascript:void(0)"  
-                                    onclick="MainPageAjaxSearch(    parseInt($(this).html()),
+                                    onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
                                                                     main_page_main_current_sort,
-                                                                    document.getElementById('main_page_search_input').value)">@i</a>   
+                                                                    document.getElementById('main_page_search_input').value);
+                                            document.getElementById('current_scrolldown_process').innerHTML = '' ">@i</a>    
                             }
                             else
                             {
@@ -265,10 +266,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         {
                             if (i == Model.NumberOfPages)
                             {
-                                 <a  class="page-number" href="javascript:void(0)"  
-                                     onclick="MainPageAjaxSearch(   parseInt($(this).html()),
-                                                                    main_page_main_current_sort,
-                                                                    document.getElementById('main_page_search_input').value)">@i</a> 
+                                 <a     class="page-number" href="javascript:void(0)"  
+                                        onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
+                                                                        main_page_main_current_sort,
+                                                                        document.getElementById('main_page_search_input').value);
+                                                document.getElementById('current_scrolldown_process').innerHTML = '' ">@i</a>  
                             }
                             else
                             {
@@ -283,9 +285,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         else
                         {
                              <a  class="page-number" href="javascript:void(0)"  
-                                onclick="MainPageAjaxSearch(    parseInt($(this).html()),
+                                onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
                                                                 main_page_main_current_sort,
-                                                                document.getElementById('main_page_search_input').value)">@i</a> 
+                                                                document.getElementById('main_page_search_input').value);
+                                        document.getElementById('current_scrolldown_process').innerHTML = '' ">@i</a> 
                         }
                     }    
                                                                

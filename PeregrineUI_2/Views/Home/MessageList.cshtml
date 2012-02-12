@@ -9,67 +9,76 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <script type="text/javascript">
    
-    var img = new Image();
-    var up = new Image();
-    var down = new Image();
-
     /**/
     // Update page and sort val
     $(document).ready(function () {   
         msg_inquiry_current_page = @(Model.CurrentPage);
-        msg_inquiry_current_sort = @(Model.SortingType);  
-        down.scr = "..\..\Content\images\down.png";
-        img.scr = "..\..\Content\images\sad.jpg";
-        up.scr = "..\..\Content\images\up.png";
+        msg_inquiry_current_sort = @(Model.SortingType);     
     });
 
-</script>
+</script>                          
 
 <table id ="msg_list_table" class="display">
         <thead>
             <tr>            
-                <td>     
+                <td>                                         
                     <div style="float: left">Message ID</div> 
-                    <div style="float: right">              
-                        <img    id="Msg_inq_msg_id_sort_acc" 
-                                src="..\..\Content\images\up.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
-                        <img    id="Msg_inq_msg_id_sort_desc" 
-                                src="..\..\Content\images\down.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                    <div style="float: right">           
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_msg_id_sort_acc" 
+                                    src="../../Content/images/up.png" 
+                                    alt="N_show" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_msg_id_sort_desc" 
+                                    src="../../Content/images/down.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>
                     </div>                           
                 </td>
                 <td>     
                     <div style="float: left">Message Context</div> 
-                    <div style="float: right">      
-                        <img    id="Msg_inq_context_sort_acc" 
-                                src="..\..\Content\images\up.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
-                        <img    id="Msg_inq_context_sort_desc" 
-                                src="..\..\Content\images\down.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />                         
+                    <div style="float: right">                         
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_context_sort_acc" 
+                                    src="../../Content/images/up.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a> 
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_context_sort_desc" 
+                                    src="../../Content/images/down.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>                          
                     </div> 
                 </td>
                 <td>       
                     <div style="float: left">Process Name</div>  
                     <div style="float: right">                         
-                        <img    id="Msg_inq_name_sort_acc" 
-                                src="..\..\Content\images\up.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
-                        <img    id="Msg_inq_name_sort_desc" 
-                                src="..\..\Content\images\down.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />             
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_name_sort_acc" 
+                                    src="../../Content\images\up.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a> 
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_name_sort_desc" 
+                                    src="../../Content/images/down.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>              
                     </div> 
                 </td>           
                 <td>
                     <div style="float: left">Priority</div> 
                     <div style="float: right">   
-                        <img    id="Msg_inq_prio_sort_acc" 
-                                src="..\..\Content\images\up.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
-                        <img    id="Msg_inq_prio_sort_desc" 
-                                src="..\..\Content\images\down.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />                   
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_prio_sort_acc" 
+                                    src="../../Content/images/up.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>  
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_prio_sort_desc" 
+                                    src="../../Content/images/down.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>                    
                     </div>
                 </td>
                 <td>
@@ -78,12 +87,16 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td> 
                     <div style="float: left">Date</div>  
                     <div style="float: right">                                     
-                        <img    id="Msg_inq_date_sort_acc" 
-                                src="..\..\Content\images\up.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" />
-                        <img    id="Msg_inq_date_sort_desc" 
-                                src="..\..\Content\images\down.png" 
-                                alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_date_sort_acc" 
+                                    src="../../Content/images/up.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                        </a>
+                        <a style="text-decoration:none" href="javascript:void(0);"> 
+                            <img    id="Msg_inq_date_sort_desc" 
+                                    src="../../Content/images/down.png" 
+                                    alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        </a>
                     </div> 
                 </td>
             </tr>
@@ -96,14 +109,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     <td>
                             @message.Content
                             @if (message.Content.Length > 8)
-                            {
-                                // Call function in Helper.js to get the full version of message content
-                           
+                            {                      
                                 <a href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID), "falcon");'>...</a> 
                             }                                                              
                     </td>
                     <td>
-                            <img src="..\..\Content\images\@(message.ProcessState.Trim()).png" alt=""/>
+                            <img src="../../Content/images/@(message.ProcessState.Trim()).png" alt=""/>
                             @message.ProcessName 
                     </td>
                     <td>    @message.Priority.ToString() </td>

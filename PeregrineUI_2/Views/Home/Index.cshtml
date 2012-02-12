@@ -35,9 +35,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $('#main_page_search_input').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {
-                MainPageAjaxSearch( '1',
-                                    '1',
-                                    document.getElementById("main_page_search_input").value);
+                MainPageAjaxUpdate('1',
+                                        '1',
+                                        document.getElementById("main_page_search_input").value);
+                document.getElementById("current_scrolldown_process").innerHTML = '';          
             }
         });
 

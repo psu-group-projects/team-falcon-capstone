@@ -6,23 +6,6 @@ Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 */
 
-function MainPageAjaxSearch(page, SortingType, SearchPattern) {
-    $.ajax({
-        type: "POST",
-        url: '/Home/MainPageAjaxUpdate',
-        data: { "page": page, "SortingType": SortingType, "SearchPattern": SearchPattern },
-        success: function (data) {
-            $('div.process-list').empty();
-            $('div.process-list').append(data);
-        },
-        error: function (result) {
-            alert(result);
-        }
-    });
-    document.getElementById("current_scrolldown_process").innerHTML = '';
-}
-
-
 function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
     $.ajax({
         type: "POST",
