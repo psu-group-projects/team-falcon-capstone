@@ -55,17 +55,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         $("#process_table tr:not(.odd)").hide();
         $("#process_table tr:first-child").show();
 
-        opened_row_id = document.getElementById("current_scrolldown_process").innerHTML;
-        if (opened_row_id != '') {
+        opened_row_id = current_scrolldown_process;
+        if (opened_row_id != '*_*') {
             opened_row = document.getElementById(opened_row_id);
             if (opened_row != null) {
                 $(opened_row).next("tr").show();
-                ExpandedTabUpdate(   document.getElementById("current_scrolldown_process").innerHTML,
+                ExpandedTabUpdate(   current_scrolldown_process,
                                      document.getElementById("msg_or_job").innerHTML,
                                      parseInt(document.getElementById("inside_page").innerHTML));
             }
             else {
-                document.getElementById("current_scrolldown_process").innerHTML = '';
+                current_scrolldown_process = '*_*';
             }
         }
 
@@ -89,13 +89,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
                 // Save currently opened tab into a label
                 // If the clicked row is currently open, close it
-                if (document.getElementById("current_scrolldown_process").innerHTML == $(this).attr("id")) {
-                    document.getElementById("current_scrolldown_process").innerHTML = '';
+                if (current_scrolldown_process == $(this).attr("id")) {
+                    current_scrolldown_process = '*_*';
                 }
                 // if not, open the row
                 else {
-                    document.getElementById("current_scrolldown_process").innerHTML = $(this).attr("id");
-                    //document.getElementById($(this).attr("id") + 'MsgBtn').click();  
+                    current_scrolldown_process = $(this).attr("id"); 
                     show_message('1', $(this).attr("id"));              
                 }
              }
@@ -104,13 +103,13 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
             show_message(   parseInt($(this).html()),
-                            document.getElementById("current_scrolldown_process").innerHTML);
+                            current_scrolldown_process);
         });
 
         // Handle clicking job page number 
         $(".process_job_page-number").live("click", function () {
             show_job(   parseInt($(this).html()),
-                        document.getElementById("current_scrolldown_process").innerHTML);
+                        current_scrolldown_process);
         });
     });
 
@@ -254,7 +253,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                     onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
                                                                     main_page_main_current_sort,
                                                                     document.getElementById('main_page_search_input').value);
-                                            document.getElementById('current_scrolldown_process').innerHTML = '' ">@i</a>    
+                                            current_scrolldown_process = '*_*' ">@i</a>    
                             }
                             else
                             {
@@ -270,7 +269,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                         onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
                                                                         main_page_main_current_sort,
                                                                         document.getElementById('main_page_search_input').value);
-                                                document.getElementById('current_scrolldown_process').innerHTML = '' ">@i</a>  
+                                                current_scrolldown_process = '*_*' ">@i</a>  
                             }
                             else
                             {
@@ -288,7 +287,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                 onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
                                                                 main_page_main_current_sort,
                                                                 document.getElementById('main_page_search_input').value);
-                                        document.getElementById('current_scrolldown_process').innerHTML = '' ">@i</a> 
+                                        current_scrolldown_process = '*_*' ">@i</a> 
                         }
                     }    
                                                                
@@ -299,7 +298,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <input  id="page_target" type="text" style="width: 40px" 
                         onchange="MainPageAjaxUpdate(   parseInt(document.getElementById(this.id).value), 
                                                         main_page_main_current_sort, 
-                                                        document.getElementById('main_page_search_input').value)"/>
+                                                        document.getElementById('main_page_search_input').value);
+                                  current_scrolldown_process = '*_*' "/>
             </td>
         </tr>              
     </tfoot>
