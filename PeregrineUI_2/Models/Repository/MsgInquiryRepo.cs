@@ -9,7 +9,7 @@ namespace PeregrineUI_2.Models.Repository
 {
     public class MsgInquiryRepo
     {
-        public static PageData<Message> GetMessages(int page, int sortOption, int searchpriority, string searchprocess, int SU_SD_msg, int pagesize)
+        public static PageData<Message> GetMessages(int page, int sortColumm, int sort_type, int searchpriority, string searchprocess, int SU_SD_msg, int pagesize)
         {
             List<Message> SummaryData = new List<Message>();
             Random random = new Random();
@@ -55,23 +55,48 @@ namespace PeregrineUI_2.Models.Repository
                 page = 1;
 
             // Do the sorting
-            switch (sortOption)
+            switch (sortColumm)
             {
+                case 0:
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.MessageID).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.MessageID).ToList();
+                    }
+                    break;
                 case 1:
-                    SummaryData = SummaryData.OrderBy(p => p.MessageID).ToList();
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.Content).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.Content).ToList();
+                    }
                     break;
                 case 2:
-                    SummaryData = SummaryData.OrderBy(p => p.Content).ToList();
-                    break;
-                case 3:
-                    SummaryData = SummaryData.OrderBy(p => p.ProcessName).ToList();
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.ProcessName).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.ProcessName).ToList();
+                    }         
                     break;               
+                case 3:
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.Priority).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.Priority).ToList();
+                    }     
+                    break;
                 case 4:
-                    SummaryData = SummaryData.OrderBy(p => p.Priority).ToList();
-                    break;
-                case 5:
-                    SummaryData = SummaryData.OrderBy(p => p.Date).ToList();
-                    break;
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.Date).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.Date).ToList();
+                    } 
+                    break;             
                 default:
                     break;
             }
@@ -80,7 +105,7 @@ namespace PeregrineUI_2.Models.Repository
             pagingContext.Data = SummaryData.Skip(pagesize * (page - 1)).Take(pagesize).ToList();
             pagingContext.NumberOfPages = totalpage;
             pagingContext.CurrentPage = page;
-            pagingContext.SortingType = sortOption;
+            pagingContext.SortingType = (sortColumm * 2) + sort_type;
 
             return pagingContext;
         }

@@ -2,7 +2,7 @@
 Author   : Anh T Nguyen, Chinh T Cao
 Version  : 1.0.1
 Date     : 01/01/2012
-Modified : 1/21/2012 by CC
+Modified : 2/7/2012 by CC
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 */
 
@@ -78,8 +78,6 @@ body {
 #msg_list_table tbody tr:nth-child(even) td { background:#E0FFFF; color:#000; padding:7px 15px; }
 
 #msg_list_table tbody tr:nth-child(odd) td { background:#D1EEEE; color:#000; padding:7px 15px; }
-
-
 
 table.msg_table 
 {

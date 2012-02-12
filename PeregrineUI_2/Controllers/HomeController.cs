@@ -73,8 +73,14 @@ namespace PeregrineUI_2.Controllers
             else
                 input_msg_priority = Convert.ToInt32(msg_priority);
 
+            // Parsing the sort_option info
+            int sort_option_input = Convert.ToInt32(sort_option);
+            int sort_columm = sort_option_input / 2;
+            int sort_type = sort_option_input % 2;  // sort_type = [0 for accending and 1 for descending]
+
             var pagingContext = MsgInquiryRepo.GetMessages( Convert.ToInt32(page_number),
-                                                            Convert.ToInt32(sort_option),
+                                                            sort_columm,
+                                                            sort_type,
                                                             input_msg_priority,
                                                             process_name,
                                                             Convert.ToInt32(SU_SD_msg),
@@ -202,3 +208,5 @@ namespace PeregrineUI_2.Controllers
         }
     }
 }
+
+//padding: 3px 18px 3px 10px;

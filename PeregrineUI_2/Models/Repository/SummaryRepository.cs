@@ -14,14 +14,14 @@ namespace PeregrineUI_2.Models.Repository
             List<Process> SummaryData = new List<Process>();
          
             // API call will be here
-            PeregrineService service = new PeregrineService();
-            List<ProcessSummary> ProcessSummaryData = service.getSummaryByPage(1, pagesize, SortBy.PROCESS_STATE);
+            //PeregrineService service = new PeregrineService();
+            //List<ProcessSummary> ProcessSummaryData = service.getSummaryByPage(1, pagesize, SortBy.PROCESS_STATE);
 
-            foreach ( ProcessSummary summary in ProcessSummaryData){
-                SummaryData.Add(new Process { ProcessName = summary._process.ProcessName, LastAction = summary._message.Message, MsgDate = summary._message.Date, ProcessState = summary._process.State.ToString() });
-            }
-
-            /*
+            //foreach (ProcessSummary summary in ProcessSummaryData)
+            //{
+            //    SummaryData.Add(new Process { ProcessName = summary._process.ProcessName, LastAction = summary._message.Message, MsgDate = summary._message.Date, ProcessState = summary._process.State.ToString() });
+            //}
+           
             SummaryData.Add(new Process { ProcessName = "Falcon10", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon11", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon12", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
@@ -97,7 +97,7 @@ namespace PeregrineUI_2.Models.Repository
             SummaryData.Add(new Process { ProcessName = "Falcon82", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon83", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
             SummaryData.Add(new Process { ProcessName = "Falcon84", LastAction = Path.GetRandomFileName(), MsgDate = DateTime.Now, ProcessState = "GREEN" });
-            */
+            
 
             var pagingContext = new PageData<Process>();
 

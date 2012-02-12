@@ -114,6 +114,8 @@ function show_message(page, process_name) {
 
 
 // Message inquiry page helper api
+
+/**/
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
     $.ajax({
         type: "POST",
@@ -135,6 +137,7 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
     });
 }
 
+/**/
 function GetFullDetailMessage(msg_id, pro_name) {
     $.ajax({
         type: "POST",
@@ -148,4 +151,77 @@ function GetFullDetailMessage(msg_id, pro_name) {
             alert(result);
         }
     });
+}
+
+/**/
+function Msg_inquiry_collect_info(page_number, sort_option, process_priority, process_name) {
+    // Getting the current state of the SU_SD_Checkbox checkbox
+    var state = document.getElementById("SU_SD_Checkbox").checked;
+
+    // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
+    if (state) {
+        MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '1');
+    }
+    else {
+        MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '0');
+    }
+}
+
+/**/
+function showpopup(msg_id, process_name) {
+    if (document.getElementById("popwindow").className == 'popperHid') {
+        // Update the div
+        GetFullDetailMessage(msg_id, process_name);
+        document.getElementById("popwindow").className = 'popperShow';
+    } else {
+        if (msg_id == "-1")
+            document.getElementById("popwindow").className = 'popperHid';
+        else {
+            // Update the div
+            GetFullDetailMessage(msg_id, process_name);
+        }
+    }
+    return false;
+}
+
+/**/
+function Change_SU_SD_Status(sort_option, process_priority, process_name) {
+    // Getting the current state of the SU_SD_Checkbox checkbox
+    var state = document.getElementById("SU_SD_Checkbox").checked;
+
+    // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
+    if (state) {
+        MsgInquiryUpdate('1', sort_option, process_priority, process_name, '1');
+    }
+    else {
+        MsgInquiryUpdate('1', sort_option, process_priority, process_name, '0');
+    }
+}
+
+/**/
+function Msg_inquiry_sorting(chkboxname) {
+    // Getting the state of the chose checkbox
+    //var state = document.getElementById(chkboxname).checked;
+    var s_option;
+
+    // If we check this checkbox, turnoff the other sorting checkbox
+    if (chkboxname == "Msg_inq_msg_id_sort_acc") s_option = "0";
+    else if (chkboxname == "Msg_inq_msg_id_sort_desc") s_option = "1";
+    else if (chkboxname == "Msg_inq_context_sort_acc") s_option = "2";
+    else if (chkboxname == "Msg_inq_context_sort_desc") s_option = "3";
+    else if (chkboxname == "Msg_inq_name_sort_acc") s_option = "4";
+    else if (chkboxname == "Msg_inq_name_sort_desc") s_option = "5";
+    else if (chkboxname == "Msg_inq_prio_sort_acc") s_option = "6";
+    else if (chkboxname == "Msg_inq_prio_sort_desc") s_option = "7";
+    else if (chkboxname == "Msg_inq_date_sort_acc") s_option = "8";
+    else if (chkboxname == "Msg_inq_date_sort_desc") s_option = "9";
+    else {
+        alert("SORTING ERROR");
+    }
+
+    // Make ajax call to controller to update the table
+    Msg_inquiry_collect_info(       "1",            // Page number
+                                    s_option,       // Sort option
+                                    document.getElementById("process_prio_input").value,
+                                    document.getElementById("process_name_input").value);
 }

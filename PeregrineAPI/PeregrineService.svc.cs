@@ -99,6 +99,12 @@ namespace PeregrineAPI
         {
             throw new NotImplementedException();
         }
+
+
+        public List<MessageDTO> getMessagesByProcessId(int processId, int pageSize, int pageNumber, SortBy sortBy, bool isShowStartUpAndShutdownCheckMarkEnabled)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

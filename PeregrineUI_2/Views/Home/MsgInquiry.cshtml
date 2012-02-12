@@ -18,52 +18,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var msg_inquiry_current_sort;
 
     /**/
-    function Msg_inquiry_collect_info(page_number, sort_option, process_priority, process_name) {
-        // Getting the current state of the SU_SD_Checkbox checkbox
-        var state = document.getElementById("SU_SD_Checkbox").checked;
-
-        // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
-        if (state) {
-            MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '1');
-        }
-        else {
-            MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '0');
-        }
-    }
-
-    /**/
-    function showpopup(msg_id, process_name) {
-        if (document.getElementById("popwindow").className == 'popperHid') {
-            // Update the div
-            GetFullDetailMessage(msg_id, process_name);
-            document.getElementById("popwindow").className = 'popperShow';
-        } else {
-            if (msg_id == "-1")
-                document.getElementById("popwindow").className = 'popperHid';
-            else {
-                // Update the div
-                GetFullDetailMessage(msg_id, process_name);
-            }
-        }
-        return false;
-    }
-
-    /**/
-    function Change_SU_SD_Status(sort_option, process_priority, process_name) 
-    {
-        // Getting the current state of the SU_SD_Checkbox checkbox
-        var state = document.getElementById("SU_SD_Checkbox").checked;
-
-        // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
-        if (state) {
-            MsgInquiryUpdate('1', sort_option, process_priority, process_name, '1');
-        }
-        else {
-            MsgInquiryUpdate('1', sort_option, process_priority, process_name, '0');
-        }
-    }
-
-    /**/
     $(document).ready(function () {
         // Fix event.layerx and layery broken warning, work like a charm
         var all = $.event.props,
@@ -78,7 +32,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         // Set up the initial stage of the message inquiry page
         MsgInquiryUpdate(
                             "1",    // current page number = 1
-                            "5",    // sort_option = 5 which is sort by date
+                            "10",    // sort_option = 5 which is sort by date descending
                             "0",    // msg_priority = 0 which will show every message with every possible priority
                             "",     // processname = "" which will search for all message
                             "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
@@ -95,14 +49,14 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         });
 
         // Automatic update
-        setInterval(function () {
-            Msg_inquiry_collect_info(
-                                        msg_inquiry_current_page,
-                                        msg_inquiry_current_sort,
-                                        document.getElementById("process_prio_input").value,
-                                        document.getElementById("process_name_input").value
-                                    );
-        }, 5000);
+//        setInterval(function () {
+//            Msg_inquiry_collect_info(
+//                                        msg_inquiry_current_page,
+//                                        msg_inquiry_current_sort,
+//                                        document.getElementById("process_prio_input").value,
+//                                        document.getElementById("process_name_input").value
+//                                    );
+//        }, 5000);
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#process_name_input').keypress(function (e) {
@@ -110,7 +64,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             if (code == 13) {           
                 Msg_inquiry_collect_info(
                                             '1',    //  Page number
-                                            '1',    //  Sort option
+                                            msg_inquiry_current_sort,    //  Sort option
                                             document.getElementById("process_prio_input").value,    // priority value
                                             document.getElementById("process_name_input").value     // process name value
                                          );
@@ -140,10 +94,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <select id="process_prio_input" 
         onchange="Msg_inquiry_collect_info ( 
                                                 '1',
-                                                '1',                                      
+                                                msg_inquiry_current_sort,                                      
                                                 document.getElementById('process_prio_input').value,
                                                 document.getElementById('process_name_input').value
-                                            )">
+                                            );">
     <option value="0">0</option>                                            
     <option value="1">1</option>
     <option value="2">2</option>
@@ -162,10 +116,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <label>Get all start up and shutdown msg: </label>
 <input id="SU_SD_Checkbox" type="checkbox" 
         onclick="Change_SU_SD_Status (
-                                        '1',
+                                        msg_inquiry_current_sort,
                                         document.getElementById('process_prio_input').value,
                                         document.getElementById('process_name_input').value  
-                                        )"/>
+                                        );"/>
    
                                                                             
 <hr />

@@ -16,87 +16,55 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         msg_inquiry_current_sort = @(Model.SortingType);
     });
 
-    /**/
-    function Msg_inquiry_sorting(chkboxname) {
-        // Getting the state of the chose checkbox
-        var state = document.getElementById(chkboxname).checked;
-
-        // If we check this checkbox, turnoff the other sorting checkbox
-        if (state) {
-            // Make ajax call to controller to update the table
-            if (chkboxname == "Msg_inq_msg_id_sort")
-                Msg_inquiry_collect_info(   "1",    // Page number
-                                            "1",    // Sort option
-                                            document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_inq_context_sort")
-                Msg_inquiry_collect_info(   "1",    // Page number
-                                            "2",    // Sort option
-                                            document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_inq_name_sort")
-                Msg_inquiry_collect_info(   "1",    // Page number
-                                            "3",    // Sort option
-                                            document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value );       
-            else if (chkboxname == "Msg_inq_prio_sort")
-                Msg_inquiry_collect_info(   "1",    // Page number
-                                            "4",    // Sort option
-                                            document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value );
-            else if (chkboxname == "Msg_inq_date_sort")
-                Msg_inquiry_collect_info(   "1",    // Page number
-                                            "5",    // Sort option
-                                            document.getElementById("process_prio_input").value,
-                                            document.getElementById("process_name_input").value );
-            else
-                alert("SORTING ERROR");
-        }
-        else {
-            // We are not allowed all sorting checkbox uncheck
-            document.getElementById(chkboxname).checked = true;
-        }
-    }
-
-    $(document).ready(function () {
-        if ( @(Model.SortingType) == 1 )
-            document.getElementById("Msg_inq_msg_id_sort").checked = true;
-        else if ( @(Model.SortingType) == 2) 
-            document.getElementById("Msg_inq_context_sort").checked = true;
-        else if ( @(Model.SortingType) == 3) 
-            document.getElementById("Msg_inq_name_sort").checked = true;     
-        else if ( @(Model.SortingType) == 4) 
-            document.getElementById("Msg_inq_prio_sort").checked = true;
-        else if ( @(Model.SortingType) == 5) 
-            document.getElementById("Msg_inq_date_sort").checked = true;
-    });       
 </script>
 
 <table id ="msg_list_table" class="display">
         <thead>
             <tr>            
                 <td>
-                    Message ID 
-                    <input id="Msg_inq_msg_id_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>            
+                    <center>                 
+                        <img id="Msg_inq_msg_id_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />  
+                        <img  id="Msg_inq_msg_id_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />        
+                        <br /> 
+                        Message ID 
+                    </center>                      
                 </td>
                 <td>
-                    Message Context 
-                    <input id="Msg_inq_context_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>                 
+                    <center>               
+                        <img id="Msg_inq_context_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        <img id="Msg_inq_context_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />                         
+                        <br />
+                        Message Context 
+                    </center>
                 </td>
                 <td>
-                    Process Name 
-                    <input id="Msg_inq_name_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>  
+                    <center>                                    
+                        <img id="Msg_inq_name_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                        <img id="Msg_inq_name_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />             
+                        <br />
+                        Process Name 
+                    </center>
                 </td>           
                 <td>
-                    Priority                    
-                    <input id="Msg_inq_prio_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/>   
+                    <center>
+                        <img id="Msg_inq_prio_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        <img id="Msg_inq_prio_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />                   
+                        <br />
+                        Priority
+                    </center>
                 </td>
                 <td>
-                    Message Type
+                    <center>
+                        Message Type
+                    </center>
                 </td>
                 <td>
-                    Date 
-                    <input id="Msg_inq_date_sort" type="checkbox" onclick="Msg_inquiry_sorting(this.id)"/> 
+                    <center>                                      
+                        <img id="Msg_inq_date_sort_acc" src="..\..\Content\images\up.png" alt="" onclick="Msg_inquiry_sorting(this.id);" />
+                        <img id="Msg_inq_date_sort_desc" src="..\..\Content\images\down.png" alt="" onclick="Msg_inquiry_sorting(this.id);" /> 
+                        <br />
+                        Date 
+                    </center>
                 </td>
             </tr>
         </thead>     
@@ -110,7 +78,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             @if (message.Content.Length > 8)
                             {
                                 // Call function in Helper.js to get the full version of message content
-                                //<a class="msg_inquiry_process_id" style="text-decoration:none" href="javascript:void(0)" onclick="GetFullDetailMessage(@(message.ProcessID))"> .....</a> 
+                           
                                 <a href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID), "falcon");'>...</a> 
                             }                                                              
                     </td>
@@ -205,7 +173,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                                     msg_inquiry_current_sort,
                                                                     document.getElementById('process_prio_input').value,
                                                                     document.getElementById('process_name_input').value     
-                                                                )" />
+                                                                );" />
                                                                                                                                                                         
                 </td>
             </tr>
