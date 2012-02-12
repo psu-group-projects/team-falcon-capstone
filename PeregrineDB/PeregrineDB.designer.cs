@@ -18,6 +18,7 @@ namespace PeregrineDB
 	using System.Reflection;
 	using System.Linq;
 	using System.Linq.Expressions;
+	using System.Runtime.Serialization;
 	using System.ComponentModel;
 	using System;
 	
@@ -225,13 +226,6 @@ namespace PeregrineDB
 			return ((ISingleResult<GetJobResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetMessage")]
-		public ISingleResult<GetMessageResult> GetMessage([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID);
-			return ((ISingleResult<GetMessageResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetProcessByName")]
 		public ISingleResult<Process> GetProcessByName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="VarChar(200)")] string processName)
 		{
@@ -267,15 +261,44 @@ namespace PeregrineDB
 			return ((ISingleResult<Process>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetMessagesWithProcessID")]
-		public ISingleResult<Message> GetMessagesWithProcessID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetMessage")]
+		public ISingleResult<Message> GetMessage([global::System.Data.Linq.Mapping.ParameterAttribute(Name="MessageID", DbType="Int")] System.Nullable<int> messageID)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), messageID);
+			return ((ISingleResult<Message>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetMessagesWithProcessID")]
+		public ISingleResult<Message> GetMessagesWithProcessID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="Int")] System.Nullable<int> from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="Int")] System.Nullable<int> to)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, sortBy, order, from, to);
+			return ((ISingleResult<Message>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStartStopMessagesWithProcessID")]
+		public ISingleResult<Message> GetStartStopMessagesWithProcessID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessID", DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="Int")] System.Nullable<int> from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="Int")] System.Nullable<int> to)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, sortBy, order, from, to);
+			return ((ISingleResult<Message>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfJobs")]
+		public ISingleResult<Job> GetPageOfJobs([global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="Int")] System.Nullable<int> from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="Int")] System.Nullable<int> to, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> processID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), from, to, processID);
+			return ((ISingleResult<Job>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfMessagesByProcessId")]
+		public ISingleResult<Message> GetPageOfMessagesByProcessId([global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="Int")] System.Nullable<int> from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="Int")] System.Nullable<int> to, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> processID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), from, to, processID);
 			return ((ISingleResult<Message>)(result.ReturnValue));
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Process")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class Process : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -288,6 +311,8 @@ namespace PeregrineDB
 		private int _State;
 		
 		private EntitySet<LogRel> _LogRels;
+		
+		private bool serializing;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -303,11 +328,11 @@ namespace PeregrineDB
 		
 		public Process()
 		{
-			this._LogRels = new EntitySet<LogRel>(new Action<LogRel>(this.attach_LogRels), new Action<LogRel>(this.detach_LogRels));
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int ProcessID
 		{
 			get
@@ -328,6 +353,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string ProcessName
 		{
 			get
@@ -348,6 +374,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public int State
 		{
 			get
@@ -368,10 +395,16 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Process_LogRel", Storage="_LogRels", ThisKey="ProcessID", OtherKey="ProcessID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
 		public EntitySet<LogRel> LogRels
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._LogRels.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
 				return this._LogRels;
 			}
 			set
@@ -411,9 +444,37 @@ namespace PeregrineDB
 			this.SendPropertyChanging();
 			entity.Process = null;
 		}
+		
+		private void Initialize()
+		{
+			this._LogRels = new EntitySet<LogRel>(new Action<LogRel>(this.attach_LogRels), new Action<LogRel>(this.detach_LogRels));
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LogRel")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class LogRel : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -445,13 +506,11 @@ namespace PeregrineDB
 		
 		public LogRel()
 		{
-			this._Process = default(EntityRef<Process>);
-			this._Job = default(EntityRef<Job>);
-			this._Message = default(EntityRef<Message>);
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -476,6 +535,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public int ProcessID
 		{
 			get
@@ -500,6 +560,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> JobID
 		{
 			get
@@ -644,9 +705,25 @@ namespace PeregrineDB
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void Initialize()
+		{
+			this._Process = default(EntityRef<Process>);
+			this._Job = default(EntityRef<Job>);
+			this._Message = default(EntityRef<Message>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Job")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class Job : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -663,6 +740,8 @@ namespace PeregrineDB
 		private System.Nullable<double> _PercentComplete;
 		
 		private EntitySet<LogRel> _LogRels;
+		
+		private bool serializing;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -682,11 +761,11 @@ namespace PeregrineDB
 		
 		public Job()
 		{
-			this._LogRels = new EntitySet<LogRel>(new Action<LogRel>(this.attach_LogRels), new Action<LogRel>(this.detach_LogRels));
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int JobID
 		{
 			get
@@ -707,6 +786,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string JobName
 		{
 			get
@@ -727,6 +807,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> PlannedCount
 		{
 			get
@@ -747,6 +828,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public System.Nullable<int> CompletedCount
 		{
 			get
@@ -767,6 +849,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public System.Nullable<double> PercentComplete
 		{
 			get
@@ -787,10 +870,16 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Job_LogRel", Storage="_LogRels", ThisKey="JobID", OtherKey="JobID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
 		public EntitySet<LogRel> LogRels
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._LogRels.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
 				return this._LogRels;
 			}
 			set
@@ -830,9 +919,37 @@ namespace PeregrineDB
 			this.SendPropertyChanging();
 			entity.Job = null;
 		}
+		
+		private void Initialize()
+		{
+			this._LogRels = new EntitySet<LogRel>(new Action<LogRel>(this.attach_LogRels), new Action<LogRel>(this.detach_LogRels));
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Message")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -849,6 +966,8 @@ namespace PeregrineDB
 		private int _Priority;
 		
 		private EntityRef<LogRel> _LogRel;
+		
+		private bool serializing;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -868,11 +987,11 @@ namespace PeregrineDB
 		
 		public Message()
 		{
-			this._LogRel = default(EntityRef<LogRel>);
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -893,6 +1012,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Message", Storage="_Message1", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string Message1
 		{
 			get
@@ -913,6 +1033,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.DateTime Date
 		{
 			get
@@ -933,6 +1054,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public int Category
 		{
 			get
@@ -953,6 +1075,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public int Priority
 		{
 			get
@@ -973,10 +1096,16 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Message_LogRel", Storage="_LogRel", ThisKey="MessageID", OtherKey="MessageID", IsUnique=true, IsForeignKey=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
 		public LogRel LogRel
 		{
 			get
 			{
+				if ((this.serializing 
+							&& (this._LogRel.HasLoadedOrAssignedValue == false)))
+				{
+					return null;
+				}
 				return this._LogRel.Entity;
 			}
 			set
@@ -1020,8 +1149,36 @@ namespace PeregrineDB
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void Initialize()
+		{
+			this._LogRel = default(EntityRef<LogRel>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class UpdateProcessResult
 	{
 		
@@ -1036,6 +1193,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int ProcessID
 		{
 			get
@@ -1052,6 +1210,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string ProcessName
 		{
 			get
@@ -1068,6 +1227,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public int State
 		{
 			get
@@ -1084,6 +1244,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class InsertJobResult
 	{
 		
@@ -1102,6 +1263,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int JobID
 		{
 			get
@@ -1118,6 +1280,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string JobName
 		{
 			get
@@ -1134,6 +1297,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> PlannedCount
 		{
 			get
@@ -1150,6 +1314,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public System.Nullable<int> CompletedCount
 		{
 			get
@@ -1166,6 +1331,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public System.Nullable<double> PercentComplete
 		{
 			get
@@ -1182,6 +1348,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class InsertMessageResult
 	{
 		
@@ -1200,6 +1367,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -1216,6 +1384,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string Message
 		{
 			get
@@ -1232,6 +1401,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.DateTime Date
 		{
 			get
@@ -1248,6 +1418,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public int Category
 		{
 			get
@@ -1264,6 +1435,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public int Priority
 		{
 			get
@@ -1280,6 +1452,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class InsertProcessResult
 	{
 		
@@ -1294,6 +1467,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int ProcessID
 		{
 			get
@@ -1310,6 +1484,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string ProcessName
 		{
 			get
@@ -1326,6 +1501,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public int State
 		{
 			get
@@ -1342,6 +1518,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class ShowAllResult
 	{
 		
@@ -1376,6 +1553,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -1392,6 +1570,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string Message
 		{
 			get
@@ -1408,6 +1587,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.DateTime Date
 		{
 			get
@@ -1424,6 +1604,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public int Category
 		{
 			get
@@ -1440,6 +1621,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public int Priority
 		{
 			get
@@ -1456,6 +1638,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public int ProcessID
 		{
 			get
@@ -1472,6 +1655,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
 		public string ProcessName
 		{
 			get
@@ -1488,6 +1672,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
 		public int State
 		{
 			get
@@ -1504,6 +1689,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9)]
 		public int JobID
 		{
 			get
@@ -1520,6 +1706,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10)]
 		public string JobName
 		{
 			get
@@ -1536,6 +1723,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11)]
 		public System.Nullable<int> PlannedCount
 		{
 			get
@@ -1552,6 +1740,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12)]
 		public System.Nullable<int> CompletedCount
 		{
 			get
@@ -1568,6 +1757,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13)]
 		public System.Nullable<double> PercentComplete
 		{
 			get
@@ -1584,6 +1774,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class ShowJobsResult
 	{
 		
@@ -1602,6 +1793,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int JobID
 		{
 			get
@@ -1618,6 +1810,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string JobName
 		{
 			get
@@ -1634,6 +1827,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> PlannedCount
 		{
 			get
@@ -1650,6 +1844,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public System.Nullable<int> CompletedCount
 		{
 			get
@@ -1666,6 +1861,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public System.Nullable<double> PercentComplete
 		{
 			get
@@ -1682,6 +1878,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class ShowLogRelResult
 	{
 		
@@ -1696,6 +1893,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -1712,6 +1910,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public int ProcessID
 		{
 			get
@@ -1728,6 +1927,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> JobID
 		{
 			get
@@ -1744,6 +1944,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class ShowMessagesResult
 	{
 		
@@ -1762,6 +1963,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -1778,6 +1980,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string Message
 		{
 			get
@@ -1794,6 +1997,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.DateTime Date
 		{
 			get
@@ -1810,6 +2014,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public int Category
 		{
 			get
@@ -1826,6 +2031,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public int Priority
 		{
 			get
@@ -1842,6 +2048,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class ShowProcessesResult
 	{
 		
@@ -1856,6 +2063,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int ProcessID
 		{
 			get
@@ -1872,6 +2080,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string ProcessName
 		{
 			get
@@ -1888,6 +2097,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public int State
 		{
 			get
@@ -1904,6 +2114,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class UpdateJobResult
 	{
 		
@@ -1922,6 +2133,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int JobID
 		{
 			get
@@ -1938,6 +2150,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string JobName
 		{
 			get
@@ -1954,6 +2167,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> PlannedCount
 		{
 			get
@@ -1970,6 +2184,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public System.Nullable<int> CompletedCount
 		{
 			get
@@ -1986,6 +2201,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public System.Nullable<double> PercentComplete
 		{
 			get
@@ -2002,6 +2218,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class UpdateMessageResult
 	{
 		
@@ -2020,6 +2237,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int MessageID
 		{
 			get
@@ -2036,6 +2254,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string Message
 		{
 			get
@@ -2052,6 +2271,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.DateTime Date
 		{
 			get
@@ -2068,6 +2288,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public int Category
 		{
 			get
@@ -2084,6 +2305,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public int Priority
 		{
 			get
@@ -2100,6 +2322,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class GetProcessResult
 	{
 		
@@ -2114,6 +2337,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int ProcessID
 		{
 			get
@@ -2130,6 +2354,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string ProcessName
 		{
 			get
@@ -2146,6 +2371,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public int State
 		{
 			get
@@ -2162,6 +2388,7 @@ namespace PeregrineDB
 		}
 	}
 	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class GetJobResult
 	{
 		
@@ -2180,6 +2407,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int JobID
 		{
 			get
@@ -2196,6 +2424,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobName", DbType="NChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public string JobName
 		{
 			get
@@ -2212,6 +2441,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlannedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> PlannedCount
 		{
 			get
@@ -2228,6 +2458,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompletedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public System.Nullable<int> CompletedCount
 		{
 			get
@@ -2244,6 +2475,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PercentComplete", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public System.Nullable<double> PercentComplete
 		{
 			get
@@ -2255,104 +2487,6 @@ namespace PeregrineDB
 				if ((this._PercentComplete != value))
 				{
 					this._PercentComplete = value;
-				}
-			}
-		}
-	}
-	
-	public partial class GetMessageResult
-	{
-		
-		private int _MessageID;
-		
-		private string _Message;
-		
-		private System.DateTime _Date;
-		
-		private int _Category;
-		
-		private int _Priority;
-		
-		public GetMessageResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
-		public int MessageID
-		{
-			get
-			{
-				return this._MessageID;
-			}
-			set
-			{
-				if ((this._MessageID != value))
-				{
-					this._MessageID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
-		public string Message
-		{
-			get
-			{
-				return this._Message;
-			}
-			set
-			{
-				if ((this._Message != value))
-				{
-					this._Message = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
-		public System.DateTime Date
-		{
-			get
-			{
-				return this._Date;
-			}
-			set
-			{
-				if ((this._Date != value))
-				{
-					this._Date = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
-		public int Category
-		{
-			get
-			{
-				return this._Category;
-			}
-			set
-			{
-				if ((this._Category != value))
-				{
-					this._Category = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
-		public int Priority
-		{
-			get
-			{
-				return this._Priority;
-			}
-			set
-			{
-				if ((this._Priority != value))
-				{
-					this._Priority = value;
 				}
 			}
 		}

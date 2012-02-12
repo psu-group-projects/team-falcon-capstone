@@ -5,59 +5,80 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using PeregrineDB;
 
 namespace PeregrineAPI
 {
+
+    //By default, stored proceedures order desc. This keeps most recent entrys up top.
+    //Thus, order enums from lowset importance to highest (except for sortby).
     [DataContract]
     public enum Category
     {
         [EnumMember]
-        ERROR,
+        START, //0
         [EnumMember]
-        INFORMATION,
+        STOP, //1
         [EnumMember]
-        STATE_CHANGE,
+        INFORMATION, //2
         [EnumMember]
-        START,
+        STATE_CHANGE, //3
         [EnumMember]
-        STOP,
+        PROGRESS, //4
         [EnumMember]
-        PROGRESS
+        ERROR //5
     }
 
     [DataContract]
     public enum Priority
     {
         [EnumMember]
-        HIGH,
+        LOW,
         [EnumMember]
         MEDIUM,
         [EnumMember]
-        LOW
+        HIGH
     }
 
     [DataContract]
     public enum ProcessState
     {
         [EnumMember]
-        RED,
-        [EnumMember]
         GREEN,
         [EnumMember]
-        YELLOW
+        YELLOW,
+        [EnumMember]
+        RED
     }
 
     [DataContract]
     public enum SortBy
     {
         [EnumMember]
-        PROCESS_NAME,
+        PROCESS_NAME, //0
         [EnumMember]
-        LAST_MESSAGE,
+        PROCESS_STATE, //1
         [EnumMember]
-        MESSAGE_DATE,
+        MESSAGE_CONTENT, //2
         [EnumMember]
-        PROCESS_STATE
+        MESSAGE_DATE, //3
+        [EnumMember]
+        MESSAGE_CATEGORY, //4
+        [EnumMember]
+        MESSAGE_PRIORITY, //5
+        [EnumMember]
+        JOB_NAME, //6
+        [EnumMember]
+        JOB_PERCENT_COMPLETE //7
+    }
+
+    [DataContract]
+    public enum SortDirection
+    {
+        [EnumMember]
+        ASSENDING,
+        [EnumMember]
+        DESENDING
     }
 
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
@@ -69,23 +90,32 @@ namespace PeregrineAPI
          * UI Service Operations
          */
         [OperationContract]
-        MessageDTO getMessage(int msg_id);
+        Message getMessage(int msg_id);
 
         [OperationContract]
         List<ProcessDTO> getAllProcesses();
 
         // This will be the main fetching method for the front page. gets summary objects.
         [OperationContract]
-        List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy); 
+        List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy, SortDirection sortDirection); 
 
         //This hooks into the MsgInquryRepo
-        List<MessageDTO> getMessagesByProcessId(
+        [OperationContract]
+        List<Message> getMessagesForMessageInq(
             int processId, 
             int pageSize, 
             int pageNumber, 
             SortBy sortBy, 
+            SortDirection sortDirection,
             bool isShowStartUpAndShutdownCheckMarkEnabled);
 
+        //This is the hook for the JobRepo
+        [OperationContract]
+        List<Job> getPageOfJobsByProcessId(int processId, int pageNumber, int numToFetch);
+
+        //This is the hook for the MessageRepo
+        [OperationContract]
+        List<Message> getPageOfMessagesByProcessId(int processId, int pageNumber, int numToFetch);
 
         /**
          * This is for the client app
@@ -94,19 +124,19 @@ namespace PeregrineAPI
         void logProcessMessage(String processName, String message, Category category, Priority priority);
 
         [OperationContract]
-        void logJobProgressAsPercentage(int jobID, String processName, double percent);
+        void logJobProgressAsPercentage(String jobName, String processName, double percent);
 
         [OperationContract]
-        void logJobProgress(int jobID, String processName, int total, int completed);
+        void logJobProgress(String jobName, String processName, int total, int completed);
 
         [OperationContract]
-        void logJobStart(int jobID, String processName);
+        void logJobStart(String jobName, String processName);
 
         [OperationContract]
-        void logJobStartWithTotalTasks(int jobID, String processName, int totalTasks);
+        void logJobStartWithTotalTasks(String jobName, String processName, int totalTasks);
 
         [OperationContract]
-        void logJobComplete(int jobID, String processName);
+        void logJobComplete(String jobName, String processName);
 
         [OperationContract]
         void logProcessStart(String processName);

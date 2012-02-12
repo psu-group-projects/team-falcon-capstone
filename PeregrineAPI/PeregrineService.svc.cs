@@ -8,15 +8,23 @@ using System.Text;
 using System.IO;
 using PeregrineDBWrapper;
 using PeregrineDB;
+using System.Configuration;
 
 namespace PeregrineAPI
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     public class PeregrineService : IPeregrineService
     {
-        public MessageDTO getMessage(int msg_id)
+        private DBLogWrapper logWrapper = new DBLogWrapper();
+
+        private PeregrineDBDataContext db = new PeregrineDBDataContext();
+        
+        public Message getMessage(int msg_id)
         {
-            throw new NotImplementedException();
+            var message_result = db.GetMessage(msg_id).ToList();
+
+            Message message = message_result[0];
+            return message;
         }
 
         public List<ProcessDTO> getAllProcesses()
@@ -24,11 +32,33 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
-        public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy)
+        public List<Message> getMessagesForMessageInq(
+            int processId, 
+            int pageSize, 
+            int pageNumber, 
+            SortBy sortBy, 
+            SortDirection sortDirection, 
+            bool isShowStartUpAndShutdownCheckMarkEnabled)
+        {
+            List<Message> messages;
+
+            if (isShowStartUpAndShutdownCheckMarkEnabled)
+            {
+                messages = db.GetStartStopMessagesWithProcessID(processId, (int)sortBy, 0, getStartIndex(pageNumber, pageSize), getEndIndex(pageNumber, pageSize)).ToList();
+            }
+            else
+            {
+                messages = db.GetMessagesWithProcessID(processId, (int)sortBy, 0, getStartIndex(pageNumber, pageSize), getEndIndex(pageNumber, pageSize)).ToList();
+            }
+
+            return messages;
+        }
+
+        
+        public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection)
         {
             int start = getStartIndex(pageNumber, numToFetch);
             int end = getEndIndex(pageNumber, numToFetch);
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             List<Process> processes = db.GetPageOfProcess(start, end).ToList<Process>();
 
             List<ProcessSummary> processSummaries = new List<ProcessSummary>();
@@ -45,6 +75,20 @@ namespace PeregrineAPI
             return processSummaries;
         }
 
+        public List<Job> getPageOfJobsByProcessId(int processId, int pageNumber, int numToFetch)
+        {
+            int start = getStartIndex(pageNumber, numToFetch);
+            int end = getEndIndex(pageNumber, numToFetch);
+            return db.GetPageOfJobs(start, end, processId).ToList<Job>();   
+        }
+
+        public List<Message> getPageOfMessagesByProcessId(int processId, int pageNumber, int numToFetch)
+        {
+            int start = getStartIndex(pageNumber, numToFetch);
+            int end = getEndIndex(pageNumber, numToFetch);
+            return db.GetPageOfMessagesByProcessId(start, end, processId).ToList<Message>();
+        }
+
         private static int getEndIndex(int pageNumber, int numToFetch)
         {
             return (pageNumber * numToFetch) - 1;
@@ -55,49 +99,68 @@ namespace PeregrineAPI
             return (pageNumber - 1) * numToFetch;
         }
 
+
+        /**
+         * Below is for the inbound client logging
+         */
+
         public void logProcessMessage(string processName, string message, Category category, Priority priority)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessMessage(processName, message, category, priority);
         }
 
-        public void logJobProgressAsPercentage(int jobID, string processName, double percent)
+        public void logJobProgressAsPercentage(String jobName, string processName, double percent)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobProgressAsPercentage(jobName, processName, percent);
         }
 
-        public void logJobProgress(int jobID, string processName, int total, int completed)
+        public void logJobProgress(String jobName, string processName, int total, int completed)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobProgress(jobName, processName, total, completed);
         }
 
-        public void logJobStart(int jobID, string processName)
+        public void logJobStart(String jobName, string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobStart(jobName, processName);
         }
 
-        public void logJobStartWithTotalTasks(int jobID, string processName, int totalTasks)
+        public void logJobStartWithTotalTasks(String jobName, string processName, int totalTasks)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobStartWithTotalTasks(jobName, processName, totalTasks);
         }
 
-        public void logJobComplete(int jobID, string processName)
+        public void logJobComplete(String jobName, string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logJobComplete(jobName, processName);
         }
 
         public void logProcessStart(string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessStart(processName);
         }
 
         public void logProcessShutdown(string processName)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessShutdown(processName);
         }
 
         public void logProcessStateChange(string processName, ProcessState state)
         {
-            throw new NotImplementedException();
+            logWrapper.logProcessStateChange(processName, state);
+        }
+
+
+        //This method will be called automatically on some callback.
+        //http://www.mikesdotnetting.com/Article/129/Simple-task-Scheduling-using-Global.asax
+        public void cleanUpDatabase()
+        {
+            int interval = int.Parse(ConfigurationManager.AppSettings.Get("DB_Cleanup_Interval"));
+            int process_min_life = int.Parse(ConfigurationManager.AppSettings.Get("Process_Min_Life_Time"));
+
+            //call some stored proceedure to fetch the last cleanup datetime. (we will need to store this somewhere. maybe a file or a new table?)
+            //if ((now time) - (last cleanup time) > interval){
+            //  call stored proceedure to delete processes that are in a done state and (now - their datetime) > process_min_life
+            //}
         }
 
 

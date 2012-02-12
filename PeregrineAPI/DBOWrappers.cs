@@ -34,11 +34,12 @@ namespace PeregrineDBWrapper
             State = GlobVar.DEFAULT_PROCESS_STATE;
         }
 
+        private PeregrineDBDataContext db = new PeregrineDBDataContext();
+        
         // This constructor will retrieve a process from the DB by ProcessName or add it
         // to the DB if it's not already there.
         public ProcessWrapper(string procName)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             List<Process> result = db.GetProcessByName(procName).ToList<Process>();
             int resultCount = result.Count();
 
@@ -65,7 +66,6 @@ namespace PeregrineDBWrapper
 
         public ProcessWrapper(int id)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<GetProcessResult> result = db.GetProcess(id);
             // should only have one proc in result
             foreach (GetProcessResult proc in result)
@@ -80,7 +80,6 @@ namespace PeregrineDBWrapper
         {
             State = state;
 
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<UpdateProcessResult> result = db.UpdateProcess(ProcessId, ProcessName, (int)State);
             // repopulate Properties?
         }
@@ -88,7 +87,6 @@ namespace PeregrineDBWrapper
         [Obsolete]
         public void PutInDatabase()
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<InsertProcessResult> result = db.InsertProcess(null, ProcessName, (int)State);
             // should only have one proc in result
             foreach (InsertProcessResult proc in result)
@@ -101,7 +99,6 @@ namespace PeregrineDBWrapper
 
         public void DeleteFromDatabase()
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             db.DeleteProcess(ProcessId);
         }
     }
@@ -118,9 +115,10 @@ namespace PeregrineDBWrapper
             PercentComplete = 0;
         }
 
+        private PeregrineDBDataContext db = new PeregrineDBDataContext();
+
         public JobWrapper(string jobName)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             List<Job> result = db.GetJobByName(jobName).ToList<Job>();
             int resultCount = result.Count();
 
@@ -150,7 +148,6 @@ namespace PeregrineDBWrapper
 
         public JobWrapper(int id)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<GetJobResult> result = db.GetJob(id);
             // should only have one job in result
             foreach (GetJobResult job in result)
@@ -166,7 +163,6 @@ namespace PeregrineDBWrapper
         {
             PercentComplete = percent;
 
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<UpdateJobResult> result = db.UpdateJob(JobId, JobName, PlannedCount, (int)((double)PlannedCount*PercentComplete*0.01), PercentComplete);
             // repopulate Properties?
         }
@@ -176,7 +172,6 @@ namespace PeregrineDBWrapper
             PercentComplete = ((double)completed/(double)total) * 100.0;
             PlannedCount = total;
 
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<UpdateJobResult> result = db.UpdateJob(JobId, JobName, PlannedCount, completed, PercentComplete);
             // repopulate Properties?
         }
@@ -184,7 +179,6 @@ namespace PeregrineDBWrapper
         [Obsolete]
         public void PutInDatabase()
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<InsertJobResult> result = db.InsertJob(null, JobName, PlannedCount, 0, PercentComplete);
             // should only have one job in result
             foreach (InsertJobResult job in result)
@@ -198,7 +192,6 @@ namespace PeregrineDBWrapper
 
         public void DeleteFromDatabase()
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             db.DeleteJob(JobId);
         }
     }
@@ -215,9 +208,10 @@ namespace PeregrineDBWrapper
             Priority = 0;
         }
 
+        private PeregrineDBDataContext db = new PeregrineDBDataContext();
+
         public MessageWrapper(String message, Category category, Priority priority)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             InsertMessageResult result = db.InsertMessage(GlobVar.UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority).First();
 
             MessageId = result.MessageID;
@@ -226,16 +220,15 @@ namespace PeregrineDBWrapper
             Category = (Category)result.Category;
             Priority = (Priority)result.Priority;
         }
-    
+        
         public MessageWrapper(int id)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
-            ISingleResult<GetMessageResult> result = db.GetMessage(id);
+            ISingleResult<Message> result = db.GetMessage(id);
             // should only have one message in result
-            foreach (GetMessageResult mess in result)
+            foreach (Message mess in result)
             {
                 MessageId = mess.MessageID;
-                Message = mess.Message;
+                Message = mess.Message1;
                 Date = mess.Date;
                 Category = (Category)mess.Category;
                 Priority = (Priority)mess.Priority;
@@ -245,7 +238,6 @@ namespace PeregrineDBWrapper
         [Obsolete]
         public void PutInDatabase()
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             ISingleResult<InsertMessageResult> result = db.InsertMessage(null, Message, Date, (int)Category, (int)Priority);
             // should only have one message in result
             foreach (InsertMessageResult mess in result)
@@ -260,7 +252,6 @@ namespace PeregrineDBWrapper
 
         public void DeleteFromDatabase()
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             db.DeleteMessage(MessageId);
         }
     }
@@ -271,9 +262,10 @@ namespace PeregrineDBWrapper
         private int processId;
         private int jobId;
 
+        private PeregrineDBDataContext db = new PeregrineDBDataContext();
+
         public LogRelWrapper(int messageId, int processId)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             LogRel result = db.InsertLogRel(messageId, processId, null).First();
 
             MessageId = result.MessageID;
@@ -283,7 +275,6 @@ namespace PeregrineDBWrapper
 
         public LogRelWrapper(int messageId, int processId, int jobId)
         {
-            PeregrineDBDataContext db = new PeregrineDBDataContext();
             LogRel result = db.InsertLogRel(messageId, processId, jobId).First();
 
             MessageId = result.MessageID;
