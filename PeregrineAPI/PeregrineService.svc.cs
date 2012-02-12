@@ -59,7 +59,6 @@ namespace PeregrineAPI
         {
             int start = getStartIndex(pageNumber, numToFetch);
             int end = getEndIndex(pageNumber, numToFetch);
-            //PeregrineDBDataContext db = new PeregrineDBDataContext();
             List<Process> processes = db.GetPageOfProcess(start, end).ToList<Process>();
 
             List<ProcessSummary> processSummaries = new List<ProcessSummary>();
@@ -76,6 +75,18 @@ namespace PeregrineAPI
             return processSummaries;
         }
 
+        public List<Job> getListOfJobsByProcessName(int pageNumber, int numToFetch, string processName)
+        {
+            int start = getStartIndex(pageNumber, numToFetch);
+            int end = getEndIndex(pageNumber, numToFetch);
+            return null;   
+        }
+
+        public List<MessageDTO> getMessagesByProcessName(string searchpattern, int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection)
+        {
+            throw new NotImplementedException();
+        }
+
         private static int getEndIndex(int pageNumber, int numToFetch)
         {
             return (pageNumber * numToFetch) - 1;
@@ -85,6 +96,11 @@ namespace PeregrineAPI
         {
             return (pageNumber - 1) * numToFetch;
         }
+
+
+        /**
+         * Below is for the inbound client logging
+         */
 
         public void logProcessMessage(string processName, string message, Category category, Priority priority)
         {

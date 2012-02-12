@@ -109,6 +109,13 @@ namespace PeregrineAPI
             SortDirection sortDirection,
             bool isShowStartUpAndShutdownCheckMarkEnabled);
 
+        //This is the hook for the JobRepo
+        [OperationContract]
+        List<Job> getListOfJobsByProcessName(int pageNumber, int numToFetch, String processName);
+
+        //This is the hook for the MessageRepo
+        [OperationContract]
+        List<MessageDTO> getMessagesByProcessName(string searchpattern, int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection);
 
         /**
          * This is for the client app
