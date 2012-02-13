@@ -30,9 +30,12 @@ namespace PeregrineUI_2.Controllers
         }
 
         [HttpPost]
-        public ActionResult MainPageAjaxUpdate(int page, int SortingType, string SearchPattern)
+        public ActionResult MainPageAjaxUpdate(int page, int sort_input, string SearchPattern)
         {
-            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, SortingType, SearchPattern, PageSize);
+            int sort_columm = sort_input / 2;
+            int sort_type = sort_input % 2;  // sort_type = [0 for accending and 1 for descending]
+
+            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, SearchPattern, PageSize);
             return PartialView("ProcessList", pagingContext);
         }
 

@@ -6,11 +6,14 @@ Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
 */
 
-function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
+///////////////////////////////////////// Main Page ////////////////////////////////////////////////////////////
+
+/**/
+function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
     $.ajax({
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',
-        data: { "page": page, "SortingType": SortingType, "SearchPattern": SearchPattern },
+        data: { "page": page, "sort_input": sort_input, "SearchPattern": SearchPattern },
         success: function (data) {
             $('div.process-list').empty();
             $('div.process-list').append(data);
@@ -21,7 +24,31 @@ function MainPageAjaxUpdate(page, SortingType, SearchPattern) {
     });
 }
 
+/**/
+function Main_page_sorting(id) {
+    var s_option;
 
+    // If we check this checkbox, turnoff the other sorting checkbox
+    if (id == "Main_page_pro_name_sort_acc") s_option = "0";
+    else if (id == "Main_page_pro_name_sort_desc") s_option = "1";
+    else if (id == "Main_page_last_msg_sort_acc") s_option = "2";
+    else if (id == "Main_page_last_msg_sort_desc") s_option = "3";
+    else if (id == "Main_page_msg_date_sort_acc") s_option = "4";
+    else if (id == "Main_page_msg_date_sort_desc") s_option = "5";
+    else if (id == "Main_page_pro_state_sort_acc") s_option = "6";
+    else if (id == "Main_page_pro_state_sort_desc") s_option = "7";
+    else {
+        alert("SORTING ERROR");
+    }
+
+    // Make ajax call to controller to update the table
+    MainPageAjaxUpdate(parseInt("1"),      // Page number
+                            s_option,           // Sort option
+                            document.getElementById("main_page_search_input").value);
+    current_scrolldown_process = '*_*';
+}
+
+/**/
 function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
     
     if (msg_or_job == 'Msg') {
@@ -32,6 +59,7 @@ function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
     }
 }
 
+/**/
 function ProcessMsgUpdate(page, process_name) {
     $.ajax({
         type: "POST",
@@ -47,6 +75,7 @@ function ProcessMsgUpdate(page, process_name) {
     });
 }
 
+/**/
 function ProcessJobUpdate(page, process_name) {
     $.ajax({
         type: "POST",
@@ -96,7 +125,7 @@ function show_message(page, process_name) {
 }
 
 
-// Message inquiry page helper api
+///////////////////////////////////////// Message Inquiry Page ////////////////////////////////////////////////////////////
 
 /**/
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
@@ -182,9 +211,7 @@ function Change_SU_SD_Status(sort_option, process_priority, process_name) {
 }
 
 /**/
-function Msg_inquiry_sorting(chkboxname) {
-    // Getting the state of the chose checkbox
-    //var state = document.getElementById(chkboxname).checked;
+function Msg_inquiry_sorting(chkboxname) {   
     var s_option;
 
     // If we check this checkbox, turnoff the other sorting checkbox

@@ -9,7 +9,7 @@ namespace PeregrineUI_2.Models.Repository
 {
     public class SummaryRepository
     {
-        public static PageData<Process> GetSummaryDataByPage(int page, int sortOption, string searchpattern, int pagesize)
+        public static PageData<Process> GetSummaryDataByPage(int page, int sortColumm, int sort_type, string process_name, int pagesize)
         {
             List<Process> SummaryData = new List<Process>();
          
@@ -102,8 +102,8 @@ namespace PeregrineUI_2.Models.Repository
             var pagingContext = new PageData<Process>();
 
             // Filtering if searching is actived
-            if (searchpattern != "")
-                SummaryData = SummaryData.Where(p => p.ProcessName.Contains(searchpattern)).ToList();
+            if (process_name != "")
+                SummaryData = SummaryData.Where(p => p.ProcessName.Contains(process_name)).ToList();
 
             int totalpage = Convert.ToInt32(Math.Ceiling((double)SummaryData.Count() / pagesize));
 
@@ -114,19 +114,39 @@ namespace PeregrineUI_2.Models.Repository
                 page = 1;
 
             // Do the sorting
-            switch (sortOption)
+            switch (sortColumm)
             {
+                case 0:
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.ProcessName).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.ProcessName).ToList();
+                    }
+                    break;
                 case 1:
-                    SummaryData = SummaryData.OrderBy(p => p.ProcessName).ToList();
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.LastAction).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.LastAction).ToList();
+                    }
                     break;
                 case 2:
-                    SummaryData = SummaryData.OrderBy(p => p.LastAction).ToList();
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.MsgDate).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.MsgDate).ToList();
+                    }
                     break;
                 case 3:
-                    SummaryData = SummaryData.OrderBy(p => p.MsgDate).ToList();
-                    break;
-                case 4:
-                    SummaryData = SummaryData.OrderBy(p => p.ProcessState).ToList();
+                    {
+                        if (sort_type == 0)
+                            SummaryData = SummaryData.OrderBy(p => p.ProcessState).ToList();
+                        else
+                            SummaryData = SummaryData.OrderByDescending(p => p.ProcessState).ToList();
+                    }   
                     break;
                 default:
                     break;
@@ -136,7 +156,7 @@ namespace PeregrineUI_2.Models.Repository
             pagingContext.Data = SummaryData.Skip(pagesize * (page - 1)).Take(pagesize).ToList();
             pagingContext.NumberOfPages = totalpage;
             pagingContext.CurrentPage = page;
-            pagingContext.SortingType = sortOption;
+            pagingContext.SortingType = (sortColumm * 2) + sort_type;
 
             return pagingContext;
 
