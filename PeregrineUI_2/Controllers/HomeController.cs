@@ -29,6 +29,17 @@ namespace PeregrineUI_2.Controllers
             return View();
         }
 
+        /*
+        [HttpPost]
+        public ActionResult MainPageAjaxUpdate(int page, int sort_input, string SearchPattern)
+        {
+            int sort_columm = sort_input / 2;
+            int sort_type = sort_input % 2;  // sort_type = [0 for accending and 1 for descending]
+
+            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, SearchPattern, PageSize);
+            return PartialView("ProcessList", pagingContext);
+        }*/
+
         [HttpPost]
         public ActionResult MainPageAjaxUpdate(int page, int sort_input, string SearchPattern)
         {
@@ -38,7 +49,6 @@ namespace PeregrineUI_2.Controllers
             var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, SearchPattern, PageSize);
             return PartialView("ProcessList", pagingContext);
         }
-
 
         [HttpPost]
         public ActionResult ProcessMsgUpdate(int page, string processName)

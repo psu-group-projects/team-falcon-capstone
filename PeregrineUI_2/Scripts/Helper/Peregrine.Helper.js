@@ -15,8 +15,7 @@ function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
         url: '/Home/MainPageAjaxUpdate',
         data: { "page": page, "sort_input": sort_input, "SearchPattern": SearchPattern },
         success: function (data) {
-            $('div.process-list').empty();
-            $('div.process-list').append(data);
+            $('.process-list').html(data);
         },
         error: function (result) {
             alert(result);
@@ -29,20 +28,52 @@ function Main_page_sorting(id) {
     var s_option;
 
     // If we check this checkbox, turnoff the other sorting checkbox
-    if (id == "Main_page_pro_name_sort_acc") s_option = "0";
-    else if (id == "Main_page_pro_name_sort_desc") s_option = "1";
-    else if (id == "Main_page_last_msg_sort_acc") s_option = "2";
-    else if (id == "Main_page_last_msg_sort_desc") s_option = "3";
-    else if (id == "Main_page_msg_date_sort_acc") s_option = "4";
-    else if (id == "Main_page_msg_date_sort_desc") s_option = "5";
-    else if (id == "Main_page_pro_state_sort_acc") s_option = "6";
-    else if (id == "Main_page_pro_state_sort_desc") s_option = "7";
+    if (id == "Main_page_pro_name_sort_acc") {
+        s_option = "0";
+        $("#Main_page_pro_name_sort_acc div").addClass("arrow_selected");
+        $("#Main_page_pro_name_sort_desc div").removeClass("arrow_selected");
+    }
+    else if (id == "Main_page_pro_name_sort_desc") {
+        s_option = "1";
+        $("#Main_page_pro_name_sort_acc div").removeClass("arrow_selected");
+        $("#Main_page_pro_name_sort_desc div").addClass("arrow_selected");
+    }
+    else if (id == "Main_page_last_msg_sort_acc") {
+        s_option = "2";
+        $("#Main_page_last_msg_sort_acc div").addClass("arrow_selected");
+        $("#Main_page_last_msg_sort_desc div").removeClass("arrow_selected");
+    }
+    else if (id == "Main_page_last_msg_sort_desc") {
+        s_option = "3";
+        $("#Main_page_last_msg_sort_acc div").removeClass("arrow_selected");
+        $("#Main_page_last_msg_sort_desc div").addClass("arrow_selected");
+    }
+    else if (id == "Main_page_msg_date_sort_acc") {
+        s_option = "4";
+        $("#Main_page_msg_date_sort_acc div").addClass("arrow_selected");
+        $("#Main_page_msg_date_sort_desc div").removeClass("arrow_selected");
+    }
+    else if (id == "Main_page_msg_date_sort_desc") {
+        s_option = "5";
+        $("#Main_page_msg_date_sort_acc div").removeClass("arrow_selected");
+        $("#Main_page_msg_date_sort_desc div").addClass("arrow_selected");
+    }
+    else if (id == "Main_page_pro_state_sort_acc") {
+        s_option = "6";
+        $("#Main_page_pro_state_sort_acc div").addClass("arrow_selected");
+        $("#Main_page_pro_state_sort_desc div").removeClass("arrow_selected");
+    }
+    else if (id == "Main_page_pro_state_sort_desc") {
+        s_option = "7";
+        $("#Main_page_pro_state_sort_acc div").removeClass("arrow_selected");
+        $("#Main_page_pro_state_sort_desc div").addClass("arrow_selected");
+    }
     else {
         alert("SORTING ERROR");
     }
 
     // Make ajax call to controller to update the table
-    MainPageAjaxUpdate(parseInt("1"),      // Page number
+    MainPageAjaxUpdate(main_page_main_current_page,      // Page number
                             s_option,           // Sort option
                             document.getElementById("main_page_search_input").value);
     current_scrolldown_process = '*_*';
@@ -215,23 +246,55 @@ function Msg_inquiry_sorting(chkboxname) {
     var s_option;
 
     // If we check this checkbox, turnoff the other sorting checkbox
-    if (chkboxname == "Msg_inq_msg_id_sort_acc") s_option = "0";
-    else if (chkboxname == "Msg_inq_msg_id_sort_desc") s_option = "1";
-    else if (chkboxname == "Msg_inq_context_sort_acc") s_option = "2";
-    else if (chkboxname == "Msg_inq_context_sort_desc") s_option = "3";
-    else if (chkboxname == "Msg_inq_name_sort_acc") s_option = "4";
-    else if (chkboxname == "Msg_inq_name_sort_desc") s_option = "5";
-    else if (chkboxname == "Msg_inq_prio_sort_acc") s_option = "6";
-    else if (chkboxname == "Msg_inq_prio_sort_desc") s_option = "7";
-    else if (chkboxname == "Msg_inq_date_sort_acc") s_option = "8";
-    else if (chkboxname == "Msg_inq_date_sort_desc") s_option = "9";
-    else {
+    if (chkboxname == "Msg_inq_msg_id_sort_acc") {
+        s_option = "0";
+        $("#Msg_inq_msg_id_sort_acc div").addClass("arrow_selected");
+        $("#Msg_inq_msg_id_sort_desc div").removeClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_msg_id_sort_desc") {
+        s_option = "1";
+        $("#Msg_inq_msg_id_sort_acc div").removeClass("arrow_selected");
+        $("#Msg_inq_msg_id_sort_desc div").addClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_context_sort_acc") {
+        s_option = "2";
+        $("#Msg_inq_context_sort_acc div").addClass("arrow_selected");
+        $("#Msg_inq_context_sort_desc div").removeClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_context_sort_desc") {
+        s_option = "3";
+        $("#Msg_inq_context_sort_acc div").removeClass("arrow_selected");
+        $("#Msg_inq_context_sort_desc div").addClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_name_sort_acc") {
+        s_option = "4";
+        $("#Msg_inq_name_sort_acc div").addClass("arrow_selected");
+        $("#Msg_inq_name_sort_desc div").removeClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_name_sort_desc") {
+        s_option = "5";
+        $("#Msg_inq_name_sort_acc div").removeClass("arrow_selected");
+        $("#Msg_inq_name_sort_desc div").addClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_prio_sort_acc") {
+        s_option = "6";
+        $("#Msg_inq_prio_sort_acc div").addClass("arrow_selected");
+        $("#Msg_inq_prio_sort_desc div").removeClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_prio_sort_desc") {
+        s_option = "7";
+        $("#Msg_inq_prio_sort_acc div").removeClass("arrow_selected");
+        $("#Msg_inq_prio_sort_desc div").addClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_date_sort_acc") {
+        s_option = "8";
+        $("#Msg_inq_date_sort_acc div").addClass("arrow_selected");
+        $("#Msg_inq_date_sort_desc div").removeClass("arrow_selected");
+    } else if (chkboxname == "Msg_inq_date_sort_desc") {
+        s_option = "9";
+        $("#Msg_inq_date_sort_acc div").removeClass("arrow_selected");
+        $("#Msg_inq_date_sort_desc div").addClass("arrow_selected");
+    } else {
         alert("SORTING ERROR");
     }
 
     // Make ajax call to controller to update the table
-    Msg_inquiry_collect_info(       "1",            // Page number
+    /*Msg_inquiry_collect_info(       "1",            // Page number
                                     s_option,       // Sort option
                                     document.getElementById("process_prio_input").value,
-                                    document.getElementById("process_name_input").value);
+                                    document.getElementById("process_name_input").value);*/
+
+    MsgInquiryUpdate(msg_inquiry_current_page, s_option, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0))
 }

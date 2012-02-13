@@ -153,7 +153,8 @@ namespace PeregrineUI_2.Models.Repository
             }
 
             // Fill out the info of PageData var type
-            pagingContext.Data = SummaryData.Skip(pagesize * (page - 1)).Take(pagesize).ToList();
+            //pagingContext.Data = SummaryData.Skip(pagesize * (page - 1)).Take(pagesize).ToList();
+            pagingContext.Data = SummaryData.Take(pagesize*page).ToList();
             pagingContext.NumberOfPages = totalpage;
             pagingContext.CurrentPage = page;
             pagingContext.SortingType = (sortColumm * 2) + sort_type;

@@ -32,7 +32,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         // Set up the initial stage of the message inquiry page
         MsgInquiryUpdate(
                             "1",    // current page number = 1
-                            "10",    // sort_option = 5 which is sort by date descending
+                            "9",    // sort_option = 5 which is sort by date descending
                             "0",    // msg_priority = 0 which will show every message with every possible priority
                             "",     // processname = "" which will search for all message
                             "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
@@ -114,12 +114,14 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <br />
 
 <label>Get all start up and shutdown msg: </label>
-<input id="SU_SD_Checkbox" type="checkbox" 
+<!--<input id="SU_SD_Checkbox" type="checkbox" 
         onclick="Change_SU_SD_Status (
                                         msg_inquiry_current_sort,
                                         document.getElementById('process_prio_input').value,
                                         document.getElementById('process_name_input').value  
-                                        );"/>
+                                        );"/>-->
+
+    <input id="SU_SD_Checkbox" type="checkbox" onclick="MsgInquiryUpdate((msg_inquiry_current_page+1), msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" />
    
                                                                             
 <hr />
@@ -131,7 +133,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <div id="popwindow_header"></div>
     <hr />
     <div id="popwindow_message"></div>
-    <div id="closebutton" ><input type="button" value="Close" onClick="showpopup('-1', '');"></div>
+    <div id="closebutton" ><input type="button" value="Close" onclick="showpopup('-1', '');" /></div>
 </div>
 
 <!-- Code development corner -->

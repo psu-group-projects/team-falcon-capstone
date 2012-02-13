@@ -37,6 +37,46 @@ body {
 	cursor: pointer;
 }
 
+.up_arrow 
+{
+    background-image: url('../../Content/themes/base/images/ui-icons_222222_256x240.png');
+    width: 16px; 
+    height: 16px;
+    display: inline-block;
+}
+
+.down_arrow
+{
+    background-image: url('../../Content/themes/base/images/ui-icons_222222_256x240.png');
+    background-position: -64px 0;
+    width: 16px; 
+    height: 16px;
+    display: inline-block;
+}
+
+.arrow_selected 
+{
+    background-image: url('../../Content/themes/base/images/ui-icons_cd0a0a_256x240.png') !important;
+}
+
+.arrow_bg
+{
+    display: inline-block;
+    background: url('../../Content/themes/base/images/ui-bg_glass_65_ffffff_1x400.png') repeat-x scroll 50% 50% #ffffff;
+    opacity:0.8;
+    filter:alpha(opacity=80);
+    border: 1px solid #D3D3D3;
+    width: 16px; height: 16px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.arrow_bg:hover 
+{
+    background: url('../../Content/themes/base/images/ui-bg_glass_75_dadada_1x400.png') repeat-x scroll 50% 50% #ffffff;
+}
+
 #process_table tbody td {  color:#000; padding:7px 15px; }
 
 #expand_row { background:#C7DDEE none repeat-x scroll center left; color:#000; padding:7px 15px; }

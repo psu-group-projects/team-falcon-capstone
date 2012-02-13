@@ -85,7 +85,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             <td>
                 <div style="float: left">Process Name</div> 
                 <div style="float: right">           
-                    <a style="text-decoration:none" href="javascript:void(0);"> 
+                    <!--<a style="text-decoration:none" href="javascript:void(0);"> 
                         <img    id="Main_page_pro_name_sort_acc" 
                                 src="../../Content/images/up.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
@@ -94,13 +94,20 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         <img    id="Main_page_pro_name_sort_desc" 
                                 src="../../Content/images/down.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
-                    </a>
+                    </a>-->
+                               
+                    <div id="Main_page_pro_name_sort_acc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 0){
+                                                                                                                                          @:arrow_selected
+                                                                                                                                          }"></div></div>
+                    <div id="Main_page_pro_name_sort_desc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 1){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
                 </div>                               
             </td>
             <td>
                 <div style="float: left">Last Message</div> 
                 <div style="float: right">           
-                    <a style="text-decoration:none" href="javascript:void(0);"> 
+                    <!--<a style="text-decoration:none" href="javascript:void(0);"> 
                         <img    id="Main_page_last_msg_sort_acc" 
                                 src="../../Content/images/up.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
@@ -109,13 +116,20 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         <img    id="Main_page_last_msg_sort_desc" 
                                 src="../../Content/images/down.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
-                    </a>
+                    </a>-->
+
+                    <div id="Main_page_last_msg_sort_acc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 2){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
+                    <div id="Main_page_last_msg_sort_desc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 3){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
                 </div>            
             </td>
             <td>
                 <div style="float: left">Message Date</div> 
                 <div style="float: right">           
-                    <a style="text-decoration:none" href="javascript:void(0);"> 
+                    <!--<a style="text-decoration:none" href="javascript:void(0);"> 
                         <img    id="Main_page_msg_date_sort_acc" 
                                 src="../../Content/images/up.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
@@ -124,13 +138,20 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         <img    id="Main_page_msg_date_sort_desc" 
                                 src="../../Content/images/down.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
-                    </a>
+                    </a>-->
+
+                    <div id="Main_page_msg_date_sort_acc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 4){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
+                    <div id="Main_page_msg_date_sort_desc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 5){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
                 </div>              
             </td>
             <td>
                 <div style="float: left">Process State</div> 
                 <div style="float: right">           
-                    <a style="text-decoration:none" href="javascript:void(0);"> 
+                    <!--<a style="text-decoration:none" href="javascript:void(0);"> 
                         <img    id="Main_page_pro_state_sort_acc" 
                                 src="../../Content/images/up.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
@@ -139,7 +160,13 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         <img    id="Main_page_pro_state_sort_desc" 
                                 src="../../Content/images/down.png" 
                                 alt="" onclick="Main_page_sorting(this.id);" /> 
-                    </a>
+                    </a>-->
+                    <div id="Main_page_pro_state_sort_acc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 6){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
+                    <div id="Main_page_pro_state_sort_desc" onclick="Main_page_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 7){
+                                                                                                                                             @:arrow_selected
+                                                                                                                                          }"></div></div>
                 </div>                 
             </td>
             <td>
@@ -158,7 +185,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
-                <td><center><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/></center> </td>
+                <td style="text-align: center;"><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/> </td>
                 <td><div class="arrow"></div></td>
                            
             </tr>
@@ -189,7 +216,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <!-- Table footer: Paging -->
     <tfoot>
         <tr>
-            <td colspan="4">
+            <!--<td colspan="4">
                 @{  // Pagination     
 
                     int start, end;
@@ -276,6 +303,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                         main_page_main_current_sort, 
                                                         document.getElementById('main_page_search_input').value);
                                   current_scrolldown_process = '*_*' "/>
+            </td>-->
+            <td colspan="5">
+                <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="MainPageAjaxUpdate((main_page_main_current_page+1), main_page_main_current_sort, document.getElementById('main_page_search_input').value)" /></div>
             </td>
         </tr>              
     </tfoot>
