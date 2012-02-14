@@ -93,7 +93,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <label>Search message by message priority:</label>
 <select id="process_prio_input" 
         onchange="Msg_inquiry_collect_info ( 
-                                                '1',
+                                                msg_inquiry_current_page,
                                                 msg_inquiry_current_sort,                                      
                                                 document.getElementById('process_prio_input').value,
                                                 document.getElementById('process_name_input').value
@@ -114,16 +114,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <br />
 
 <label>Get all start up and shutdown msg: </label>
-<!--<input id="SU_SD_Checkbox" type="checkbox" 
-        onclick="Change_SU_SD_Status (
-                                        msg_inquiry_current_sort,
-                                        document.getElementById('process_prio_input').value,
-                                        document.getElementById('process_name_input').value  
-                                        );"/>-->
 
-    <input id="SU_SD_Checkbox" type="checkbox" onclick="MsgInquiryUpdate((msg_inquiry_current_page+1), msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" />
-   
-                                                                            
+<input id="SU_SD_Checkbox" type="checkbox" onclick="MsgInquiryUpdate(msg_inquiry_current_page, msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" />
+                                                                             
 <hr />
 
 <div class="message-list"></div>
