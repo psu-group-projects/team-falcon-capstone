@@ -4,39 +4,20 @@ using System.Linq;
 using System.Text;
 
 using System.Data.SqlClient;
-// using System.IO; // needed for accessing files - not currently needed
 using System.Text.RegularExpressions;
 
-namespace PeregrineDBTesting
+namespace PeregrineCreateDB
 {
     class Program
     {
         static void Main(string[] args)
         {
-            if (args.Count() == 0)
-            {
-                Console.WriteLine("Arguments are required. Here are your options...");
-                Console.WriteLine("create - create a fresh Peregrine database");
-            }
-            // iterate through given arguments
-            else foreach (string arg in args)
-            {
-
-                switch (arg)
-                {
-                    case "create":
-                        createDB();
-                        break;
-                    default:
-                        Console.WriteLine("Unknown argument: {0}", arg);
-                        break;
-                }
-            }
+            createDB();
         }
 
         static void createDB()
         {
-            string dbName = "PeregrineDB";           // name of db to be created
+            string dbName = "PeregrineTestDB";  // name of db to be created
             string reply;                       // for user input
             Boolean okayToGo;                   // for input loop
 
@@ -51,7 +32,7 @@ namespace PeregrineDBTesting
                 else
                 {
                     if (reply != "") dbName = reply;
-                    if (String.Compare(dbName, Properties.Resources.OldDBName, true) == 0) Console.WriteLine("\nWarning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDBName);
+                    if (String.Compare(dbName, Properties.Resources.OldDatabaseName, true) == 0) Console.WriteLine("\nWarning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDatabaseName);
                     okayToGo = true;
                 }
             }
@@ -71,7 +52,7 @@ namespace PeregrineDBTesting
                 connection.Open();
 
                 Console.WriteLine("Dropping old and creating empty {0} database...", dbName);
-                executeScript(connection, dbName, Properties.Resources.DropCreatePeregrineDB_sql);
+                executeScript(connection, dbName, Properties.Resources.DropCreateEmptyDatabaseSql);
 
                 Console.WriteLine("Creating {0} database tables, views, and stored procedures...", dbName);
                 executeScript(connection, dbName, Properties.Resources.CreateDatabaseSql);
@@ -86,7 +67,7 @@ namespace PeregrineDBTesting
         static void executeScript(SqlConnection connection, string dbName, string script)
         {
             script = script + Environment.NewLine;
-            script = script.Replace(Properties.Resources.OldDBName, dbName);
+            script = script.Replace(Properties.Resources.OldDatabaseName, dbName);
             executeSqlStrings(connection, script);
         }
 

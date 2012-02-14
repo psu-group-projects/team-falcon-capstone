@@ -6,13 +6,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB_WinForm", "Pere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDB", "PeregrineDB\PeregrineDB.csproj", "{C785DAD0-7D82-41D5-A34B-2080E69FFB78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDbTesting", "TestingTools\PeregrineDbTesting\PeregrineDbTesting.csproj", "{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineServiceTestClient", "PeregrineServiceTestClient\PeregrineServiceTestClient.csproj", "{4C211B92-96BB-4585-81A3-30128A7000F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineDBTestClient", "PeregrineDBTestClient\PeregrineDBTestClient.csproj", "{070B280C-9A9A-4E82-9A67-332F7F243763}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineAPI", "PeregrineAPI\PeregrineAPI.csproj", "{079C86A1-B7D3-4454-9153-007349500A7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeregrineCreateDB", "PeregrineCreateDB\PeregrineCreateDB.csproj", "{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,16 +54,6 @@ Global
 		{C785DAD0-7D82-41D5-A34B-2080E69FFB78}.Release|Mixed Platforms.Build.0 = Release|x86
 		{C785DAD0-7D82-41D5-A34B-2080E69FFB78}.Release|x86.ActiveCfg = Release|x86
 		{C785DAD0-7D82-41D5-A34B-2080E69FFB78}.Release|x86.Build.0 = Release|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|x86.ActiveCfg = Debug|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|x86.Build.0 = Debug|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Any CPU.ActiveCfg = Release|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Mixed Platforms.Build.0 = Release|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|x86.ActiveCfg = Release|x86
-		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|x86.Build.0 = Release|x86
 		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{4C211B92-96BB-4585-81A3-30128A7000F6}.Debug|x86.ActiveCfg = Debug|x86
@@ -90,6 +80,16 @@ Global
 		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{079C86A1-B7D3-4454-9153-007349500A7F}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|x86.ActiveCfg = Debug|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Debug|x86.Build.0 = Debug|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Any CPU.ActiveCfg = Release|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|x86.ActiveCfg = Release|x86
+		{9C5ABE4F-F37A-41A4-B667-CD79A0300D2E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
