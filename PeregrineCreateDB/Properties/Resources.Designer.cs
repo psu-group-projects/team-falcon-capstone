@@ -63,12 +63,18 @@ namespace PeregrineCreateDB.Properties {
         /// <summary>
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
-        ////****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/05/2012 16:30:09 ******/
-        ///IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N&apos;[dbo].[FK_LogRel_Job]&apos;) AND parent_object_id = OBJECT_ID(N&apos;[dbo].[LogRel]&apos;))
-        ///ALTER TABLE [dbo].[LogRel] DROP CONSTRAINT [FK_LogRel_Job]
+        ////****** Object:  StoredProcedure [dbo].[GetStartStopMessagesWithProcessID]    Script Date: 02/13/2012 19:35:47 ******/
+        ///SET ANSI_NULLS ON
         ///GO
-        ////****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/05/2012 16:30:09 ******/
-        ///IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N&apos;[dbo].[FK_LogRel_Me [rest of string was truncated]&quot;;.
+        ///SET QUOTED_IDENTIFIER ON
+        ///GO
+        ///-- =============================================
+        ///-- Author:		Kyle P. / Weixiong Lu
+        ///-- Create date: 2012-02-04
+        ///-- Description:	Retrieve process by ProcessID
+        ///-- =============================================
+        ///CREATE PROCEDURE [dbo].[GetStartStopMessagesWithProcessID] 
+        ///	-- Add the parameters for the stored procedu [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CreateDatabaseSql {
             get {
@@ -80,7 +86,7 @@ namespace PeregrineCreateDB.Properties {
         ///   Looks up a localized string similar to USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 02/05/2012 16:20:20 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 02/13/2012 19:30:04 ******/
         ///IF  EXISTS (SELECT name FROM sys.databases WHERE name = N&apos;PeregrineDB&apos;)
         ///DROP DATABASE [PeregrineDB]
         ///GO
@@ -88,7 +94,7 @@ namespace PeregrineCreateDB.Properties {
         ///USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 02/05/2012 16:20:20 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 02/13/2012 19:30:04 ******/
         ///CREATE DATABASE [PeregrineDB] ON  PRIMARY 
         ///( NAME = N&apos;PeregrineDB&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf&apos; , SIZE = 2048KB , MAXSIZE  [rest of string was truncated]&quot;;.
         /// </summary>

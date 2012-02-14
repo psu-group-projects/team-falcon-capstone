@@ -32,12 +32,13 @@ namespace PeregrineCreateDB
                 else
                 {
                     if (reply != "") dbName = reply;
-                    if (String.Compare(dbName, Properties.Resources.OldDatabaseName, true) == 0) Console.WriteLine("\nWarning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDatabaseName);
+                    if (String.Compare(dbName, Properties.Resources.OldDatabaseName, true) == 0)
+                        Console.WriteLine(Environment.NewLine + "Warning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDatabaseName);
                     okayToGo = true;
                 }
             }
 
-            Console.WriteLine(Environment.NewLine + "Warning! Creating a new {0} database will completely overwrite any other database of the same name.", dbName);
+            Console.WriteLine(Environment.NewLine + "Warning! Creating a new {0} database will completely overwrite any other database of the same name." + Environment.NewLine, dbName);
             Console.Write("Are you sure you wish to do this (yes/no)? ");
             reply = Console.ReadLine();
             if (reply.ToLower() == "yes")
