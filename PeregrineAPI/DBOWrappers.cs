@@ -169,7 +169,8 @@ namespace PeregrineDBWrapper
 
         public void Update(int total, int completed)
         {
-            PercentComplete = ((double)completed/(double)total) * 100.0;
+            if (total == 0) PercentComplete = 0.0;      // Should PercentComplete = 0 or 100, or throw exception?
+            else PercentComplete = ((double)completed/(double)total) * 100.0;
             PlannedCount = total;
 
             ISingleResult<UpdateJobResult> result = db.UpdateJob(JobId, JobName, PlannedCount, completed, PercentComplete);
