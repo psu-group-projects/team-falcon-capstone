@@ -29,15 +29,18 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         }
         $.event.props = res;
 
-        // Initialize the default value for current_scrolldown_process
-        current_scrolldown_process = '*_*';
-
         // Get the default value of refresh rate
 
-        // Set up the initial stage of the main page
+        // Initialize the default value for current_scrolldown_process
+
+        current_scrolldown_process = '*_*';
+        
+        var search_process = "@Request.QueryString["Process"]";
+        
+
         MainPageAjaxUpdate( parseInt("1"),
                             parseInt("4"),
-                            "");
+                            search_process);
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#main_page_search_input').keypress(function (e) {
@@ -51,12 +54,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         });
 
         // Automatic refresh the page        
-        /*
+        
         setInterval(function () {
             MainPageAjaxUpdate(main_page_main_current_page,
                                 main_page_main_current_sort,
                                 document.getElementById("main_page_search_input").value);
-        }, 15000);*/
+        }, 5000);
 
     });
 
@@ -73,7 +76,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <fieldset>
     <label>Search:</label>
-    <input  id="main_page_search_input" type="text" />
+    <input  id="main_page_search_input" type="text" value="@Request.QueryString["Process"]" />
 </fieldset>
 
 <div class="process-list"></div>

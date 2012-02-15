@@ -18,9 +18,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     
     
     function GoToMainPage( processName) {
-    alert("To main page");
-    window.location.href = "Index";
-}
+        window.location.href = "Index";
+        MainPageAjaxUpdate(1, 1, processName)
+    }
 
 </script>                          
 
@@ -109,10 +109,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                 <a href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID), "falcon");'>...</a> 
                             }                                                              
                     </td>
-                    <td id="@(message.ProcessName)" onclick = GoToMainPage(@message.ProcessName) >
+                    <td id="@(message.ProcessName)" >
                             <div class="top" onmouseover="this.className='top2'" onmouseout="this.className='top'">
-                            <img src="../../Content/images/@(message.ProcessState.Trim()).png" alt=""/>
-                            @message.ProcessName 
+                            <img src="../../Content/images/@(message.ProcessState.Trim()).png" alt=""/>      
+                            <a href="Index?Process=@message.ProcessName">@message.ProcessName</a>
                             </div>
                     </td>
                     <td>    @message.Priority.ToString() </td>
