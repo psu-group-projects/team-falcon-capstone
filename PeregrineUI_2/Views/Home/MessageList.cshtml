@@ -15,6 +15,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         msg_inquiry_current_page = @(Model.CurrentPage);
         msg_inquiry_current_sort = @(Model.SortingType);
     });
+    
+    
+    function GoToMainPage( processName) {
+    alert("To main page");
+    window.location.href = "Index";
+}
 
 </script>                          
 
@@ -103,9 +109,11 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                 <a href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID), "falcon");'>...</a> 
                             }                                                              
                     </td>
-                    <td>
+                    <td id="@(message.ProcessName)" onclick = GoToMainPage(@message.ProcessName) >
+                            <div class="top" onmouseover="this.className='top2'" onmouseout="this.className='top'">
                             <img src="../../Content/images/@(message.ProcessState.Trim()).png" alt=""/>
                             @message.ProcessName 
+                            </div>
                     </td>
                     <td>    @message.Priority.ToString() </td>
                     <td>    @message.MsgType </td>

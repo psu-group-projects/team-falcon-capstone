@@ -251,3 +251,34 @@ table.job_table tbody tr:nth-child(odd) td
 {
     height: 15px;
 }
+
+
+.meter-wrap{
+    position: relative;
+}
+
+.meter-wrap, .meter-value, .meter-text {
+    /* The width and height of your image */
+    width: 200px; height: 20px;
+}
+
+.meter-wrap, .meter-value {
+    background: #bdbdbd url(/path/to/your-image.png) top left no-repeat;
+}
+
+.meter-text {
+    position: absolute;
+    top:0; left:0;
+
+    padding-top: 5px;
+
+    color: #000;
+    text-align: center;
+    width: 100%;
+}
+
+.top{}
+
+.top2{
+        color:Red; cursor:pointer;
+     }

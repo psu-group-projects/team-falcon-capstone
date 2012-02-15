@@ -20,7 +20,15 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             {
                 <tr >
                     <td>@job.JobContent </td>
-                    <td>@job.PercentProgress </td>
+                    <td>
+                        <div class="meter-wrap">
+                            <div class="meter-value" style="background-color: #3333CC; width: @(job.PercentProgress)%;">
+                                <div class="meter-text">
+                                    @(job.PercentProgress)%
+                                </div>
+                            </div>
+                        </div> 
+                    </td>
                 </tr>
             }
         </tbody>
