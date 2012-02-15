@@ -65,6 +65,31 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 </script>
 
+
+<script>
+    $(function () {
+        var availableTags = [
+			"Falcon10",
+			"Falcon11",
+			"Falcon12",
+			"Falcon13",
+			"Falcon14",
+			"Falcon15",
+			"Falcon16",
+			"Falcon17",
+			"Falcon18",
+			"Falcon19",
+			"Falcon20",
+			"Falcon21",
+			"Falcon22"
+		];
+        $("#main_page_search_input").autocomplete({
+            source: availableTags
+        });
+    });
+	</script>
+
+
 <nav>
     <ul id="menu">
         <li>@Html.ActionLink("Message Inquiry", "MsgInquiry", "Home")</li>

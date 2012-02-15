@@ -20,6 +20,6 @@ namespace PeregrineUI_2.Models
         public string LastAction { get; set; }
         public DateTime MsgDate { get; set; }
         public string ProcessState { get; set; }
- 
+        public int ProcessId { get; set; }
     }
 }
