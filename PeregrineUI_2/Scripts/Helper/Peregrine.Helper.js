@@ -210,10 +210,26 @@ function Msg_inquiry_collect_info(page_number, sort_option, process_priority, pr
     }
 }
 
+function findPos(obj) {
+    var curtop = 0;
+    if (obj.offsetParent) {   
+        curtop = obj.offsetTop
+        while (obj = obj.offsetParent) {          
+            curtop += obj.offsetTop
+        }
+    }
+    return curtop;
+}
+
 /**/
-function showpopup(msg_id, process_name) {
+function showpopup(msg_id, process_name, top_value) {
+
+    var pos;
+     
     if (document.getElementById("popwindow").className == 'popperHid') {
         // Update the div
+        pos = findPos(top_value);
+        document.getElementById("popwindow").style.top = pos + "px";
         GetFullDetailMessage(msg_id, process_name);
         document.getElementById("popwindow").className = 'popperShow';
     } else {
@@ -221,6 +237,8 @@ function showpopup(msg_id, process_name) {
             document.getElementById("popwindow").className = 'popperHid';
         else {
             // Update the div
+            pos = findPos(top_value);
+            document.getElementById("popwindow").style.top = pos + "px";
             GetFullDetailMessage(msg_id, process_name);
         }
     }
