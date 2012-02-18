@@ -219,7 +219,7 @@ namespace PeregrinDBTestClient
 
         public static void insertJob(Proc p)
         {
-            int newJobTasks = ran.Next(max_tasks_per_job + 1);
+            int newJobTasks = ran.Next(max_tasks_per_job) + 1;
             String newJobName = "Job "+p.jobCount+" For " + p.procName;
             log.logJobStartWithTotalTasks(newJobName, p.procName, newJobTasks);
             //p.jobs.Add(new ProcJob(newJobName, newJobTasks, 0, p.locationInList));
