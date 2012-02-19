@@ -1,35 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PeregrineDB" Class="PeregrineDBDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=CAPSTONEBB;Initial Catalog=PeregrineDB;Integrated Security=True" SettingsObjectName="PeregrineDB.Properties.Settings" SettingsPropertyName="PeregrineDBConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Process" Member="Processes">
-    <Type Name="Process" Id="ID1">
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Process_LogRel" Member="LogRels" ThisKey="ProcessID" OtherKey="ProcessID" Type="LogRel" />
-    </Type>
-  </Table>
-  <Table Name="dbo.LogRel" Member="LogRels">
-    <Type Name="LogRel" Id="ID2">
-      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Process_LogRel" Member="Process" ThisKey="ProcessID" OtherKey="ProcessID" Type="Process" IsForeignKey="true" />
-      <Association Name="Job_LogRel" Member="Job" ThisKey="JobID" OtherKey="JobID" Type="Job" IsForeignKey="true" />
-      <Association Name="Message_LogRel" Member="Message" ThisKey="MessageID" OtherKey="MessageID" Type="Message" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Job" Member="Jobs">
-    <Type Name="Job" Id="ID3">
+    <Type Name="Job" Id="ID1">
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Association Name="Job_LogRel" Member="LogRels" ThisKey="JobID" OtherKey="JobID" Type="LogRel" />
     </Type>
   </Table>
+  <Table Name="dbo.LogRel" Member="LogRels">
+    <Type Name="LogRel" Id="ID4">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Job_LogRel" Member="Job" ThisKey="JobID" OtherKey="JobID" Type="Job" IsForeignKey="true" />
+      <Association Name="Message_LogRel" Member="Message" ThisKey="MessageID" OtherKey="MessageID" Type="Message" IsForeignKey="true" />
+      <Association Name="Process_LogRel" Member="Process" ThisKey="ProcessID" OtherKey="ProcessID" Type="Process" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Message" Member="Messages">
-    <Type Name="Message" Id="ID4">
+    <Type Name="Message" Id="ID2">
       <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Message" Member="Message1" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
       <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -38,17 +30,25 @@
       <Association Name="Message_LogRel" Member="LogRel" ThisKey="MessageID" OtherKey="MessageID" Type="LogRel" Cardinality="One" />
     </Type>
   </Table>
+  <Table Name="dbo.Process" Member="Processes">
+    <Type Name="Process" Id="ID3">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Process_LogRel" Member="LogRels" ThisKey="ProcessID" OtherKey="ProcessID" Type="LogRel" />
+    </Type>
+  </Table>
   <Function Name="dbo.DeleteJob" Method="DeleteJob">
     <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.UpdateProcess" Method="UpdateProcess">
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NChar(200)" />
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NVarChar(200)" />
     <Parameter Name="State" Parameter="state" Type="System.Int32" DbType="Int" />
     <ElementType Name="UpdateProcessResult">
       <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
@@ -56,26 +56,208 @@
     <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.DeleteOldMessages" Method="DeleteOldMessages">
+    <Parameter Name="NumberToKeep" Parameter="numberToKeep" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.DeleteProcess" Method="DeleteProcess">
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.GetTable1" Method="GetTable1">
+  <Function Name="dbo.GetJob" Method="GetJob">
+    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetJobResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetJobByName" Method="GetJobByName">
+    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NVarChar(200)" />
     <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="dbo.GetJobOrderbyCompletedCount" Method="GetJobOrderbyCompletedCount">
+    <ElementType Name="GetJobOrderbyCompletedCountResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetJobOrderbyID" Method="GetJobOrderbyID">
+    <ElementType Name="GetJobOrderbyIDResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetJobOrderbyName" Method="GetJobOrderbyName">
+    <ElementType Name="GetJobOrderbyNameResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetJobOrderbyPercentComplete" Method="GetJobOrderbyPercentComplete">
+    <ElementType Name="GetJobOrderbyPercentCompleteResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetJobOrderbyPlannedCount" Method="GetJobOrderbyPlannedCount">
+    <ElementType Name="GetJobOrderbyPlannedCountResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetMessage" Method="GetMessage">
+    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID2" />
+  </Function>
+  <Function Name="dbo.GetMessageOrderbyCategory" Method="GetMessageOrderbyCategory">
+    <ElementType Name="GetMessageOrderbyCategoryResult">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetMessageOrderbyDate" Method="GetMessageOrderbyDate">
+    <ElementType Name="GetMessageOrderbyDateResult">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetMessageOrderbyID" Method="GetMessageOrderbyID">
+    <ElementType Name="GetMessageOrderbyIDResult">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetMessageOrderbyMsg" Method="GetMessageOrderbyMsg">
+    <ElementType Name="GetMessageOrderbyMsgResult">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetPageMessagesWithCategory" Method="GetPageMessagesWithCategory">
+    <Parameter Name="Category" Parameter="category" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.GetPageMessagesWithProcessID" Method="GetPageMessagesWithProcessID">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.GetPageOfJobs" Method="GetPageOfJobs">
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <Parameter Name="processID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID1" />
+  </Function>
+  <Function Name="dbo.GetPageOfMessages" Method="GetPageOfMessages">
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.GetPageOfMessagesByProcessId" Method="GetPageOfMessagesByProcessId">
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <Parameter Name="processID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID2" />
+  </Function>
+  <Function Name="dbo.GetPageOfProcess" Method="GetPageOfProcess">
+    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
+    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID3" />
+  </Function>
+  <Function Name="dbo.GetProcess" Method="GetProcess">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetProcessResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetProcessByName" Method="GetProcessByName">
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NVarChar(200)" />
+    <ElementType IdRef="ID3" />
+  </Function>
+  <Function Name="dbo.GetProcessOrderbyID" Method="GetProcessOrderbyID">
+    <ElementType Name="GetProcessOrderbyIDResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetProcessOrderbyName" Method="GetProcessOrderbyName">
+    <ElementType Name="GetProcessOrderbyNameResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetProcessOrderbyState" Method="GetProcessOrderbyState">
+    <ElementType Name="GetProcessOrderbyStateResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetTable1" Method="GetTable1">
+    <ElementType IdRef="ID3" />
   </Function>
   <Function Name="dbo.InsertJob" Method="InsertJob">
     <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NChar(200)" />
+    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NVarChar(200)" />
     <Parameter Name="PlannedCount" Parameter="plannedCount" Type="System.Int32" DbType="Int" />
     <Parameter Name="CompletedCount" Parameter="completedCount" Type="System.Int32" DbType="Int" />
     <Parameter Name="PercentComplete" Parameter="percentComplete" Type="System.Double" DbType="Float" />
     <ElementType Name="InsertJobResult">
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.InsertLogRel" Method="InsertLogRel">
+    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
+    <ElementType IdRef="ID4" />
   </Function>
   <Function Name="dbo.InsertMessage" Method="InsertMessage">
     <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
@@ -93,11 +275,44 @@
   </Function>
   <Function Name="dbo.InsertProcess" Method="InsertProcess">
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="VarChar(200)" />
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NVarChar(200)" />
     <Parameter Name="State" Parameter="state" Type="System.Int32" DbType="Int" />
     <ElementType Name="InsertProcessResult">
       <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.InsertProcess2" Method="InsertProcess2">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="State" Parameter="state" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SearchJobByName" Method="SearchJobByName">
+    <Parameter Name="JobNamePartial" Parameter="jobNamePartial" Type="System.String" DbType="NVarChar(200)" />
+    <ElementType Name="SearchJobByNameResult">
+      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SearchMessageBySting" Method="SearchMessageBySting">
+    <Parameter Name="MessagePartial" Parameter="messagePartial" Type="System.String" DbType="NVarChar(500)" />
+    <ElementType Name="SearchMessageByStingResult">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SearchProcessByName" Method="SearchProcessByName">
+    <Parameter Name="ProcessNamePartial" Parameter="processNamePartial" Type="System.String" DbType="NVarChar(200)" />
+    <ElementType Name="SearchProcessByNameResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
@@ -109,10 +324,10 @@
       <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
@@ -121,7 +336,7 @@
   <Function Name="dbo.ShowJobs" Method="ShowJobs">
     <ElementType Name="ShowJobsResult">
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
@@ -146,19 +361,19 @@
   <Function Name="dbo.ShowProcesses" Method="ShowProcesses">
     <ElementType Name="ShowProcessesResult">
       <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.UpdateJob" Method="UpdateJob">
     <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NChar(200)" />
+    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NVarChar(200)" />
     <Parameter Name="PlannedCount" Parameter="plannedCount" Type="System.Int32" DbType="Int" />
     <Parameter Name="CompletedCount" Parameter="completedCount" Type="System.Int32" DbType="Int" />
     <Parameter Name="PercentComplete" Parameter="percentComplete" Type="System.Double" DbType="Float" />
     <ElementType Name="UpdateJobResult">
       <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
@@ -178,58 +393,19 @@
       <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.GetProcess" Method="GetProcess">
-    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="GetProcessResult">
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetJob" Method="GetJob">
-    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="GetJobResult">
-      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetProcessByName" Method="GetProcessByName">
-    <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="VarChar(200)" />
-    <ElementType IdRef="ID1" />
-  </Function>
-  <Function Name="dbo.InsertLogRel" Method="InsertLogRel">
-    <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID2" />
-  </Function>
-  <Function Name="dbo.GetJobByName" Method="GetJobByName">
-    <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NChar(200)" />
-    <ElementType IdRef="ID3" />
-  </Function>
   <Function Name="dbo.GetTopMessageFromProcessId" Method="GetTopMessageFromProcessId">
     <Parameter Name="ProcessId" Parameter="processId" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID4" />
+    <ElementType IdRef="ID2" />
   </Function>
-  <Function Name="dbo.GetPageOfProcess" Method="GetPageOfProcess">
-    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
-    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID1" />
-  </Function>
-  <Function Name="dbo.GetMessage" Method="GetMessage">
+  <Function Name="dbo.GetMessageOrderbyPriority" Method="GetMessageOrderbyPriority">
     <Parameter Name="MessageID" Parameter="messageID" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID4" />
-  </Function>
-  <Function Name="dbo.GetMessagesWithProcessID" Method="GetMessagesWithProcessID">
-    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
-    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
-    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID4" />
+    <ElementType Name="GetMessageOrderbyPriorityResult1">
+      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </ElementType>
   </Function>
   <Function Name="dbo.GetStartStopMessagesWithProcessID" Method="GetStartStopMessagesWithProcessID">
     <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
@@ -237,18 +413,14 @@
     <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
     <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
     <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID4" />
+    <ElementType IdRef="ID2" />
   </Function>
-  <Function Name="dbo.GetPageOfJobs" Method="GetPageOfJobs">
+  <Function Name="dbo.GetMessagesWithProcessID" Method="GetMessagesWithProcessID">
+    <Parameter Name="ProcessID" Parameter="processID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
     <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
     <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
-    <Parameter Name="processID" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID3" />
-  </Function>
-  <Function Name="dbo.GetPageOfMessagesByProcessId" Method="GetPageOfMessagesByProcessId">
-    <Parameter Name="From" Parameter="from" Type="System.Int32" DbType="Int" />
-    <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
-    <Parameter Name="processID" Type="System.Int32" DbType="Int" />
-    <ElementType IdRef="ID4" />
+    <ElementType IdRef="ID2" />
   </Function>
 </Database>
