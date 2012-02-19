@@ -118,9 +118,9 @@ namespace PeregrineUI_2.Controllers
 
 
         [HttpPost]
-        public List<string> AutoCompleteUpdate( string search_string)
+        public string AutoCompleteUpdate( string search_string)
         {
-            var autoCompleteResults = AutoCompleteRepository.GetAutoCompleteList(search_string);
+            string autoCompleteResults = AutoCompleteRepository.GetAutoCompleteList(search_string);
             return autoCompleteResults;
         }
     }

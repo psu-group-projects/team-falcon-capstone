@@ -7,7 +7,7 @@ namespace PeregrineUI_2.Models.Repository
 {
     public class AutoCompleteRepository
     {
-        public static List<string> GetAutoCompleteList(string search_string){
+        public static string GetAutoCompleteList(string search_string){
             List<string> AutoCompleteList = new List<string>();
 
             AutoCompleteList.Add("Falcon10");
@@ -31,7 +31,9 @@ namespace PeregrineUI_2.Models.Repository
             AutoCompleteList.Add("Falcon28");
             AutoCompleteList.Add("Falcon29");
 
-            return AutoCompleteList;
+            string ans = string.Join(",", AutoCompleteList.ToArray());
+
+            return ans;
         }
     }
 }

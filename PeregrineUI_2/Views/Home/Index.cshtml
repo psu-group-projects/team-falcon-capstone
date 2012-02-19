@@ -51,7 +51,23 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                     '1',
                                     document.getElementById("main_page_search_input").value);
                 current_scrolldown_process = '*_*';
-            }       
+            }else{
+                 $.ajax({
+                    type: "POST",
+                    url: '/Home/AutoCompleteUpdate',
+                    data: { "search_string": "Fal" },
+                    success: function (data) {
+                        var availableTags = data.split(",");
+                        $("#main_page_search_input").autocomplete({
+                            source: availableTags
+                        }); 
+                    },
+                    error: function (result) {
+                        alert(result);
+                    }
+                });
+                
+            }
         });
 
         // Automatic refresh the page        
@@ -66,29 +82,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 </script>
 
-
-<script>
-    $(function () {
-        var availableTags = [
-			"Falcon10",
-			"Falcon11",
-			"Falcon12",
-			"Falcon13",
-			"Falcon14",
-			"Falcon15",
-			"Falcon16",
-			"Falcon17",
-			"Falcon18",
-			"Falcon19",
-			"Falcon20",
-			"Falcon21",
-			"Falcon22"
-		];
-        $("#main_page_search_input").autocomplete({
-            source: availableTags
-        });
-    });
-</script>
 
 
 <nav>
