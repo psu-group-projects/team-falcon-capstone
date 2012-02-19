@@ -5,8 +5,8 @@ using System.Text;
 
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
-using Microsoft.SqlServer.Management.Smo;
-using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;       // Requires SqlServer Assemblies
+using Microsoft.SqlServer.Management.Common;    // Requires SqlServer Assemblies
 
 namespace PeregrineCreateDB
 {
