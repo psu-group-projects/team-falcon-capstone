@@ -70,8 +70,10 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PageData.cs" />
     <Compile Include="Models\Process.cs" />
+    <Compile Include="Models\Repository\AutoCompleteRepository.cs" />
     <Compile Include="Models\Repository\JobRepository.cs" />
     <Compile Include="Models\Repository\MessageRepository.cs" />
+    <Compile Include="Models\Repository\MsgContentRepository.cs" />
     <Compile Include="Models\Repository\MsgInquiryRepo.cs" />
     <Compile Include="Models\Repository\SummaryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

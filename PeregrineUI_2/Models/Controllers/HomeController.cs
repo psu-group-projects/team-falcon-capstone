@@ -112,119 +112,16 @@ namespace PeregrineUI_2.Controllers
         [HttpPost]
         public string MsgInq_getfulldetail(string msg_id)
         {
-            string result = "asdfsdfsdfsdfsdfsafdsdfsdfsdfsdfsdfsdf" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsl222222222222222";
+            string result = MsgContentRepository.GetMessageContent(msg_id);
             return result;
+        }
+
+
+        [HttpPost]
+        public List<string> AutoCompleteUpdate( string search_string)
+        {
+            var autoCompleteResults = AutoCompleteRepository.GetAutoCompleteList(search_string);
+            return autoCompleteResults;
         }
     }
 }
