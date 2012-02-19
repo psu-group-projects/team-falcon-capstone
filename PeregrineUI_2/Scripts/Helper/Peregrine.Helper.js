@@ -15,7 +15,9 @@ function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
         url: '/Home/MainPageAjaxUpdate',
         data: { "page": page, "sort_input": sort_input, "SearchPattern": SearchPattern },
         success: function (data) {
+            page_scroll_amt = $(window).scrollTop();
             $('.process-list').html(data);
+            $(window).scrollTop(page_scroll_amt);
         },
         error: function (result) {
             alert(result);
@@ -97,8 +99,8 @@ function ProcessMsgUpdate(page, process_name) {
         url: '/Home/ProcessMsgUpdate',
         data: { "page": page, "processName": process_name },
         success: function (data) {
-            $('div.' + process_name + 'message').empty();
-            $('div.' + process_name + 'message').append(data);
+            //tab_amt = $('div.' + process_name + 'message').height();   
+            $('div.' + process_name + 'message').html(data);         
         },
         error: function (result) {
             alert(result);
@@ -113,8 +115,7 @@ function ProcessJobUpdate(page, process_name) {
         url: '/Home/ProcessJobUpdate',
         data: { "page": page, "processName": process_name },
         success: function (data) {
-            $('div.' + process_name + 'job').empty();
-            $('div.' + process_name + 'job').append(data);
+            $('div.' + process_name + 'job').html(data);          
         },
         error: function (result) {
             alert(result);

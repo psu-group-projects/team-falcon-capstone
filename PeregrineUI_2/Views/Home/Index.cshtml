@@ -17,6 +17,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var current_scrolldown_process;
     var msg_or_job;
     var inside_page;
+    var page_scroll_amt;
+    var tab_amt;
 
     $(document).ready(function () {
         // Fix event.layerx and layery broken warning, work like a charm
@@ -29,7 +31,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         }
         $.event.props = res;
 
-        // Get the default value of refresh rate
+        tab_amt = 0;
 
         // Initialize the default value for current_scrolldown_process
 
@@ -37,7 +39,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         
         var search_process = "@Request.QueryString["Process"]";
         
-
         MainPageAjaxUpdate( parseInt("1"),
                             parseInt("4"),
                             search_process);
@@ -50,13 +51,13 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                     '1',
                                     document.getElementById("main_page_search_input").value);
                 current_scrolldown_process = '*_*';
-            }
+            }       
         });
 
         // Automatic refresh the page        
         
         setInterval(function () {
-            MainPageAjaxUpdate(main_page_main_current_page,
+            MainPageAjaxUpdate( main_page_main_current_page,
                                 main_page_main_current_sort,
                                 document.getElementById("main_page_search_input").value);
         }, 5000);
@@ -87,7 +88,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             source: availableTags
         });
     });
-	</script>
+</script>
 
 
 <nav>
@@ -104,4 +105,4 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <input  id="main_page_search_input" type="text" value="@Request.QueryString["Process"]" />
 </fieldset>
 
-<div class="process-list"></div>
+<div class="process-list" style="height: 100%;"></div>
