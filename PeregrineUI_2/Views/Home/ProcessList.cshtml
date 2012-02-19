@@ -17,14 +17,14 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         main_page_main_current_sort = @(Model.SortingType);
 
         $("#process_table tr:odd").addClass("odd");
-        $("#process_table tr:not(.odd)").hide();
-        $("#process_table tr:first-child").show();
+        //$("#process_table tr:not(.odd)").hide();
+        //$("#process_table tr:first-child").show();
 
         opened_row_id = current_scrolldown_process;
         if (opened_row_id != '*_*') {
             opened_row = document.getElementById(opened_row_id);
             if (opened_row != null) {
-                $(opened_row).next("tr").show();
+                //$(opened_row).next("tr").show();
                 ExpandedTabUpdate(   current_scrolldown_process,
                                      msg_or_job,
                                      parseInt(inside_page));
@@ -39,9 +39,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             if ($(this).attr("id") != "")
             {
                 // Close all tabs except the clicked row
-                $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
+                //$("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
                 $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
-                $("#process_table tr:first-child").show();
+                //$("#process_table tr:first-child").show();
 
                 // Toggle the clicked row
                 $(this).next("tr").toggle();
