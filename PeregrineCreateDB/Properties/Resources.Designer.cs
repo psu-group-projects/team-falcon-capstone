@@ -83,6 +83,30 @@ namespace PeregrineCreateDB.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to USE [msdb]
+        ///GO
+        ///
+        ////****** Object:  Job [PeregrineDBCleanup]    Script Date: 02/18/2012 16:16:57 ******/
+        ///IF  EXISTS (SELECT job_id FROM msdb.dbo.sysjobs_view WHERE name = N&apos;PeregrineDBCleanup&apos;)
+        ///EXEC msdb.dbo.sp_delete_job @job_id=N&apos;63c25ee4-b1ed-4799-96f0-fc762f4e2ce3&apos;, @delete_unused_schedule=1
+        ///GO
+        ///
+        ///USE [msdb]
+        ///GO
+        ///
+        ////****** Object:  Job [PeregrineDBCleanup]    Script Date: 02/18/2012 16:16:57 ******/
+        ///BEGIN TRANSACTION
+        ///DECLARE @ReturnCode INT
+        ///SELECT @ReturnCode = 0
+        ////****** Object:  JobCategory [Data [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DropCreateCleanupJob {
+            get {
+                return ResourceManager.GetString("DropCreateCleanupJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to USE [master]
         ///GO
         ///
