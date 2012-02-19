@@ -49,22 +49,22 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         });
 
         // Automatic update
-//        setInterval(function () {
-//            Msg_inquiry_collect_info(
-//                                        msg_inquiry_current_page,
-//                                        msg_inquiry_current_sort,
-//                                        document.getElementById("process_prio_input").value,
-//                                        document.getElementById("process_name_input").value
-//                                    );
-//        }, 5000);
+        setInterval(function () {
+            Msg_inquiry_collect_info(
+                                        msg_inquiry_current_page,
+                                        msg_inquiry_current_sort,
+                                        document.getElementById("process_prio_input").value,
+                                        document.getElementById("process_name_input").value
+                                    );
+        }, 5000);
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#process_name_input').keypress(function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {           
                 Msg_inquiry_collect_info(
-                                            '1',    //  Page number
-                                            msg_inquiry_current_sort,    //  Sort option
+                                            '1',                                                    //  Page number
+                                            msg_inquiry_current_sort,                               //  Sort option
                                             document.getElementById("process_prio_input").value,    // priority value
                                             document.getElementById("process_name_input").value     // process name value
                                          );
