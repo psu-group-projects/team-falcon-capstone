@@ -39,7 +39,7 @@ namespace PeregrineUI_2.Models.Repository
             List<PeregrineDB.Process> process_list = service.searchProcessByName(search_string);
             foreach (PeregrineDB.Process p in process_list)
             {
-                AutoCompleteList.Add(p.ProcessName);
+                AutoCompleteList.Add(p.ProcessName.Trim());
             }
 
             string ans = string.Join(",", AutoCompleteList.ToArray());

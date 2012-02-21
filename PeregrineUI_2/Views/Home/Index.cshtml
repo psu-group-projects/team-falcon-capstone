@@ -37,9 +37,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         
         var search_process = "@Request.QueryString["Process"]";
         
-        MainPageAjaxUpdate( parseInt("1"),
-                            parseInt("4"),
-                            search_process);
+        MainPageAjaxUpdate(1, 4, search_process);
 
         // Use enter to send value in input box. Work for IE, Firefox and Chrome
         $('#main_page_search_input').keypress(function (e) {
@@ -50,20 +48,24 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                     document.getElementById("main_page_search_input").value);
                 current_scrolldown_process = '*_*';
             }else{
-                 $.ajax({
-                    type: "POST",
-                    url: '/Home/AutoCompleteUpdate',
-                    data: { "search_string":  document.getElementById("main_page_search_input").value },
-                    success: function (data) {
-                        var availableTags = data.split(",");
-                        $("#main_page_search_input").autocomplete({
-                            source: availableTags
-                        }); 
-                    },
-                    error: function (result) {
-                        alert(result);
-                    }
-                });              
+                 if(document.getElementById("main_page_search_input").value == ""){
+                    MainPageAjaxUpdate(1, 4, "");
+                 }else{
+                    $.ajax({
+                        type: "POST",
+                        url: '/Home/AutoCompleteUpdate',
+                        data: { "search_string":  document.getElementById("main_page_search_input").value },
+                        success: function (data) {
+                            var availableTags = data.split(",");
+                            $("#main_page_search_input").autocomplete({
+                                source: availableTags
+                            }); 
+                        },
+                        error: function (result) {
+                            alert(result);
+                        }
+                    });
+                }              
             }
         });
 
