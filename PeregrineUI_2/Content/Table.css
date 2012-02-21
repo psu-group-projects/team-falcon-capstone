@@ -256,6 +256,26 @@ table.job_table tbody tr:nth-child(odd) td
 /*
 ---For popup window--------------*/
 
+#popwindow_header
+{
+    padding: 10px;
+    border: 1px solid #600;
+    display:block;
+    font-size: 200%;
+    text-decoration:underline;
+    color: #000000;
+}
+
+#popwindow_message
+{
+    padding: 10px;
+    border: 1px solid #600;
+    display:block;
+    background: #e6fcff;
+    font-size: 100%;
+    color: #000000;
+}
+
 .popperHid 
 {
     display:none;
@@ -266,14 +286,16 @@ table.job_table tbody tr:nth-child(odd) td
     position: absolute;
     z-index: 99;
     padding: 10px;
-    border: 1px solid #600;
+    border: 3px solid #600;
     width: 385px;
     left: 46%;
     top: 360px;
     margin: 0 0 0 -200px;
-    background: #ffc;
+    background: #5757ff;
     display:block;
     font-size: 90%;
+    -moz-border-radius: 15px;
+    border-radius: 10px;
 }
 
 .popperShow #closebutton 

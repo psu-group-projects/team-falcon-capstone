@@ -17,8 +17,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var current_scrolldown_process;
     var msg_or_job;
     var inside_page;
+    var tabsize;
     var page_scroll_amt;
-    var tab_amt;
 
     $(document).ready(function () {
         // Fix event.layerx and layery broken warning, work like a charm
@@ -55,7 +55,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                  $.ajax({
                     type: "POST",
                     url: '/Home/AutoCompleteUpdate',
-                    data: { "search_string": "Fal" },
+                    data: { "search_string":  document.getElementById("main_page_search_input").value },
                     success: function (data) {
                         var availableTags = data.split(",");
                         $("#main_page_search_input").autocomplete({
@@ -65,8 +65,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     error: function (result) {
                         alert(result);
                     }
-                });
-                
+                });              
             }
         });
 
