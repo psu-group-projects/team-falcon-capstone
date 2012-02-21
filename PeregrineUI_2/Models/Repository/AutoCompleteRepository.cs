@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PeregrineAPI;
+using PeregrineDB;
 
 namespace PeregrineUI_2.Models.Repository
 {
@@ -10,6 +12,7 @@ namespace PeregrineUI_2.Models.Repository
         public static List<string> GetAutoCompleteList(string search_string){
             List<string> AutoCompleteList = new List<string>();
 
+            /*
             AutoCompleteList.Add("Falcon10");
             AutoCompleteList.Add("Falcon11");
             AutoCompleteList.Add("Falcon12");
@@ -30,6 +33,14 @@ namespace PeregrineUI_2.Models.Repository
             AutoCompleteList.Add("Falcon27");
             AutoCompleteList.Add("Falcon28");
             AutoCompleteList.Add("Falcon29");
+            */
+            PeregrineService service = new PeregrineService();
+
+            List<PeregrineDB.Process> process_list = service.searchProcessByName(search_string);
+            foreach (PeregrineDB.Process p in process_list)
+            {
+                AutoCompleteList.Add(p.ProcessName);
+            }
 
             return AutoCompleteList;
         }

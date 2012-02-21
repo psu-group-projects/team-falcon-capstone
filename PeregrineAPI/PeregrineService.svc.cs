@@ -89,6 +89,22 @@ namespace PeregrineAPI
             return db.GetPageOfMessagesByProcessId(start, end, processId).ToList<Message>();
         }
 
+        public List<ProcessSummary> getProcessByName(String name)
+        {
+            List<ProcessSummary> processSummaries = new List<ProcessSummary>();
+            List<Process> p = db.GetProcessByName(name).ToList<Process>();
+            if (p.Count > 0)
+            {
+                processSummaries.Add(new ProcessSummary(p[0], db.GetTopMessageFromProcessId(p[0].ProcessID).ToList<Message>()[0]));
+            }
+            return processSummaries;
+        }
+
+        public List<Process> searchProcessByName(String name)
+        {
+            return db.SearchProcessByName(name).ToList<Process>();
+        }
+
         private static int getEndIndex(int pageNumber, int numToFetch)
         {
             return (pageNumber * numToFetch) - 1;
@@ -98,7 +114,6 @@ namespace PeregrineAPI
         {
             return (pageNumber - 1) * numToFetch;
         }
-
 
         /**
          * Below is for the inbound client logging

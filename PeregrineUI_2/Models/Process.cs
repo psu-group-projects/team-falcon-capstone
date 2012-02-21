@@ -19,7 +19,21 @@ namespace PeregrineUI_2.Models
         public string ProcessName { get; set; }
         public string LastAction { get; set; }
         public DateTime MsgDate { get; set; }
-        public string ProcessState { get; set; }
+        public string ProcessState;
+        public string _ProcessState
+        {
+            get { return this.ProcessState; }
+            set
+            {
+                if(value == "0"){
+                    this.ProcessState = "green";
+                } else if (value == "1") {
+                    this.ProcessState = "yellow";
+                } else if (value == "2") {
+                    this.ProcessState = "red";
+                }
+            }
+        }
         public int ProcessId { get; set; }
     }
 }

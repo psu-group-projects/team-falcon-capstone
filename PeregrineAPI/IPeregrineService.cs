@@ -117,6 +117,14 @@ namespace PeregrineAPI
         [OperationContract]
         List<Message> getPageOfMessagesByProcessId(int processId, int pageNumber, int numToFetch);
 
+        //This is for the search functionality on the UI
+        [OperationContract]
+        List<ProcessSummary> getProcessByName(String name);
+
+        //This is for the search functionality on the UI
+        [OperationContract]
+        List<Process> searchProcessByName(String name);
+
         /**
          * This is for the client app
          */

@@ -310,11 +310,7 @@
   </Function>
   <Function Name="dbo.SearchProcessByName" Method="SearchProcessByName">
     <Parameter Name="ProcessNamePartial" Parameter="processNamePartial" Type="System.String" DbType="NVarChar(200)" />
-    <ElementType Name="SearchProcessByNameResult">
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </ElementType>
+    <ElementType IdRef="ID3" />
   </Function>
   <Function Name="dbo.ShowAll" Method="ShowAll">
     <ElementType Name="ShowAllResult">

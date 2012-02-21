@@ -83,7 +83,7 @@ body {
 
 #process_table tbody tr.not(odd) td { background:#C7DDEE none repeat-x scroll center left; cursor:pointer; }
 
-#process_table tbody tr.odd td { background:#fff url(images/row_bkg.png) repeat-x scroll center left; cursor:pointer; }
+#process_table tbody tr.odd td { background:#fff url(images/row_bkg.png) repeat-x scroll left top; cursor:pointer; }
 
 #process_table div.arrow { background:transparent url(images/arrows.png) no-repeat scroll 0px -16px; width:16px; height:16px; display:block;}
 

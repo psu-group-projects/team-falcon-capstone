@@ -14,7 +14,7 @@
         <elementListCompartment Id="9cb5d923-3096-4ad4-b97b-817ba09ff464" absoluteBounds="6.14, 5.96, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.375 : 7.875); (6.375 : 6.76050048828125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.375 : 7.875); (6.375 : 6.76050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/PeregrineDBDataContext/Job/Job_LogRel" />
       <nodes>
         <classShapeMoniker Id="55b2c8b6-73e6-4739-8321-618ce0ff4234" />
@@ -27,7 +27,7 @@
         <elementListCompartment Id="12815c67-e374-463e-9502-4e670872af8e" absoluteBounds="6.14, 3.96, 1.9700000000000002, 1.0291951497395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.125 : 5.08919514973958); (7.125 : 5.5)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.125 : 5.08919514973958); (7.125 : 5.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/PeregrineDBDataContext/Message/Message_LogRel" />
       <nodes>
         <classShapeMoniker Id="049b4d77-9e7e-4c56-8808-b9cdd69d2b71" />
@@ -40,7 +40,7 @@
         <elementListCompartment Id="5997b294-9061-4d51-aefd-0783fa3089ac" absoluteBounds="7.765, 8.335, 1.9700000000000002, 0.70050048828125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.9375 : 7.875); (7.9375 : 6.76050048828125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.9375 : 7.875); (7.9375 : 6.76050048828125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/PeregrineDBDataContext/Process/Process_LogRel" />
       <nodes>
         <classShapeMoniker Id="59d0ee04-8678-4bfb-af3b-e23c3bd9006e" />

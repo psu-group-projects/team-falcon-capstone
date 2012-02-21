@@ -9,7 +9,20 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Process>
 
 <script type="text/javascript">
-  
+    
+    function toggleMoreInfo(id){
+        //check to see if requested tr is already open
+        var is_closed = ($("#"+id+"_more").css("display") == "none");
+        //first close all other trs...
+        $(".more_info_rows").hide();
+        $(".arrow").removeClass("up");
+        //then show the right tr
+        if(is_closed){
+            $("#"+id+"_more").fadeIn(500);
+            $("#"+id+" .arrow").addClass("up");
+        }
+    }
+
     // Expand process detail
     $(document).ready(function () { 
        
@@ -34,6 +47,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             }
         }
 
+        /*
         $("#process_table tr.odd").click(function () {
          
             if ($(this).attr("id") != "")
@@ -58,8 +72,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     show_message('1', $(this).attr("id"));              
                 }
              }
-        });
-       
+        });*/
+
+               
         // Handle clicking msg page number 
         $(".process_msg_page-number").live("click", function () {
             show_message(   parseInt($(this).html()),
@@ -146,7 +161,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         @foreach (var process in Model.Data)
         {
             <!-- Show summary -->
-            <tr id="@(process.ProcessName)">
+            <tr id="Process_@(process.ProcessId)" onclick="toggleMoreInfo('Process_@(process.ProcessId)')">
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
@@ -156,22 +171,22 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             </tr>
             
             <!-- If click on the process, expand the table, show process details -->
-            <tr>
-                <td colspan="5" id = "expand_row">
+            <tr id="Process_@(process.ProcessId)_more" class="more_info_rows" style="display: none;">
+                <td colspan="5">
                     <!-- Table of messages in current process -->
-                    <input id="@(process.ProcessName)JobBtn" type="button" value="Show Jobs"
-                            onclick="show_job('1', '@(process.ProcessName)')"/>
+                    <input id="Process_@(process.ProcessId)JobBtn" type="button" value="Show Jobs"
+                            onclick="show_job('1', 'Process_@(process.ProcessId)')"/>
                     <!-- Partial View: Message --> 
-                    <div  id = "@(process.ProcessName)message" style="display:inline-block; width:100%">
-                        <div class = "@(process.ProcessName)message"></div>
+                    <div  id = "Process_@(process.ProcessId)message" style="display:inline-block; width:100%">
+                        <div class = "Process_@(process.ProcessId)message"></div>
                     </div>
 
                     <!-- Table of jobs in current process -->
-                    <input id="@(process.ProcessName)MsgBtn" type="button" value="Show Messages" style="display:none" 
-                            onclick="show_message('1', '@(process.ProcessName)')"/>
+                    <input id="Process_@(process.ProcessId)MsgBtn" type="button" value="Show Messages" style="display:none" 
+                            onclick="show_message('1', 'Process_@(process.ProcessId)')"/>
                     <!-- Partial View: Job -->
-                    <div id = "@(process.ProcessName)job" style="display:none; width:100%">
-                        <div class = "@(process.ProcessName)job"></div>
+                    <div id = "Process_@(process.ProcessId)job" style="display:none; width:100%">
+                        <div class = "Process_@(process.ProcessId)job"></div>
                     </div>
                 </td>
             </tr>
@@ -181,94 +196,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <!-- Table footer: Paging -->
     <tfoot>
         <tr>
-            <!--<td colspan="4">
-                @{  // Pagination     
-
-                    int start, end;
-
-                    // Get the value of start and end based on the value of currpage and total number of page
-                    if (Model.NumberOfPages <= 5)
-                    {
-                        // If the total number of page is less than 5, show all to user
-                        start = 0;
-                        end = Model.NumberOfPages;
-                    }
-                    else
-                    {
-                        // Else, allows user to choose first page, last page and 5 other page around current chose page
-                        start = Model.CurrentPage - 2;
-                        end = Model.CurrentPage + 2;
-
-                        if (start < 1)
-                        {
-                            start = 1;
-                            end = 5;
-                        }
-                        else if (end > Model.NumberOfPages)
-                        {
-                            start = Model.NumberOfPages - 4;
-                            end = Model.NumberOfPages;
-                        }
-                    }
-
-                    for (int i = 1; i <= Model.NumberOfPages; i++)
-                    {
-                        if (i < start)
-                        {
-                            if (i == 1)
-                            {
-                                <a  class="page-number" href="javascript:void(0)"  
-                                    onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
-                                                                    main_page_main_current_sort,
-                                                                    document.getElementById('main_page_search_input').value);
-                                            current_scrolldown_process = '*_*' ">@i</a>    
-                            }
-                            else
-                            {
-                                <label>...</label>
-                                i = start - 1;
-                            }
-                        }
-                        else if (i > end)
-                        {
-                            if (i == Model.NumberOfPages)
-                            {
-                                 <a     class="page-number" href="javascript:void(0)"  
-                                        onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
-                                                                        main_page_main_current_sort,
-                                                                        document.getElementById('main_page_search_input').value);
-                                                current_scrolldown_process = '*_*' ">@i</a>  
-                            }
-                            else
-                            {
-                                <label>...</label>
-                                i = Model.NumberOfPages - 1;
-                            }
-                        }
-                        else if (i == Model.CurrentPage)
-                        {
-                            @i
-                        }
-                        else
-                        {
-                             <a  class="page-number" href="javascript:void(0)"  
-                                onclick="MainPageAjaxUpdate(    parseInt($(this).html()),
-                                                                main_page_main_current_sort,
-                                                                document.getElementById('main_page_search_input').value);
-                                        current_scrolldown_process = '*_*' ">@i</a> 
-                        }
-                    }    
-                                                               
-                }
-                            
-                <label>|</label>
-                <label>Go to page:</label>                       
-                <input  id="page_target" type="text" style="width: 40px" 
-                        onchange="MainPageAjaxUpdate(   parseInt(document.getElementById(this.id).value), 
-                                                        main_page_main_current_sort, 
-                                                        document.getElementById('main_page_search_input').value);
-                                  current_scrolldown_process = '*_*' "/>
-            </td>-->
             <td colspan="5">
                 <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="MainPageAjaxUpdate((main_page_main_current_page+1), main_page_main_current_sort, document.getElementById('main_page_search_input').value)" /></div>
             </td>
