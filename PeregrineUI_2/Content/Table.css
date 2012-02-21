@@ -192,8 +192,89 @@ table.job_table tbody tr:nth-child(odd) td
     background:#D1EEEE;
 }
 
+/* For autocomplete*/
+.ui-autocomplete{
+    cursor: default;
+    position: absolute;
+}
+
+.ui-menu
+{
+    display: block;
+    float: left;
+    list-style: none outside none;
+    margin: 0;
+    padding: 2px;
+}
+
+.ui-corner-all 
+{
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.ui-widget 
+{
+    font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+}
+
+.ui-widget-content 
+{
+    background: url('../../Content/themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.pn') repeat-x scroll 50% top #EEEEEE;
+    border: 1px solid #DDDDDD;
+    color: #333333;    
+}
+
+.ui-menu-item
+{
+    clear: left;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.ui-menu-item a
+{
+    display: block;
+    line-height: 1.5;
+    padding: 0.2em 0.4em;
+    text-decoration: none;
+}
+
+.ui-state-hover
+{
+    background: url("../../Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png") repeat-x scroll 50% 50% #fef1ec;
+    border: 1px solid #FBCB09;
+    color: #C77405;
+    font-weight: bold;
+    outline: medium none;
+}
+
 /*
 ---For popup window--------------*/
+
+#popwindow_header
+{
+    padding: 10px;
+    border: 1px solid #600;
+    display:block;
+    font-size: 200%;
+    text-decoration:underline;
+    color: #000000;
+}
+
+#popwindow_message
+{
+    padding: 10px;
+    border: 1px solid #600;
+    display:block;
+    background: #e6fcff;
+    font-size: 100%;
+    color: #000000;
+}
 
 .popperHid 
 {
@@ -205,14 +286,16 @@ table.job_table tbody tr:nth-child(odd) td
     position: absolute;
     z-index: 99;
     padding: 10px;
-    border: 1px solid #600;
+    border: 3px solid #600;
     width: 385px;
     left: 46%;
     top: 360px;
     margin: 0 0 0 -200px;
-    background: #ffc;
+    background: #5757ff;
     display:block;
     font-size: 90%;
+    -moz-border-radius: 15px;
+    border-radius: 10px;
 }
 
 .popperShow #closebutton 
