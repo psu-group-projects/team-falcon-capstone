@@ -14,10 +14,8 @@ function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',
         data: { "page": page, "sort_input": sort_input, "SearchPattern": SearchPattern },
-        success: function (data) {
-            page_scroll_amt = $(window).scrollTop();
-            $('.process-list').html(data);
-            $(window).scrollTop(page_scroll_amt);
+        success: function (data) {         
+            $('.process-list').html(data);     
         },
         error: function (result) {
             alert(result);
@@ -99,8 +97,7 @@ function ProcessMsgUpdate(page, process_name) {
         url: '/Home/ProcessMsgUpdate',
         data: { "page": page, "processName": process_name },
         success: function (data) {
-            //tab_amt = $('div.' + process_name + 'message').height();   
-            $('div.' + process_name + 'message').html(data);         
+            $('div.' + process_name + 'message').html(data);           
         },
         error: function (result) {
             alert(result);
@@ -114,7 +111,7 @@ function ProcessJobUpdate(page, process_name) {
         type: "POST",
         url: '/Home/ProcessJobUpdate',
         data: { "page": page, "processName": process_name },
-        success: function (data) {
+        success: function (data) {       
             $('div.' + process_name + 'job').html(data);          
         },
         error: function (result) {
@@ -125,8 +122,6 @@ function ProcessJobUpdate(page, process_name) {
 
 // Show Jobs, hide Messages on clicks
 function show_job(page, process_name) {
-    // Update the current value of current_scrolldown_process
-    //document.getElementById("current_scrolldown_process").innerHTML = process_name;
 
     // Save info of the opened tab
     msg_or_job = 'Job';
@@ -142,7 +137,6 @@ function show_job(page, process_name) {
 
 // Show Messages, hide Jobs on clicks
 function show_message(page, process_name) {
-    // Update the current value of current_scrolldown_process
 
     // Save info of the opened tab
     msg_or_job = 'Msg';

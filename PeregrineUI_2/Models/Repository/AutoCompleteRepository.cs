@@ -9,7 +9,7 @@ namespace PeregrineUI_2.Models.Repository
 {
     public class AutoCompleteRepository
     {
-        public static List<string> GetAutoCompleteList(string search_string){
+        public static string GetAutoCompleteList(string search_string){
             List<string> AutoCompleteList = new List<string>();
 
             /*
@@ -42,7 +42,9 @@ namespace PeregrineUI_2.Models.Repository
                 AutoCompleteList.Add(p.ProcessName);
             }
 
-            return AutoCompleteList;
+            string ans = string.Join(",", AutoCompleteList.ToArray());
+
+            return ans;
         }
     }
 }
