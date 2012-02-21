@@ -17,8 +17,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var current_scrolldown_process;
     var msg_or_job;
     var inside_page;
-    var tabsize;
-    var page_scroll_amt;
 
     $(document).ready(function () {
         // Fix event.layerx and layery broken warning, work like a charm
@@ -71,7 +69,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
         // Automatic refresh the page        
         
-        setInterval(function () {
+        setInterval(function () {       
             MainPageAjaxUpdate( main_page_main_current_page,
                                 main_page_main_current_sort,
                                 document.getElementById("main_page_search_input").value);
