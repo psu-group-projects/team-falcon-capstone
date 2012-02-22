@@ -192,7 +192,7 @@ table.job_table tbody tr:nth-child(odd) td
     background:#D1EEEE;
 }
 
-/* For autocomplete*/
+/* For autocomplete
 .ui-autocomplete{
     cursor: default;
     position: absolute;
@@ -252,7 +252,7 @@ table.job_table tbody tr:nth-child(odd) td
     font-weight: bold;
     outline: medium none;
 }
-
+*/
 /*
 ---For popup window--------------*/
 

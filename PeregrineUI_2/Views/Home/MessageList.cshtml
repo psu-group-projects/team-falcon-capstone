@@ -106,7 +106,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             @message.Content
                             @if (message.Content.Length > 8)
                             {                      
-                                <a id="@(message.Content)" href='' style="text-decoration:none" onclick='return showpopup(@(message.ProcessID), "@(message.ProcessName)", document.getElementById(this.id));'>...</a> 
+                                <a id="@(message.Content)" href='javascript:showpopup(@(message.ProcessID), "@(message.ProcessName)", document.getElementById(this.id))' style="text-decoration:none">...</a> 
                             }                                                              
                     </td>
                     <td id="@(message.ProcessName)" >

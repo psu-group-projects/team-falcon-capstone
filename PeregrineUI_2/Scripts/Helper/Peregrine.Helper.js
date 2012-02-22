@@ -184,9 +184,12 @@ function GetFullDetailMessage(msg_id, pro_name) {
         type: "POST",
         url: '/Home/MsgInq_getfulldetail',
         data: { "msg_id": msg_id },
-        success: function (data) {        
-            document.getElementById("popwindow_header").innerHTML = pro_name;
-            document.getElementById("popwindow_message").innerHTML = data;
+        success: function (data) {
+            //document.getElementById("popwindow_header").innerHTML = pro_name;
+            //document.getElementById("popwindow_message").innerHTML = data;
+            
+            document.getElementById("message_modal").innerHTML = data;
+            $("#message_modal").dialog({ "title": pro_name });
         },
         error: function (result) {
             alert(result);
@@ -221,7 +224,7 @@ function findPos(obj) {
 
 /**/
 function showpopup(msg_id, process_name, top_value) {
-
+    /*
     var pos;
      
     if (document.getElementById("popwindow").className == 'popperHid') {
@@ -240,7 +243,8 @@ function showpopup(msg_id, process_name, top_value) {
             GetFullDetailMessage(msg_id, process_name);
         }
     }
-    return false;
+    return false;*/
+    GetFullDetailMessage(msg_id, process_name);
 }
 
 /**/
