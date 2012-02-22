@@ -10,6 +10,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 /**/
 function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
+    current_scroll_pos = $(window).scrollTop();
     $.ajax({
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',
@@ -97,7 +98,8 @@ function ProcessMsgUpdate(page, process_name) {
         url: '/Home/ProcessMsgUpdate',
         data: { "page": page, "processName": process_name },
         success: function (data) {
-            $('div.' + process_name + 'message').html(data);           
+            $('div.' + process_name + 'message').html(data);
+            $(window).scrollTop(current_scroll_pos);
         },
         error: function (result) {
             alert(result);
@@ -111,8 +113,9 @@ function ProcessJobUpdate(page, process_name) {
         type: "POST",
         url: '/Home/ProcessJobUpdate',
         data: { "page": page, "processName": process_name },
-        success: function (data) {       
-            $('div.' + process_name + 'job').html(data);          
+        success: function (data) {
+            $('div.' + process_name + 'job').html(data);
+            $(window).scrollTop(current_scroll_pos);       
         },
         error: function (result) {
             alert(result);

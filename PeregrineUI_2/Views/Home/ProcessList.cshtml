@@ -20,6 +20,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         if(is_closed){
             $("#"+id+"_more").fadeIn(500);
             $("#"+id+" .arrow").addClass("up");
+            show_message('1', id);
+            current_scrolldown_process = id;    
         }
     }
 
