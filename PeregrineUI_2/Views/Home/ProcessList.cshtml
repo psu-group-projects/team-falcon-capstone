@@ -177,7 +177,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td colspan="5">
                     <!-- Table of messages in current process -->
                     <input id="Process_@(process.ProcessId)JobBtn" type="button" value="Show Jobs"
-                            onclick="show_job('1', 'Process_@(process.ProcessId)')"/>
+                            onclick="show_job('1', 'Process_@(process.ProcessId)', @(process.ProcessId))"/>
                     <!-- Partial View: Message --> 
                     <div  id = "Process_@(process.ProcessId)message" style="display:inline-block; width:100%">
                         <div class = "Process_@(process.ProcessId)message"></div>
@@ -185,7 +185,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
                     <!-- Table of jobs in current process -->
                     <input id="Process_@(process.ProcessId)MsgBtn" type="button" value="Show Messages" style="display:none" 
-                            onclick="show_message('1', 'Process_@(process.ProcessId)')"/>
+                            onclick="show_message('1', 'Process_@(process.ProcessId)', @(process.ProcessId))"/>
                     <!-- Partial View: Job -->
                     <div id = "Process_@(process.ProcessId)job" style="display:none; width:100%">
                         <div class = "Process_@(process.ProcessId)job"></div>

@@ -108,11 +108,11 @@ function ProcessMsgUpdate(page, process_name) {
 }
 
 /**/
-function ProcessJobUpdate(page, process_name) {
+function ProcessJobUpdate(page, process_name, id) {
     $.ajax({
         type: "POST",
         url: '/Home/ProcessJobUpdate',
-        data: { "page": page, "processName": process_name },
+        data: { "page": page, "processName": id },
         success: function (data) {
             $('div.' + process_name + 'job').html(data);
             $(window).scrollTop(current_scroll_pos);       
@@ -124,7 +124,7 @@ function ProcessJobUpdate(page, process_name) {
 }
 
 // Show Jobs, hide Messages on clicks
-function show_job(page, process_name) {
+function show_job(page, process_name, id) {
 
     // Save info of the opened tab
     msg_or_job = 'Job';
@@ -135,7 +135,7 @@ function show_job(page, process_name) {
     document.getElementById(process_name + 'JobBtn').style.display = 'none';
     document.getElementById(process_name + 'job').style.display = 'block';
     document.getElementById(process_name + 'MsgBtn').style.display = 'block';
-    ProcessJobUpdate(page, process_name);
+    ProcessJobUpdate(page, process_name, id);
 }
 
 // Show Messages, hide Jobs on clicks
