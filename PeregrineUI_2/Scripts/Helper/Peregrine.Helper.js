@@ -9,6 +9,118 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 ///////////////////////////////////////// Main Page ////////////////////////////////////////////////////////////
 
 /**/
+function Main_page_setup(s_process, refresh_rate) {
+    // Fix event.layerx and layery broken warning, work like a charm
+    var all = $.event.props,
+    len = all.length,
+    res = [];
+    while (len--) {
+        var el = all[len];
+        if (el != 'layerX' && el != 'layerY') res.push(el);
+    }
+    $.event.props = res;
+
+    tab_amt = 0;
+
+    // Initialize the default value for current_scrolldown_process
+
+    current_scrolldown_process = '*_*';
+
+    var search_process = s_process;
+          
+    MainPageAjaxUpdate(1, 4, search_process);
+
+    // Use enter to send value in input box. Work for IE, Firefox and Chrome
+    $('#main_page_search_input').keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            MainPageAjaxUpdate( '1',
+                                '1',
+                                document.getElementById("main_page_search_input").value);
+            current_scrolldown_process = '*_*';
+        }else{
+                if(document.getElementById("main_page_search_input").value == ""){
+                MainPageAjaxUpdate(1, 4, "");
+                }else{
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/AutoCompleteUpdate',
+                    data: { "search_string":  document.getElementById("main_page_search_input").value },
+                    success: function (data) {
+                        var availableTags = data.split(",");
+                        $("#main_page_search_input").autocomplete({
+                            source: availableTags
+                        }); 
+                    },
+                    error: function (result) {
+                        alert(result);
+                    }
+                });
+            }              
+        }
+    });
+
+    // Automatic refresh the page        
+        
+    setInterval(function () {       
+        MainPageAjaxUpdate( main_page_accumulate_page,
+                            main_page_current_sort,
+                            document.getElementById("main_page_search_input").value);
+    }, refresh_rate);
+}
+
+
+/**/
+function Main_partial_page_setup(acc_page, sort_type) {
+    main_page_accumulate_page = acc_page;
+    main_page_current_sort = sort_type;
+
+    $("#process_table tr:odd").addClass("odd");
+    $("#process_table tr:not(.odd)").hide();
+    $("#process_table tr:first-child").show();
+
+    opened_row_id = current_scrolldown_process;
+    if (opened_row_id != '*_*') {
+        opened_row = document.getElementById(opened_row_id);
+        if (opened_row != null) {
+            $(opened_row).next("tr").show();
+            ExpandedTabUpdate(   current_scrolldown_process, msg_or_job, parseInt(inside_page)  );              
+        }
+        else {
+            current_scrolldown_process = '*_*';
+        }
+    }
+             
+    // Handle clicking msg page number 
+    $(".process_msg_page-number").live("click", function () {
+        show_message(   parseInt($(this).html()),
+                        current_scrolldown_process);
+    });
+
+    // Handle clicking job page number 
+    $(".process_job_page-number").live("click", function () {
+        show_job(   parseInt($(this).html()),
+                    current_scrolldown_process);
+    });
+}
+
+/**/
+function toggleMoreInfo(id) {
+    //check to see if requested tr is already open
+    var is_closed = ($("#" + id + "_more").css("display") == "none");
+    //first close all other trs...
+    $(".more_info_rows").hide();
+    $(".arrow").removeClass("up");
+    //then show the right tr
+    if (is_closed) {
+        $("#" + id + "_more").fadeIn(500);
+        $("#" + id + " .arrow").addClass("up");
+        show_message('1', id);
+        current_scrolldown_process = id;
+    }
+}
+
+/**/
 function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
     current_scroll_pos = $(window).scrollTop();
     $.ajax({
@@ -74,8 +186,8 @@ function Main_page_sorting(id) {
     }
 
     // Make ajax call to controller to update the table
-    MainPageAjaxUpdate(main_page_main_current_page,      // Page number
-                            s_option,           // Sort option
+    MainPageAjaxUpdate(     main_page_accumulate_page,        // Page numberth
+                            s_option,                       // Sort option
                             document.getElementById("main_page_search_input").value);
     current_scrolldown_process = '*_*';
 }
@@ -156,6 +268,82 @@ function show_message(page, process_name) {
 
 ///////////////////////////////////////// Message Inquiry Page ////////////////////////////////////////////////////////////
 
+function Msg_Inquiry_setup() {
+    // Fix event.layerx and layery broken warning, work like a charm
+    var all = $.event.props,
+        len = all.length,
+        res = [];
+    while (len--) {
+        var el = all[len];
+        if (el != 'layerX' && el != 'layerY') res.push(el);
+    }
+    $.event.props = res;
+
+    // Set up the initial stage of the message inquiry page
+    MsgInquiryUpdate(
+                            "1",    // current page number = 1
+                            "9",    // sort_option = 5 which is sort by date descending
+                            "0",    // msg_priority = 0 which will show every message with every possible priority
+                            "",     // processname = "" which will search for all message
+                            "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
+                        );
+
+    // Handle clicking page number 
+    $(".msg_inquiry_page-number").live("click", function () {
+        Msg_inquiry_collect_info(
+                                        $(this).html(),
+                                        msg_inquiry_current_sort,
+                                        document.getElementById("process_prio_input").value,
+                                        document.getElementById("process_name_input").value
+                                    );
+    });
+
+    // Automatic update
+    //        setInterval(function () {
+    //            Msg_inquiry_collect_info(
+    //                                        msg_inquiry_accumulate_page,
+    //                                        msg_inquiry_current_sort,
+    //                                        document.getElementById("process_prio_input").value,
+    //                                        document.getElementById("process_name_input").value
+    //                                    );
+    //        }, 5000);
+
+    // Use enter to send value in input box. Work for IE, Firefox and Chrome
+    $('#process_name_input').keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            Msg_inquiry_collect_info(
+                                            '1',                                                    //  Page number
+                                            msg_inquiry_current_sort,                               //  Sort option
+                                            document.getElementById("process_prio_input").value,    // priority value
+                                            document.getElementById("process_name_input").value     // process name value
+                                         );
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '/Home/AutoCompleteUpdate',
+                data: { "search_string": "Fal" },
+                success: function (data) {
+                    var availableTags = data.split(",");
+                    $("#process_name_input").autocomplete({
+                        source: availableTags
+                    });
+                },
+                error: function (result) {
+                    alert(result);
+                }
+            });
+        }
+
+    });
+
+    // Quick way to quit message detail window
+    $('#popwindow').dblclick(function () {
+        showpopup("-1", "");
+    });
+}
+
 /**/
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
     $.ajax({
@@ -224,26 +412,6 @@ function findPos(obj) {
 
 /**/
 function showpopup(msg_id, process_name, top_value) {
-    /*
-    var pos;
-     
-    if (document.getElementById("popwindow").className == 'popperHid') {
-        // Update the div
-        pos = findPos(top_value);
-        document.getElementById("popwindow").style.top = pos + "px";
-        GetFullDetailMessage(msg_id, process_name);
-        document.getElementById("popwindow").className = 'popperShow';
-    } else {
-        if (msg_id == "-1")
-            document.getElementById("popwindow").className = 'popperHid';
-        else {
-            // Update the div
-            pos = findPos(top_value);
-            document.getElementById("popwindow").style.top = pos + "px";
-            GetFullDetailMessage(msg_id, process_name);
-        }
-    }
-    return false;*/
     GetFullDetailMessage(msg_id, process_name);
 }
 
@@ -316,7 +484,7 @@ function Msg_inquiry_sorting(chkboxname) {
                                     document.getElementById("process_prio_input").value,
                                     document.getElementById("process_name_input").value);*/
 
-    MsgInquiryUpdate(msg_inquiry_current_page, s_option, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0))
+    MsgInquiryUpdate(msg_inquiry_accumulate_page, s_option, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0))
 }
 
 

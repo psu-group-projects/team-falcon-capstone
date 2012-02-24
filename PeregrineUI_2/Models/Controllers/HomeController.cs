@@ -22,30 +22,21 @@ namespace PeregrineUI_2.Controllers
         // Specify how many entries for one page
         // Will be added into config file in the future
         //
-        private int PageSize = 5;
+        private int PageSize;
+        private int Refresh_Rate;
 
         public HomeController()
         {
-            Settings Web_setting = new Settings();
-            PageSize = Web_setting.Refresh_Rate;
+            PageSize = Properties.Settings.Default.Page_Size;
         }
         
         [HttpGet]
         public ViewResult Index()
         {
+            Refresh_Rate = Properties.Settings.Default.Refresh_Rate;
+            ViewBag.Refresh_Rate = Refresh_Rate;
             return View();
         }
-
-        /*
-        [HttpPost]
-        public ActionResult MainPageAjaxUpdate(int page, int sort_input, string SearchPattern)
-        {
-            int sort_columm = sort_input / 2;
-            int sort_type = sort_input % 2;  // sort_type = [0 for accending and 1 for descending]
-
-            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, SearchPattern, PageSize);
-            return PartialView("ProcessList", pagingContext);
-        }*/
 
         [HttpPost]
         public ActionResult MainPageAjaxUpdate(int page, int sort_input, string SearchPattern)

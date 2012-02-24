@@ -14,85 +14,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <script type="text/javascript">
 
-    var msg_inquiry_current_page;
+    var msg_inquiry_accumulate_page;
     var msg_inquiry_current_sort;
 
     /**/
     $(document).ready(function () {
-        // Fix event.layerx and layery broken warning, work like a charm
-        var all = $.event.props,
-        len = all.length,
-        res = [];
-        while (len--) {
-            var el = all[len];
-            if (el != 'layerX' && el != 'layerY') res.push(el);
-        }
-        $.event.props = res;
-
-        // Set up the initial stage of the message inquiry page
-        MsgInquiryUpdate(
-                            "1",    // current page number = 1
-                            "9",    // sort_option = 5 which is sort by date descending
-                            "0",    // msg_priority = 0 which will show every message with every possible priority
-                            "",     // processname = "" which will search for all message
-                            "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
-                        );
-
-        // Handle clicking page number 
-        $(".msg_inquiry_page-number").live("click", function () {
-            Msg_inquiry_collect_info(
-                                        $(this).html(),
-                                        msg_inquiry_current_sort,
-                                        document.getElementById("process_prio_input").value,
-                                        document.getElementById("process_name_input").value
-                                    );
-        });
-
-        // Automatic update
-        //        setInterval(function () {
-        //            Msg_inquiry_collect_info(
-        //                                        msg_inquiry_current_page,
-        //                                        msg_inquiry_current_sort,
-        //                                        document.getElementById("process_prio_input").value,
-        //                                        document.getElementById("process_name_input").value
-        //                                    );
-        //        }, 5000);
-
-        // Use enter to send value in input box. Work for IE, Firefox and Chrome
-        $('#process_name_input').keypress(function (e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
-                Msg_inquiry_collect_info(
-                                            '1',                                                    //  Page number
-                                            msg_inquiry_current_sort,                               //  Sort option
-                                            document.getElementById("process_prio_input").value,    // priority value
-                                            document.getElementById("process_name_input").value     // process name value
-                                         );
-            }
-            else {
-                $.ajax({
-                    type: "POST",
-                    url: '/Home/AutoCompleteUpdate',
-                    data: { "search_string": "Fal" },
-                    success: function (data) {
-                        var availableTags = data.split(",");
-                        $("#process_name_input").autocomplete({
-                            source: availableTags
-                        });
-                    },
-                    error: function (result) {
-                        alert(result);
-                    }
-                });
-            }
-
-        });
-
-        // Quick way to quit message detail window
-        $('#popwindow').dblclick(function () {
-            showpopup("-1", "");
-        });
-
+        Msg_Inquiry_setup();
     });
 
 </script>
@@ -111,7 +38,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <label>Search message by message priority:</label>
 <select id="process_prio_input" 
         onchange="Msg_inquiry_collect_info ( 
-                                                msg_inquiry_current_page,
+                                                msg_inquiry_accumulate_page,
                                                 msg_inquiry_current_sort,                                      
                                                 document.getElementById('process_prio_input').value,
                                                 document.getElementById('process_name_input').value
@@ -133,7 +60,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <label>Get all start up and shutdown msg: </label>
 
-<input id="SU_SD_Checkbox" type="checkbox" onclick="MsgInquiryUpdate(msg_inquiry_current_page, msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" />
+<input id="SU_SD_Checkbox" type="checkbox" onclick="MsgInquiryUpdate(msg_inquiry_accumulate_page, msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" />
                                                                              
 <hr />
 

@@ -10,84 +10,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <script type="text/javascript">
     
-    function toggleMoreInfo(id){
-        //check to see if requested tr is already open
-        var is_closed = ($("#"+id+"_more").css("display") == "none");
-        //first close all other trs...
-        $(".more_info_rows").hide();
-        $(".arrow").removeClass("up");
-        //then show the right tr
-        if(is_closed){
-            $("#"+id+"_more").fadeIn(500);
-            $("#"+id+" .arrow").addClass("up");
-            show_message('1', id);
-            current_scrolldown_process = id;    
-        }
-    }
-
     // Expand process detail
-    $(document).ready(function () { 
-       
-        main_page_main_current_page = @(Model.CurrentPage);
-        main_page_main_current_sort = @(Model.SortingType);
-
-        $("#process_table tr:odd").addClass("odd");
-        $("#process_table tr:not(.odd)").hide();
-        $("#process_table tr:first-child").show();
-
-        opened_row_id = current_scrolldown_process;
-        if (opened_row_id != '*_*') {
-            opened_row = document.getElementById(opened_row_id);
-            if (opened_row != null) {
-                $(opened_row).next("tr").show();
-                ExpandedTabUpdate(   current_scrolldown_process,
-                                     msg_or_job,
-                                     parseInt(inside_page));              
-            }
-            else {
-                current_scrolldown_process = '*_*';
-            }
-        }
-
-        /*
-        $("#process_table tr.odd").click(function () {
-         
-            if ($(this).attr("id") != "")
-            {
-                // Close all tabs except the clicked row
-                $("#process_table tr:not(.odd)").not($(this).next("tr")).hide();
-                $("#process_table tr.odd").not($(this)).find(".arrow").removeClass("up");
-                $("#process_table tr:first-child").show();
-
-                // Toggle the clicked row
-                $(this).next("tr").toggle();
-                $(this).find(".arrow").toggleClass("up");
-
-                // Save currently opened tab into a label
-                // If the clicked row is currently open, close it
-                if (current_scrolldown_process == $(this).attr("id")) {
-                    current_scrolldown_process = '*_*';
-                }
-                // if not, open the row
-                else {
-                    current_scrolldown_process = $(this).attr("id"); 
-                    show_message('1', $(this).attr("id"));              
-                }
-             }
-        });*/
-
-               
-        // Handle clicking msg page number 
-        $(".process_msg_page-number").live("click", function () {
-            show_message(   parseInt($(this).html()),
-                            current_scrolldown_process);
-        });
-
-        // Handle clicking job page number 
-        $(".process_job_page-number").live("click", function () {
-            show_job(   parseInt($(this).html()),
-                        current_scrolldown_process);
-        });
+    $(document).ready(function () {
+        Main_partial_page_setup (@(Model.CurrentPage), @(Model.SortingType));
     });
 
     
@@ -199,7 +124,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <tfoot>
         <tr>
             <td colspan="5">
-                <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="MainPageAjaxUpdate((main_page_main_current_page+1), main_page_main_current_sort, document.getElementById('main_page_search_input').value)" /></div>
+                <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="MainPageAjaxUpdate((main_page_accumulate_page+1), main_page_current_sort, document.getElementById('main_page_search_input').value)" /></div>
             </td>
         </tr>              
     </tfoot>

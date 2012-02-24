@@ -25,10 +25,19 @@ namespace PeregrineUI_2.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
         public int Refresh_Rate {
             get {
                 return ((int)(this["Refresh_Rate"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int Page_Size {
+            get {
+                return ((int)(this["Page_Size"]));
             }
         }
     }
