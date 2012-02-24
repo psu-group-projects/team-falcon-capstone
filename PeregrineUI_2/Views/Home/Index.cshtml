@@ -18,9 +18,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var msg_or_job;
     var inside_page;
     var current_scroll_pos;
+    var Refresh_Rate = @ViewBag.Refresh_Rate;
 
     $(document).ready(function () {
-       Main_page_setup("@Request.QueryString["Process"]", @ViewBag.Refresh_Rate);
+       Main_page_setup("@Request.QueryString["Process"]");
     });
 
 </script>

@@ -9,7 +9,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 ///////////////////////////////////////// Main Page ////////////////////////////////////////////////////////////
 
 /**/
-function Main_page_setup(s_process, refresh_rate) {
+function Main_page_setup(s_process) {
     // Fix event.layerx and layery broken warning, work like a charm
     var all = $.event.props,
     len = all.length,
@@ -66,7 +66,7 @@ function Main_page_setup(s_process, refresh_rate) {
         MainPageAjaxUpdate( main_page_accumulate_page,
                             main_page_current_sort,
                             document.getElementById("main_page_search_input").value);
-    }, refresh_rate);
+    }, Refresh_Rate);
 }
 
 
@@ -117,6 +117,9 @@ function toggleMoreInfo(id) {
         $("#" + id + " .arrow").addClass("up");
         show_message('1', id);
         current_scrolldown_process = id;
+    }
+    else {
+        current_scrolldown_process = '*_*';
     }
 }
 
@@ -187,7 +190,7 @@ function Main_page_sorting(id) {
 
     // Make ajax call to controller to update the table
     MainPageAjaxUpdate(     main_page_accumulate_page,        // Page numberth
-                            s_option,                       // Sort option
+                            s_option,                         // Sort option
                             document.getElementById("main_page_search_input").value);
     current_scrolldown_process = '*_*';
 }
@@ -268,7 +271,7 @@ function show_message(page, process_name) {
 
 ///////////////////////////////////////// Message Inquiry Page ////////////////////////////////////////////////////////////
 
-function Msg_Inquiry_setup() {
+function Msg_Inquiry_setup(refresh_rate) {
     // Fix event.layerx and layery broken warning, work like a charm
     var all = $.event.props,
         len = all.length,
@@ -299,24 +302,24 @@ function Msg_Inquiry_setup() {
     });
 
     // Automatic update
-    //        setInterval(function () {
-    //            Msg_inquiry_collect_info(
-    //                                        msg_inquiry_accumulate_page,
-    //                                        msg_inquiry_current_sort,
-    //                                        document.getElementById("process_prio_input").value,
-    //                                        document.getElementById("process_name_input").value
-    //                                    );
-    //        }, 5000);
+    setInterval(function () {
+        Msg_inquiry_collect_info(
+                                    msg_inquiry_accumulate_page,
+                                    msg_inquiry_current_sort,
+                                    document.getElementById("process_prio_input").value,
+                                    document.getElementById("process_name_input").value
+                                );
+    }, Refresh_Rate);
 
     // Use enter to send value in input box. Work for IE, Firefox and Chrome
     $('#process_name_input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             Msg_inquiry_collect_info(
-                                            '1',                                                    //  Page number
-                                            msg_inquiry_current_sort,                               //  Sort option
-                                            document.getElementById("process_prio_input").value,    // priority value
-                                            document.getElementById("process_name_input").value     // process name value
+                                            '1',                                                    
+                                            msg_inquiry_current_sort,                               
+                                            document.getElementById("process_prio_input").value,    
+                                            document.getElementById("process_name_input").value    
                                          );
         }
         else {
@@ -342,6 +345,12 @@ function Msg_Inquiry_setup() {
     $('#popwindow').dblclick(function () {
         showpopup("-1", "");
     });
+}
+
+/**/
+function GoToMainPage(processName) {
+    window.location.href = "Index";
+    MainPageAjaxUpdate(1, 1, processName)
 }
 
 /**/
@@ -373,11 +382,9 @@ function GetFullDetailMessage(msg_id, pro_name) {
         url: '/Home/MsgInq_getfulldetail',
         data: { "msg_id": msg_id },
         success: function (data) {
-            //document.getElementById("popwindow_header").innerHTML = pro_name;
-            //document.getElementById("popwindow_message").innerHTML = data;
-            
+            var header_title = "Process: " + pro_name + " | Message_id : " + msg_id;
             document.getElementById("message_modal").innerHTML = data;
-            $("#message_modal").dialog({ "title": pro_name });
+            $("#message_modal").dialog({ "title": header_title });
         },
         error: function (result) {
             alert(result);
@@ -477,12 +484,6 @@ function Msg_inquiry_sorting(chkboxname) {
     } else {
         alert("SORTING ERROR");
     }
-
-    // Make ajax call to controller to update the table
-    /*Msg_inquiry_collect_info(       "1",            // Page number
-                                    s_option,       // Sort option
-                                    document.getElementById("process_prio_input").value,
-                                    document.getElementById("process_name_input").value);*/
 
     MsgInquiryUpdate(msg_inquiry_accumulate_page, s_option, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0))
 }
