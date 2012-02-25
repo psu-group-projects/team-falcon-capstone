@@ -124,12 +124,12 @@ function toggleMoreInfo(id) {
 }
 
 /**/
-function MainPageAjaxUpdate(page, sort_input, SearchPattern) {
+function MainPageAjaxUpdate(page, sort_input, process_name) {
     current_scroll_pos = $(window).scrollTop();
     $.ajax({
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',
-        data: { "page": page, "sort_input": sort_input, "SearchPattern": SearchPattern },
+        data: { "page": page, "sort_input": sort_input, "process_name": process_name },
         success: function (data) {         
             $('.process-list').html(data);     
         },

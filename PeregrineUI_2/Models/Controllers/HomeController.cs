@@ -2,7 +2,7 @@
 Author   : Chinh T Cao
 Version  : 1.0.0
 Date     : 12/29/2011
-Copyright: Capstone Project Team Falcon 2011 All right reserved
+Copyright: Capstone Project Team Falcon 2011-2012 All right reserved
 */
 
 using System;
@@ -18,18 +18,25 @@ namespace PeregrineUI_2.Controllers
 {
     public class HomeController : Controller
     {
-        //
-        // Specify how many entries for one page
-        // Will be added into config file in the future
-        //
         private int PageSize;
         private int Refresh_Rate;
 
+        /// <summary>
+        /// Initializes a new instance of the HomeController class.
+        /// Read the value of Page_Size in websettings
+        /// </summary>
         public HomeController()
         {
             PageSize = Properties.Settings.Default.Page_Size;
         }
-        
+
+
+        /// <summary>
+        /// This is the entry point when users start the peregrine web app.
+        /// Read the value of Refresh_Rate in websettings, bring it to Index.cshtml and start up the 
+        /// Index.cshtm.
+        /// </summary>
+        /// <returns> ViewResult type </returns>
         [HttpGet]
         public ViewResult Index()
         {
@@ -38,16 +45,37 @@ namespace PeregrineUI_2.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult MainPageAjaxUpdate(int page, int sort_input, string SearchPattern)
-        {
-            int sort_columm = sort_input / 2;
-            int sort_type = sort_input % 2;  // sort_type = [0 for accending and 1 for descending]
 
-            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, SearchPattern, PageSize);
+        /// <summary>
+        /// This function is called when :
+        ///     * Users wants to search for a particular process with a sorting way
+        ///     * Automatic update
+        /// This function will request the information from the DB using SOAP API, then
+        /// it will bring these received info from DB to the partial view ProcessList.
+        /// </summary>
+        /// <param name="page">page.</param>
+        /// <param name="sort_input">sort_input.</param>
+        /// <param name="process_name">process_name.</param>
+        /// <returns> PartialView </returns>
+        [HttpPost]
+        public ActionResult MainPageAjaxUpdate(int page, int sort_input, string process_name)
+        {
+            int sort_columm, sort_type;
+
+            sort_columm = sort_input / 2;
+            sort_type = sort_input % 2;  // sort_type = [0 for accending and 1 for descending]
+
+            var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, process_name, PageSize);
             return PartialView("ProcessList", pagingContext);
         }
 
+
+        /// <summary>
+        /// Processes the MSG update.
+        /// </summary>
+        /// <param name="page">page.</param>
+        /// <param name="processName">processName.</param>
+        /// <returns> ActionResult </returns>
         [HttpPost]
         public ActionResult ProcessMsgUpdate(int page, string processName)
         {
@@ -55,6 +83,13 @@ namespace PeregrineUI_2.Controllers
             return PartialView("Message", pagingContext);
         }
 
+
+        /// <summary>
+        /// Processes the job update.
+        /// </summary>
+        /// <param name="page">page.</param>
+        /// <param name="processName">processName.</param>
+        /// <returns> ActionResult </returns>
         [HttpPost]
         public ActionResult ProcessJobUpdate(int page, string processName)
         {
@@ -62,13 +97,32 @@ namespace PeregrineUI_2.Controllers
             return PartialView("Job", pagingContext);
         }
 
+
+        /// <summary>
+        /// Start the message inquiry page.
+        /// The message inquiry page is used when user want to do message oriented search
+        /// </summary>
+        /// <returns> ViewResult </returns>
         [HttpGet]
         public ViewResult MsgInquiry()
         {  
             return View();
         }
 
-        // Message inquriy page
+
+        /// <summary>
+        /// This function is called when :
+        ///     * Users wants to search for a particular process with a priority value and a sorting way
+        ///     * Automatic update
+        /// This function will request the information from the DB using SOAP API, then
+        /// it will bring these received info from DB to the partial view MessageList.
+        /// </summary>
+        /// <param name="page_number">page_number.</param>
+        /// <param name="sort_option">sort_option.</param>
+        /// <param name="msg_priority">msg_priority.</param>
+        /// <param name="process_name">process_name.</param>
+        /// <param name="SU_SD_msg">SU_SD_msg.</param>
+        /// <returns> ActionResult </returns>
         [HttpPost]
         public ActionResult MsgInquiryUpdate(   string page_number,
                                                 string sort_option,
@@ -76,7 +130,7 @@ namespace PeregrineUI_2.Controllers
                                                 string process_name, 
                                                 string SU_SD_msg)
         {
-            int input_msg_priority;
+            int input_msg_priority, sort_option_input, sort_columm, sort_type;
 
             // Parsing process
             if (msg_priority == "")
@@ -85,9 +139,9 @@ namespace PeregrineUI_2.Controllers
                 input_msg_priority = Convert.ToInt32(msg_priority);
 
             // Parsing the sort_option info
-            int sort_option_input = Convert.ToInt32(sort_option);
-            int sort_columm = sort_option_input / 2;
-            int sort_type = sort_option_input % 2;  // sort_type = [0 for accending and 1 for descending]
+            sort_option_input   = Convert.ToInt32(sort_option);
+            sort_columm         = sort_option_input / 2;
+            sort_type           = sort_option_input % 2;  // sort_type = [0 for accending and 1 for descending]
 
             var pagingContext = MsgInquiryRepo.GetMessages( Convert.ToInt32(page_number),
                                                             sort_columm,
@@ -100,6 +154,12 @@ namespace PeregrineUI_2.Controllers
             return PartialView("MessageList", pagingContext);
         }
 
+
+        /// <summary>
+        /// This function is used to get the full detail version of a long message using msg_id
+        /// </summary>
+        /// <param name="msg_id">msg_id.</param>
+        /// <returns> string </returns>
         [HttpPost]
         public string MsgInq_getfulldetail(string msg_id)
         {
@@ -108,6 +168,11 @@ namespace PeregrineUI_2.Controllers
         }
 
 
+        /// <summary>
+        /// This function is used to get the list for autocomplete search features
+        /// </summary>
+        /// <param name="search_string">search_string</param>
+        /// <returns> string </returns>
         [HttpPost]
         public string AutoCompleteUpdate( string search_string)
         {
@@ -116,5 +181,3 @@ namespace PeregrineUI_2.Controllers
         }
     }
 }
-
-//padding: 3px 18px 3px 10px;
