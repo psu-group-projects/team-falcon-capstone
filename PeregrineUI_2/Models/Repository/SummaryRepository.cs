@@ -17,21 +17,28 @@ namespace PeregrineUI_2.Models.Repository
             // API call will be here
             PeregrineService service = new PeregrineService();
 
-            List<ProcessSummary> ProcessSummaryData;
+            List<ProcessSummary> OneProcessSummary;
+            List<GetPageOfProcessSummaryResult> ProcessSummaryData;
 
             if (process_name == "")
             {
                 ProcessSummaryData = service.getSummaryByPage(1, pagesize * page, SortBy.PROCESS_STATE, 0);
+                foreach (GetPageOfProcessSummaryResult summary in ProcessSummaryData)
+                {
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString() });
+                }
             }
             else
             {
-                ProcessSummaryData = service.getProcessByName(process_name);
+                
+                OneProcessSummary = service.getProcessByName(process_name);
+                foreach (ProcessSummary summary in OneProcessSummary)
+                {
+                    SummaryData.Add(new Process { ProcessId = summary._process.ProcessID, ProcessName = summary._process.ProcessName, LastAction = summary._message.Message1, MsgDate = summary._message.Date, _ProcessState = summary._process.State.ToString() });
+                }
             }
 
-            foreach (ProcessSummary summary in ProcessSummaryData)
-            {
-                SummaryData.Add(new Process { ProcessId = summary._process.ProcessID, ProcessName = summary._process.ProcessName, LastAction = summary._message.Message1, MsgDate = summary._message.Date, _ProcessState = summary._process.State.ToString() });
-            }
+            
             
             var pagingContext = new PageData<Process>();
 

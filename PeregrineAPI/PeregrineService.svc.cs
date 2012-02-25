@@ -54,15 +54,15 @@ namespace PeregrineAPI
             return messages;
         }
 
-        
-        public List<ProcessSummary> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection)
+
+        public List<GetPageOfProcessSummaryResult> getSummaryByPage(int pageNumber, int numToFetch, SortBy sortBy, SortDirection sortDirection)
         {
             int start = getStartIndex(pageNumber, numToFetch);
             int end = getEndIndex(pageNumber, numToFetch);
-            List<Process> processes = db.GetPageOfProcess(start, end).ToList<Process>();
+            //List<Process> processes = db.GetPageOfProcess(start, end).ToList<Process>();
 
             List<ProcessSummary> processSummaries = new List<ProcessSummary>();
-
+            /*
             foreach (Process process in processes)
             {
                 processSummaries.Add(
@@ -71,8 +71,20 @@ namespace PeregrineAPI
                         db.GetTopMessageFromProcessId(process.ProcessID).First<Message>()
                     )
                 );
-            }
-            return processSummaries;
+            }*/
+
+            List<GetPageOfProcessSummaryResult> summaries = db.GetPageOfProcessSummary((int)sortBy, (int)sortDirection, end).ToList<GetPageOfProcessSummaryResult>();
+
+            /*
+            foreach (GetPageOfProcessSummaryResult summary in summaries)
+            {
+                processSummaries.Add(new ProcessSummary(
+                    new Process { ProcessName = summary.ProcessName, ProcessID = summary.ProcessID, State = summary.State },
+                    new Message { Message1 = summary.LastMsg, Date = (System.DateTime)summary.MsgDate }
+                ));
+            }*/
+
+            return summaries;
         }
 
         public List<Job> getPageOfJobsByProcessId(int processId, int pageNumber, int numToFetch)

@@ -76,9 +76,9 @@ namespace PeregrineAPI
     public enum SortDirection
     {
         [EnumMember]
-        ASSENDING,
+        DESENDING,
         [EnumMember]
-        DESENDING
+        ASSENDING
     }
 
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
@@ -97,7 +97,7 @@ namespace PeregrineAPI
 
         // This will be the main fetching method for the front page. gets summary objects.
         [OperationContract]
-        List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy, SortDirection sortDirection); 
+        List<GetPageOfProcessSummaryResult> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy, SortDirection sortDirection); 
 
         //This hooks into the MsgInquryRepo
         [OperationContract]

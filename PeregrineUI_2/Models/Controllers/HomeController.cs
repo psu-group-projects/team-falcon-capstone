@@ -64,7 +64,9 @@ namespace PeregrineUI_2.Controllers
 
         [HttpGet]
         public ViewResult MsgInquiry()
-        {  
+        {
+            Refresh_Rate = Properties.Settings.Default.Refresh_Rate;
+            ViewBag.Refresh_Rate = Refresh_Rate;
             return View();
         }
 
