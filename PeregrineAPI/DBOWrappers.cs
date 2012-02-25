@@ -19,7 +19,7 @@ namespace PeregrineDBWrapper
         public const ProcessState DEFAULT_PROCESS_STATE = ProcessState.GREEN;
         public const Priority DEFAULT_PRIORITY = Priority.MEDIUM;
         public const Category DEFAULT_CATEGORY = Category.INFORMATION;
-        public const int DEFAULT_PLANNED_COUNT = 100;
+        public const int DEFAULT_PLANNED_COUNT = 0;
         public const int DEFAULT_COMPLETED_COUNT = 0;
         public const double DEFAULT_PERCENT_COUNT = 0.0;
     }
@@ -162,6 +162,7 @@ namespace PeregrineDBWrapper
         public void Update(double percent)
         {
             PercentComplete = percent;
+            PlannedCount = GlobVar.DEFAULT_PLANNED_COUNT;
 
             ISingleResult<UpdateJobResult> result = db.UpdateJob(JobId, JobName, PlannedCount, (int)((double)PlannedCount*PercentComplete*0.01), PercentComplete);
             // repopulate Properties?
