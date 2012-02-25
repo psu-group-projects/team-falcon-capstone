@@ -19,7 +19,7 @@ namespace PeregrineUI_2.Models.Repository
                 AutoCompleteList.Add(p.ProcessName.Trim());
             }
 
-            string ans = string.Join(",", AutoCompleteList.ToArray());
+            string ans = string.Join(",", AutoCompleteList.Take(10).ToArray());
 
             return ans;
         }

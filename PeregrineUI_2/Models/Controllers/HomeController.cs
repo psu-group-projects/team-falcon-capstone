@@ -49,16 +49,16 @@ namespace PeregrineUI_2.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProcessMsgUpdate(int page, string processName)
+        public ActionResult ProcessMsgUpdate(int page, int processID)
         {
-            var pagingContext = MessageRepository.GetMessageByProcess(page, PageSize, processName);
+            var pagingContext = MessageRepository.GetMessageByProcess(page, PageSize, processID);
             return PartialView("Message", pagingContext);
         }
 
         [HttpPost]
-        public ActionResult ProcessJobUpdate(int page, string processName)
+        public ActionResult ProcessJobUpdate(int page, int processID)
         {
-            var pagingContext = JobRepository.GetJobByProcess(page, PageSize, processName);
+            var pagingContext = JobRepository.GetJobByProcess(page, PageSize, processID);
             return PartialView("Job", pagingContext);
         }
 

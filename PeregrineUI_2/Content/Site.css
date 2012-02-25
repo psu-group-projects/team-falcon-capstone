@@ -177,7 +177,7 @@ ul#menu li.selected a {
 
 fieldset {
     border: 1px solid #ddd;
-    padding: 0 1.4em 1.4em 1.4em;
+    padding: 0.9em;
     margin: 0 0 1.5em 0;
 }
 
@@ -302,6 +302,30 @@ div#title {
 #logindisplay a:hover {
     color: white;
     text-decoration: none;
+}
+
+#fixed_info_container {
+    position: fixed;
+    bottom: 0px;
+    width: 90%;
+    z-index: 100;
+    margin-left: -30px;
+}
+
+#fixed_info_tab {
+    height: 28px;
+    text-align: center;
+    padding-top: 2px;
+    font-size: 1.4em;
+    cursor: pointer;
+}
+
+#fixed_info_content {
+    background-color: #dddddd;
+    overflow: auto;
+    max-height: 400px;
+    padding: 6px 6px 0px 6px;
+    display: none;
 }
 
 /* Styles for validation helpers

@@ -87,6 +87,7 @@
     <Content Include="Content\images\header_bkg.png" />
     <Content Include="Content\images\red.png" />
     <Content Include="Content\images\row_bkg.png" />
+    <Content Include="Content\images\row_bkg2.png" />
     <Content Include="Content\images\sad.jpg" />
     <Content Include="Content\images\up.png" />
     <Content Include="Content\images\yellow.png" />

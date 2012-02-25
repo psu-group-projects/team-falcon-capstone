@@ -27,71 +27,111 @@ function Main_page_setup(s_process) {
     current_scrolldown_process = '*_*';
 
     var search_process = s_process;
-          
-    MainPageAjaxUpdate(1, 4, search_process);
+
+    MainPageAjaxUpdate(1, 7, search_process);
 
     // Use enter to send value in input box. Work for IE, Firefox and Chrome
     $('#main_page_search_input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            MainPageAjaxUpdate( '1',
-                                '1',
-                                document.getElementById("main_page_search_input").value);
-            current_scrolldown_process = '*_*';
-        }else{
-                if(document.getElementById("main_page_search_input").value == ""){
-                MainPageAjaxUpdate(1, 4, "");
-                }else{
+            MainPageAjaxUpdate(1, get_selected_sort_arrow_index(), document.getElementById("main_page_search_input").value);
+            //current_scrolldown_process = '*_*';
+        } else {
+            if (document.getElementById("main_page_search_input").value == "") {
+                MainPageAjaxUpdate(1, get_selected_sort_arrow_index(), "");
+            } else {
                 $.ajax({
                     type: "POST",
                     url: '/Home/AutoCompleteUpdate',
-                    data: { "search_string":  document.getElementById("main_page_search_input").value },
+                    data: { "search_string": document.getElementById("main_page_search_input").value },
                     success: function (data) {
                         var availableTags = data.split(",");
                         $("#main_page_search_input").autocomplete({
-                            source: availableTags
-                        }); 
+                            source: availableTags,
+                            select: (function (event, ui) {
+                                MainPageAjaxUpdate(1, get_selected_sort_arrow_index(), ui.item.value);
+                            })
+                        });
                     },
                     error: function (result) {
                         alert(result);
                     }
                 });
-            }              
+            }
         }
     });
 
     // Automatic refresh the page        
         
-    setInterval(function () {       
-        MainPageAjaxUpdate( main_page_accumulate_page,
-                            main_page_current_sort,
-                            document.getElementById("main_page_search_input").value);
-    }, Refresh_Rate);
+    setInterval('MainPageAjaxUpdate(main_page_accumulate_page, main_page_current_sort, document.getElementById("main_page_search_input").value)', Refresh_Rate);
 }
 
+function refreshMainPage() {
+    MainPageAjaxUpdate(main_page_accumulate_page, main_page_current_sort, document.getElementById("main_page_search_input").value);
+}
+
+function toggleFixedInfoTab() {
+    if ($("#fixed_info_content").css("display") == "none") {
+        $("#fixed_info_content").slideDown(500, function () {
+            if (($(".process-list").offset().top + $(".process-list").height() + $("#fixed_info_content").height()) > $(window).height()) {
+                $("#fixed_info_page_padding").css("height", $("#fixed_info_content").css("height"));
+            }
+        });
+    } else {
+        $("#fixed_info_page_padding").css("height", "0");
+        $("#fixed_info_content").slideUp(500);
+    }
+
+}
+
+function showFixedInfoTab() {
+    if ($("#fixed_info_content").css("display") == "none") {
+        $("#fixed_info_content").slideDown(500, function () {
+            if (($(".process-list").offset().top + $(".process-list").height() + $("#fixed_info_content").height()) > $(window).height()) {
+                $("#fixed_info_page_padding").css("height", $("#fixed_info_content").css("height"));
+            }
+        });
+    } else {
+        if (($(".process-list").offset().top + $(".process-list").height() + $("#fixed_info_content").height()) < $(window).height()) {
+            $("#fixed_info_page_padding").css("height", "0");
+        } else {
+            $("#fixed_info_page_padding").css("height", $("#fixed_info_content").css("height"));
+        }
+    }
+}
+
+function get_selected_sort_arrow_index() {
+    var up_arrows = $(".up_arrow");
+    for (var x = 0; x < up_arrows.length; ++x) {
+        if (up_arrows.eq(x).hasClass("arrow_selected")) {
+            return x * 2;
+        }
+    }
+    var down_arrows = $(".down_arrow");
+    for (x = 0; x < down_arrows.length; ++x) {
+        if (down_arrows.eq(x).hasClass("arrow_selected")) {
+            return (x * 2) + 1;
+        }
+    }
+    return -1;
+}
 
 /**/
 function Main_partial_page_setup(acc_page, sort_type) {
     main_page_accumulate_page = acc_page;
     main_page_current_sort = sort_type;
 
-    $("#process_table tr:odd").addClass("odd");
-    $("#process_table tr:not(.odd)").hide();
-    $("#process_table tr:first-child").show();
+    //$("#process_table tr:odd").addClass("odd");
+    //$("#process_table tr:not(.odd)").hide();
+    //$("#process_table tr:first-child").show();
 
-    opened_row_id = current_scrolldown_process;
-    if (opened_row_id != '*_*') {
-        opened_row = document.getElementById(opened_row_id);
-        if (opened_row != null) {
-            $(opened_row).next("tr").show();
-            ExpandedTabUpdate(   current_scrolldown_process, msg_or_job, parseInt(inside_page)  );              
-        }
-        else {
-            current_scrolldown_process = '*_*';
-        }
+    opened_row_id = $('#fixed_info_tab').data('process_name');
+    if (opened_row_id != undefined) {
+        ExpandedTabUpdate(opened_row_id, msg_or_job, more_info_accumulate_page);
     }
              
     // Handle clicking msg page number 
+    /*
     $(".process_msg_page-number").live("click", function () {
         show_message(   parseInt($(this).html()),
                         current_scrolldown_process);
@@ -101,10 +141,11 @@ function Main_partial_page_setup(acc_page, sort_type) {
     $(".process_job_page-number").live("click", function () {
         show_job(   parseInt($(this).html()),
                     current_scrolldown_process);
-    });
+    });*/
 }
 
 /**/
+/*
 function toggleMoreInfo(id) {
     //check to see if requested tr is already open
     var is_closed = ($("#" + id + "_more").css("display") == "none");
@@ -121,6 +162,12 @@ function toggleMoreInfo(id) {
     else {
         current_scrolldown_process = '*_*';
     }
+}*/
+
+function toggleMoreInfo(id) {
+    show_message(1, id);
+    $(".table_row_selected").removeClass("table_row_selected");
+    $("#" + id).addClass("table_row_selected");
 }
 
 /**/
@@ -197,24 +244,37 @@ function Main_page_sorting(id) {
 
 /**/
 function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
-    
+    $("#" + process_name).addClass("table_row_selected");
     if (msg_or_job == 'Msg') {
-        show_message(inside_page, process_name);
+        //show_message(inside_page, process_name);
+        ProcessMsgUpdate(inside_page, process_name);
     }
     else {
-        show_job(inside_page, process_name);
+        //show_job(inside_page, process_name);
+        ProcessJobUpdate(inside_page, process_name);
     }
 }
 
 /**/
-function ProcessMsgUpdate(page, process_name) {
+function ProcessMsgUpdate(page, process_name, show) {
+    var id = process_name.split("_")[1];
     $.ajax({
         type: "POST",
         url: '/Home/ProcessMsgUpdate',
-        data: { "page": page, "processName": process_name },
+        data: { "page": page, "processID": id },
         success: function (data) {
-            $('div.' + process_name + 'message').html(data);
-            $(window).scrollTop(current_scroll_pos);
+            $('#fixed_info_content').html(data);
+            var real_project_name = $("#" + process_name + " td").eq(0).html();
+            if (real_project_name !== null) {
+                $('#fixed_info_tab').html(real_project_name);
+            }
+
+            //store process name (with the id)
+            $('#fixed_info_tab').data("process_name", process_name);
+
+            if (show === true) {
+                showFixedInfoTab();
+            }
         },
         error: function (result) {
             alert(result);
@@ -223,14 +283,25 @@ function ProcessMsgUpdate(page, process_name) {
 }
 
 /**/
-function ProcessJobUpdate(page, process_name, id) {
+function ProcessJobUpdate(page, process_name, show) {
+    var id = process_name.split("_")[1];
     $.ajax({
         type: "POST",
         url: '/Home/ProcessJobUpdate',
-        data: { "page": page, "processName": id },
+        data: { "page": page, "processID": id },
         success: function (data) {
-            $('div.' + process_name + 'job').html(data);
-            $(window).scrollTop(current_scroll_pos);       
+            $('#fixed_info_content').html(data);
+            var real_project_name = $("#" + process_name + " td").eq(0).html();
+            if (real_project_name !== null) {
+                $('#fixed_info_tab').html(real_project_name);
+            }
+
+            //store process name (with the id)
+            $('#fixed_info_tab').data("process_name", process_name);
+
+            if (show === true) {
+                showFixedInfoTab();
+            }
         },
         error: function (result) {
             alert(result);
@@ -239,18 +310,18 @@ function ProcessJobUpdate(page, process_name, id) {
 }
 
 // Show Jobs, hide Messages on clicks
-function show_job(page, process_name, id) {
+function show_job(page, process_name) {
 
     // Save info of the opened tab
     msg_or_job = 'Job';
-    inside_page = page;
+    //inside_page = page;
 
     // Show jobs and hide messages
-    document.getElementById(process_name + 'message').style.display = 'none';
-    document.getElementById(process_name + 'JobBtn').style.display = 'none';
-    document.getElementById(process_name + 'job').style.display = 'block';
-    document.getElementById(process_name + 'MsgBtn').style.display = 'block';
-    ProcessJobUpdate(page, process_name, id);
+    //document.getElementById(process_name + 'message').style.display = 'none';
+    //document.getElementById(process_name + 'JobBtn').style.display = 'none';
+    //document.getElementById(process_name + 'job').style.display = 'block';
+    //document.getElementById(process_name + 'MsgBtn').style.display = 'block';
+    ProcessJobUpdate(page, process_name, true);
 }
 
 // Show Messages, hide Jobs on clicks
@@ -258,14 +329,16 @@ function show_message(page, process_name) {
 
     // Save info of the opened tab
     msg_or_job = 'Msg';
-    inside_page = page;
+    //inside_page = page;
 
     // Show messages and hide jobs
+    /*
     document.getElementById(process_name + 'job').style.display = 'none';
     document.getElementById(process_name + 'MsgBtn').style.display = 'none';
     document.getElementById(process_name + 'message').style.display = 'block';
     document.getElementById(process_name + 'JobBtn').style.display = 'block';
-    ProcessMsgUpdate(page, process_name);
+    */
+    ProcessMsgUpdate(page, process_name, true);
 }
 
 
@@ -292,6 +365,7 @@ function Msg_Inquiry_setup(refresh_rate) {
                         );
 
     // Handle clicking page number 
+    /*
     $(".msg_inquiry_page-number").live("click", function () {
         Msg_inquiry_collect_info(
                                         $(this).html(),
@@ -299,7 +373,7 @@ function Msg_Inquiry_setup(refresh_rate) {
                                         document.getElementById("process_prio_input").value,
                                         document.getElementById("process_name_input").value
                                     );
-    });
+    });*/
 
     // Automatic update
     setInterval(function () {
@@ -348,10 +422,10 @@ function Msg_Inquiry_setup(refresh_rate) {
 }
 
 /**/
-function GoToMainPage(processName) {
-    window.location.href = "Index";
-    MainPageAjaxUpdate(1, 1, processName)
-}
+//function GoToMainPage(processName) {
+//    window.location.href = "Index";
+//    MainPageAjaxUpdate(1, 1, processName)
+//}
 
 /**/
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
@@ -410,7 +484,7 @@ function findPos(obj) {
     var curtop = 0;
     if (obj.offsetParent) {   
         curtop = obj.offsetTop
-        while (obj = obj.offsetParent) {          
+        while (obj == obj.offsetParent) {          
             curtop += obj.offsetTop
         }
     }

@@ -93,30 +93,28 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
                 <td style="text-align: center;"><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/> </td>
-                <td><div class="arrow"></div></td>
-                           
             </tr>
             
-            <!-- If click on the process, expand the table, show process details -->
+            <!-- If click on the process, expand the table, show process details 
             <tr id="Process_@(process.ProcessId)_more" class="more_info_rows" style="display: none;">
                 <td colspan="5">
-                    <!-- Table of messages in current process -->
+                    <!-- Table of messages in current process 
                     <input id="Process_@(process.ProcessId)JobBtn" type="button" value="Show Jobs"
                             onclick="show_job('1', 'Process_@(process.ProcessId)', @(process.ProcessId))"/>
-                    <!-- Partial View: Message --> 
+                    <!-- Partial View: Message  
                     <div  id = "Process_@(process.ProcessId)message" style="display:inline-block; width:100%">
                         <div class = "Process_@(process.ProcessId)message"></div>
                     </div>
 
-                    <!-- Table of jobs in current process -->
+                    <!-- Table of jobs in current process 
                     <input id="Process_@(process.ProcessId)MsgBtn" type="button" value="Show Messages" style="display:none" 
                             onclick="show_message('1', 'Process_@(process.ProcessId)', @(process.ProcessId))"/>
-                    <!-- Partial View: Job -->
+                    <!-- Partial View: Job 
                     <div id = "Process_@(process.ProcessId)job" style="display:none; width:100%">
                         <div class = "Process_@(process.ProcessId)job"></div>
                     </div>
                 </td>
-            </tr>
+            </tr>-->
         }
     </tbody>
 

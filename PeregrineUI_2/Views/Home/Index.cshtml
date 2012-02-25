@@ -13,6 +13,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <script type="text/javascript">
 
     var main_page_accumulate_page;
+    var more_info_accumulate_page;
     var main_page_current_sort;
     var current_scrolldown_process;
     var msg_or_job;
@@ -21,7 +22,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var Refresh_Rate = @ViewBag.Refresh_Rate;
 
     $(document).ready(function () {
-       Main_page_setup("@Request.QueryString["Process"]");
+       Main_page_setup('@Request.QueryString["Process"]');
     });
 
 </script>
@@ -37,7 +38,15 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <fieldset>
     <label>Search:</label>
-    <input  id="main_page_search_input" type="text" value="@Request.QueryString["Process"]" />
+    <input  id="main_page_search_input" type="text" value="@Request.QueryString["Process"]" /> 
+    <input type="button" class="ui_button" value="X" onclick="$('#main_page_search_input').val(''); refreshMainPage();" />
 </fieldset>
 
 <div class="process-list" style="height: 100%;"></div>
+
+<div id="fixed_info_container">
+    <div id="fixed_info_tab" class="ui-widget-header ui-corner-top" onclick="toggleFixedInfoTab()">Click a process to view info...</div>
+    <div id="fixed_info_content"></div>
+</div>
+
+<div id="fixed_info_page_padding" style="width: 90%;"></div>

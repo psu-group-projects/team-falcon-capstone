@@ -22,7 +22,42 @@ namespace PeregrineUI_2.Models.Repository
 
             if (process_name == "")
             {
-                ProcessSummaryData = service.getSummaryByPage(1, pagesize * page, SortBy.PROCESS_STATE, 0);
+                SortBy sort;
+                switch (sortColumm)
+                {
+                    case 0:
+                        sort = SortBy.PROCESS_NAME;
+                        break;
+                    case 1:
+                        sort = SortBy.MESSAGE_CONTENT;
+                        break;
+                    case 2:
+                        sort = SortBy.MESSAGE_DATE;
+                        break;
+                    case 3:
+                        sort = SortBy.PROCESS_STATE;
+                        break;
+                    default:
+                        sort = SortBy.PROCESS_STATE;
+                        break;
+                }
+                
+                SortDirection sortd;
+                switch (sort_type)
+                {
+                    case 0:
+                        sortd = SortDirection.ASSENDING;
+                        break;
+                    case 1:
+                        sortd = SortDirection.DESENDING;
+                        break;
+                    default:
+                        sortd = SortDirection.DESENDING;
+                        break;
+                }
+
+
+                ProcessSummaryData = service.getSummaryByPage(1, pagesize * page, sort, sortd);
                 foreach (GetPageOfProcessSummaryResult summary in ProcessSummaryData)
                 {
                     SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString() });
