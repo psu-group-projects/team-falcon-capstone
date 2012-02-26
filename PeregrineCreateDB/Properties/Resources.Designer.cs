@@ -63,18 +63,18 @@ namespace PeregrineCreateDB.Properties {
         /// <summary>
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
-        ////****** Object:  StoredProcedure [dbo].[GetStartStopMessagesWithProcessID]    Script Date: 02/13/2012 19:35:47 ******/
+        ////****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithPercent]    Script Date: 02/25/2012 17:51:00 ******/
         ///SET ANSI_NULLS ON
         ///GO
         ///SET QUOTED_IDENTIFIER ON
         ///GO
         ///-- =============================================
-        ///-- Author:		Kyle P. / Weixiong Lu
-        ///-- Create date: 2012-02-04
+        ///-- Author:		Kyle Paulsen
+        ///-- Create date: 2012-01-31
         ///-- Description:	Retrieve process by ProcessID
         ///-- =============================================
-        ///CREATE PROCEDURE [dbo].[GetStartStopMessagesWithProcessID] 
-        ///	-- Add the parameters for the stored procedu [rest of string was truncated]&quot;;.
+        ///CREATE PROCEDURE [dbo].[GetPageOfProcessSummaryWithPercent] 
+        ///	-- Add the parameters for the stored procedure here [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CreateDatabaseSql {
             get {
