@@ -12,11 +12,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     
     $(document).ready(function () {
         more_info_accumulate_page = @(Model.CurrentPage);
+        $("#show_jobs_btn").click(function(){
+            show_job(1, $('#fixed_info_tab').data('process_name'));
+        });
+        $("#msg_load_more").bind("click", {curPage: more_info_accumulate_page}, function(event){
+            show_message((event.data.curPage+1), $('#fixed_info_tab').data('process_name'));
+        });
     });
     
 </script>
  
- <input class="ui_button" type="button" value="Show Jobs" onclick="show_job(1, $('#fixed_info_tab').data('process_name'))"/>
+ <input id="show_jobs_btn" class="ui_button" type="button" value="Show Jobs"/>
 
  <table class = "msg_table">
         <thead>
@@ -28,12 +34,30 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             </tr>
         </thead>     
         <tbody>
+            @{
+                bool odd = true;
+                string classname = "tr_odd";
+            }
             @foreach (var message in Model.Data)
-            {
-                <tr>
+            {            
+                if (odd)
+                {
+                    classname = "tr_odd";
+                    odd = false;
+                }
+                else
+                {
+                    classname = "tr_even";
+                    odd = true;
+                }
+                
+                <tr class="@classname">
                     <td>@message.Content </td>
                     <td>@message.Priority </td>
-                    <td>@message.Category </td>
+                    <td class= "@if (message.Category == 5)
+                                {
+                                    @:error
+                                    }">@message.Category </td>
                     <td>@message.Date.ToString("yyyy-MM-dd HH:mm tt") </td>
                 </tr>
             }
@@ -41,7 +65,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         <tfoot>
             <tr>
                 <td colspan="4">
-                    <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="show_message((more_info_accumulate_page+1), $('#fixed_info_tab').data('process_name'))" /></div>
+                    <div style="text-align: center;"><input id="msg_load_more" type="button" class="ui_button" value="Load More" /></div>
                 </td>
             </tr>
         </tfoot>
