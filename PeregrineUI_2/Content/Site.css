@@ -267,7 +267,9 @@ table th {
 }
 
 .error {
-    color: Red;
+    color: #ff0000 !important;
+    font-weight: bold;
+    background-color: Green;
 }
 
 nav, 

@@ -277,7 +277,7 @@ function ProcessMsgUpdate(page, process_name, show) {
             }
         },
         error: function (result) {
-            alert(result);
+            alert("process_msg_update_err");
         }
     });
 }

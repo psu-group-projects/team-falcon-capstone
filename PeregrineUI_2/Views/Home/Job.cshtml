@@ -12,11 +12,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     
     $(document).ready(function () {
         more_info_accumulate_page = @(Model.CurrentPage);
+        $("#show_msg_btn").click(function(){
+            show_message(1, $('#fixed_info_tab').data('process_name'));
+        });
+        $("#job_load_more").bind("click", {curPage: more_info_accumulate_page}, function(event){
+            show_job((event.data.curPage+1), $('#fixed_info_tab').data('process_name'));
+        });
     });
     
 </script>
 
-<input class="ui_button" type="button" value="Show Messages" onclick="show_message(1, $('#fixed_info_tab').data('process_name'))"/>
+<input id="show_msg_btn" class="ui_button" type="button" value="Show Messages" />
      
 <table class = "job_table">    
         <thead>
@@ -26,9 +32,23 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             </tr>
         </thead>     
         <tbody>
+            @{
+                bool odd = true;
+                string classname = "tr_odd";
+            }
             @foreach (var job in Model.Data)
             {
-                <tr >
+                if (odd)
+                {
+                    classname = "tr_odd";
+                    odd = false;
+                }
+                else
+                {
+                    classname = "tr_even";
+                    odd = true;
+                }
+                <tr class="@classname">
                     <td>@job.JobContent </td>
                     <td>
                         <div class="meter-wrap">
@@ -45,7 +65,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         <tfoot>
             <tr>
                 <td colspan="4">
-                    <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="show_job((more_info_accumulate_page+1), $('#fixed_info_tab').data('process_name'))" /></div>
+                    <div style="text-align: center;"><input id="job_load_more" type="button" class="ui_button" value="Load More" /></div>
                 </td>
             </tr>
         </tfoot>

@@ -12,6 +12,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     $(document).ready(function () {   
         msg_inquiry_accumulate_page = @(Model.CurrentPage);
         msg_inquiry_current_sort = @(Model.SortingType);
+        $("#msg_load_more").bind("click", {curPage: msg_inquiry_accumulate_page, curSort: msg_inquiry_current_sort}, function(event){
+            MsgInquiryUpdate((event.data.curPage+1), event.data.curSort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0));
+        });
     });
 
 </script>                          
@@ -119,7 +122,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         <tfoot>
             <tr>
                 <td colspan="6">
-                    <div style="text-align: center;"><input type="button" class="ui_button" value="Load More" onclick="MsgInquiryUpdate((msg_inquiry_accumulate_page+1), msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" /></div>
+                    <div style="text-align: center;"><input type="button" id="msg_load_more" class="ui_button" value="Load More" /></div>
                 </td>
             </tr>
         </tfoot>

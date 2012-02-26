@@ -119,6 +119,10 @@ body {
 
 #msg_list_table tbody tr:nth-child(odd) td { background:#D1EEEE; color:#000; padding:7px 15px; }
 
+.tr_odd td {  background:#E0FFFF; color:#000; padding:7px 15px; }
+
+.tr_even td { background:#D1EEEE; color:#000; padding:7px 15px; }
+
 table.msg_table 
 {
     margin: 0 auto;
