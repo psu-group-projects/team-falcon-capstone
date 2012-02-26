@@ -19,8 +19,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     var Refresh_Rate = @ViewBag.Refresh_Rate;
 
     /**/
+
     $(document).ready(function () {
         Msg_Inquiry_setup();
+        $("#SU_SD_Checkbox").click(updateMsgs);
     });
 
 </script>
@@ -37,31 +39,18 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <br />
 
 <label>Search message by message priority:</label>
-<select id="process_prio_input" 
-        onchange="Msg_inquiry_collect_info ( 
-                                                msg_inquiry_accumulate_page,
-                                                msg_inquiry_current_sort,                                      
-                                                document.getElementById('process_prio_input').value,
-                                                document.getElementById('process_name_input').value
-                                            );">
-    <option value="0">0</option>                                            
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-    <option value="6">6</option>
-    <option value="7">7</option>
-    <option value="8">8</option>
-    <option value="9">9</option>
-    <option value="10">10</option>
+<select id="process_prio_input" onchange="updateMsgs()">
+    <option value="-1">Any</option>                                            
+    <option value="0">Low</option>
+    <option value="1">Medium</option>
+    <option value="2">High</option>
 </select>
 
 <br />
 
-<label>Get all start up and shutdown msg: </label>
+<label>Only get start up and shutdown messages: </label>
 
-<input id="SU_SD_Checkbox" type="checkbox" onclick="MsgInquiryUpdate(msg_inquiry_accumulate_page, msg_inquiry_current_sort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0))" />
+<input id="SU_SD_Checkbox" type="checkbox" />
                                                                              
 <hr />
 

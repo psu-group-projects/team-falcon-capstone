@@ -22,28 +22,15 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <table id ="msg_list_table" class="display">
         <thead>
             <tr>            
-                <td>                                         
-                    <div style="float: left">Message ID</div> 
-                    <div style="float: right">           
-                        
-
-                        <div id="Msg_inq_msg_id_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 0){
-                                                                                                                                          @:arrow_selected
-                                                                                                                                          }"></div></div>
-                        <div id="Msg_inq_msg_id_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 1){
-                                                                                                                                                 @:arrow_selected
-                                                                                                                                              }"></div></div>
-                    </div>                           
-                </td>
                 <td>     
-                    <div style="float: left">Message Context</div> 
+                    <div style="float: left">Message Content</div> 
                     <div style="float: right">                         
                        
 
-                        <div id="Msg_inq_context_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 2){
+                        <div id="Msg_inq_context_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 0){
                                                                                                                                           @:arrow_selected
                                                                                                                                           }"></div></div>
-                        <div id="Msg_inq_context_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 3){
+                        <div id="Msg_inq_context_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 1){
                                                                                                                                                  @:arrow_selected
                                                                                                                                               }"></div></div>                     
                     </div> 
@@ -53,10 +40,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     <div style="float: right">                         
                        
 
-                        <div id="Msg_inq_name_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 4){
+                        <div id="Msg_inq_name_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 2){
                                                                                                                                           @:arrow_selected
                                                                                                                                           }"></div></div>
-                        <div id="Msg_inq_name_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 5){
+                        <div id="Msg_inq_name_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 3){
                                                                                                                                                  @:arrow_selected
                                                                                                                                               }"></div></div>                                   
                     </div> 
@@ -66,10 +53,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     <div style="float: right">   
                         
                         
-                        <div id="Msg_inq_prio_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 6){
+                        <div id="Msg_inq_prio_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 4){
                                                                                                                                           @:arrow_selected
                                                                                                                                           }"></div></div>
-                        <div id="Msg_inq_prio_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 7){
+                        <div id="Msg_inq_prio_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 5){
                                                                                                                                                  @:arrow_selected
                                                                                                                                               }"></div></div>
                     </div>
@@ -82,10 +69,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                     <div style="float: right">                                     
                        
 
-                        <div id="Msg_inq_date_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 8){
+                        <div id="Msg_inq_date_sort_acc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="up_arrow @if(Model.SortingType == 6){
                                                                                                                                           @:arrow_selected
                                                                                                                                           }"></div></div>
-                        <div id="Msg_inq_date_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 9){
+                        <div id="Msg_inq_date_sort_desc" onclick="Msg_inquiry_sorting(this.id);" class="arrow_bg"><div class="down_arrow @if(Model.SortingType == 7){
                                                                                                                                                  @:arrow_selected
                                                                                                                                               }"></div></div>
                     </div> 
@@ -95,8 +82,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         <tbody>
             @foreach (var message in Model.Data)
             {
-                <tr>
-                    <td>    @message.MessageID.ToString() </td>                 
+                <tr>           
                     <td>
                             @message.Content
                             @if (message.Content.Length > 8)

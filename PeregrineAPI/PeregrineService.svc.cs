@@ -56,9 +56,17 @@ namespace PeregrineAPI
         }
          */
 
-        public List<GetPageOfMessageSummaryResult> getMessagesForMessageInq(int numToFetch, int priority, int getStartAndStop, SortBy sortBy, SortDirection sortDirection)
+        public List<GetPageOfMessageSummaryResult> getMessagesForMessageInq(String processName, int numToFetch, int priority, int getStartAndStop, SortBy sortBy, SortDirection sortDirection)
         {
-            List<GetPageOfMessageSummaryResult> messages = db.GetPageOfMessageSummary(priority, getStartAndStop, (int)sortBy, (int)sortDirection, numToFetch).ToList<GetPageOfMessageSummaryResult>();
+            List<GetProcessIDFromNameResult> ids = db.GetProcessIDFromName(processName).ToList<GetProcessIDFromNameResult>();
+            int id;
+            if (ids.Count > 0){
+                id = ids[0].ProcessID;
+            }else{
+                id = -1;
+            }
+
+            List<GetPageOfMessageSummaryResult> messages = db.GetPageOfMessageSummary(id, priority, getStartAndStop, (int)sortBy, (int)sortDirection, numToFetch).ToList<GetPageOfMessageSummaryResult>();
             return messages;
         }
 

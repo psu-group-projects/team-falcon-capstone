@@ -101,7 +101,7 @@ namespace PeregrineAPI
 
         //This hooks into the MsgInquryRepo
         [OperationContract]
-        List<GetPageOfMessageSummaryResult> getMessagesForMessageInq(int numToFetch, int priority, int getStartAndStop, SortBy sortBy, SortDirection sortDirection);
+        List<GetPageOfMessageSummaryResult> getMessagesForMessageInq(String processName, int numToFetch, int priority, int getStartAndStop, SortBy sortBy, SortDirection sortDirection);
 
         //This is the hook for the JobRepo
         [OperationContract]

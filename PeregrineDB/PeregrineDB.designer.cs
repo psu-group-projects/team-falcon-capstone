@@ -451,10 +451,17 @@ namespace PeregrineDB
 			return ((ISingleResult<GetPageOfProcessSummaryResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfMessageSummary")]
-		public ISingleResult<GetPageOfMessageSummaryResult> GetPageOfMessageSummary([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> priority, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> startAndStop, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Num", DbType="Int")] System.Nullable<int> num)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetProcessIDFromName")]
+		public ISingleResult<GetProcessIDFromNameResult> GetProcessIDFromName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="NVarChar(200)")] string processName)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), priority, startAndStop, sortBy, order, num);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processName);
+			return ((ISingleResult<GetProcessIDFromNameResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfMessageSummary")]
+		public ISingleResult<GetPageOfMessageSummaryResult> GetPageOfMessageSummary([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> processID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> priority, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> startAndStop, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Num", DbType="Int")] System.Nullable<int> num)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, priority, startAndStop, sortBy, order, num);
 			return ((ISingleResult<GetPageOfMessageSummaryResult>)(result.ReturnValue));
 		}
 	}
@@ -4180,6 +4187,34 @@ namespace PeregrineDB
 				if ((this._MsgDate != value))
 				{
 					this._MsgDate = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class GetProcessIDFromNameResult
+	{
+		
+		private int _ProcessID;
+		
+		public GetProcessIDFromNameResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
 				}
 			}
 		}

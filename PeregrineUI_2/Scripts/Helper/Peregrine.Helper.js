@@ -358,8 +358,8 @@ function Msg_Inquiry_setup(refresh_rate) {
     // Set up the initial stage of the message inquiry page
     MsgInquiryUpdate(
                             "1",    // current page number = 1
-                            "9",    // sort_option = 5 which is sort by date descending
-                            "0",    // msg_priority = 0 which will show every message with every possible priority
+                            "7",    // sort_option = 5 which is sort by date descending
+                            "-1",    // msg_priority = -1 which will show every message with every possible priority
                             "",     // processname = "" which will search for all message
                             "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
                         );
@@ -376,41 +376,35 @@ function Msg_Inquiry_setup(refresh_rate) {
     });*/
 
     // Automatic update
-    setInterval(function () {
-        Msg_inquiry_collect_info(
-                                    msg_inquiry_accumulate_page,
-                                    msg_inquiry_current_sort,
-                                    document.getElementById("process_prio_input").value,
-                                    document.getElementById("process_name_input").value
-                                );
-    }, Refresh_Rate);
+    setInterval("updateMsgs()", Refresh_Rate);
 
     // Use enter to send value in input box. Work for IE, Firefox and Chrome
     $('#process_name_input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-            Msg_inquiry_collect_info(
-                                            '1',                                                    
-                                            msg_inquiry_current_sort,                               
-                                            document.getElementById("process_prio_input").value,    
-                                            document.getElementById("process_name_input").value    
-                                         );
-        }
-        else {
-            $.ajax({
-                type: "POST",
-                url: '/Home/AutoCompleteUpdate',
-                data: { "search_string": "Fal" },
-                success: function (data) {
-                    var availableTags = data.split(",");
-                    $("#process_name_input").autocomplete({
-                        source: availableTags
-                    });
-                },
-                error: function (result) {
-                    alert(result);
-                }
-            });
+            MsgInquiryUpdate(1, msg_inquiry_current_sort, $('#process_prio_input').val(), $('#process_name_input').val(), (document.getElementById('SU_SD_Checkbox').checked + 0));
+        } else {
+            if (document.getElementById("process_name_input").value == "") {
+                MsgInquiryUpdate(1, msg_inquiry_current_sort, $('#process_prio_input').val(), $('#process_name_input').val(), (document.getElementById('SU_SD_Checkbox').checked + 0));
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: '/Home/AutoCompleteUpdate',
+                    data: { "search_string": document.getElementById("process_name_input").value },
+                    success: function (data) {
+                        var availableTags = data.split(",");
+                        $("#process_name_input").autocomplete({
+                            source: availableTags,
+                            select: (function (event, ui) {
+                                MsgInquiryUpdate(1, msg_inquiry_current_sort, $('#process_prio_input').val(), ui.item.value, (document.getElementById('SU_SD_Checkbox').checked + 0));
+                            })
+                        });
+                    },
+                    error: function (result) {
+                        alert(result);
+                    }
+                });
+            }
         }
 
     });
@@ -419,6 +413,10 @@ function Msg_Inquiry_setup(refresh_rate) {
     $('#popwindow').dblclick(function () {
         showpopup("-1", "");
     });
+}
+
+function updateMsgs() {
+    MsgInquiryUpdate(msg_inquiry_accumulate_page, msg_inquiry_current_sort, $('#process_prio_input').val(), $('#process_name_input').val(), (document.getElementById('SU_SD_Checkbox').checked + 0));
 }
 
 /**/
@@ -440,8 +438,7 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
                 "SU_SD_msg": SU_SD_msg
             },
         success: function (data) {
-            $('div.message-list').empty();
-            $('div.message-list').append(data);
+            $('div.message-list').html(data);
         },
         error: function (result) {
             alert(result);
@@ -515,44 +512,36 @@ function Msg_inquiry_sorting(chkboxname) {
     var s_option;
 
     // If we check this checkbox, turnoff the other sorting checkbox
-    if (chkboxname == "Msg_inq_msg_id_sort_acc") {
+    if (chkboxname == "Msg_inq_context_sort_acc") {
         s_option = "0";
-        $("#Msg_inq_msg_id_sort_acc div").addClass("arrow_selected");
-        $("#Msg_inq_msg_id_sort_desc div").removeClass("arrow_selected");
-    } else if (chkboxname == "Msg_inq_msg_id_sort_desc") {
-        s_option = "1";
-        $("#Msg_inq_msg_id_sort_acc div").removeClass("arrow_selected");
-        $("#Msg_inq_msg_id_sort_desc div").addClass("arrow_selected");
-    } else if (chkboxname == "Msg_inq_context_sort_acc") {
-        s_option = "2";
         $("#Msg_inq_context_sort_acc div").addClass("arrow_selected");
         $("#Msg_inq_context_sort_desc div").removeClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_context_sort_desc") {
-        s_option = "3";
+        s_option = "1";
         $("#Msg_inq_context_sort_acc div").removeClass("arrow_selected");
         $("#Msg_inq_context_sort_desc div").addClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_name_sort_acc") {
-        s_option = "4";
+        s_option = "2";
         $("#Msg_inq_name_sort_acc div").addClass("arrow_selected");
         $("#Msg_inq_name_sort_desc div").removeClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_name_sort_desc") {
-        s_option = "5";
+        s_option = "3";
         $("#Msg_inq_name_sort_acc div").removeClass("arrow_selected");
         $("#Msg_inq_name_sort_desc div").addClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_prio_sort_acc") {
-        s_option = "6";
+        s_option = "4";
         $("#Msg_inq_prio_sort_acc div").addClass("arrow_selected");
         $("#Msg_inq_prio_sort_desc div").removeClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_prio_sort_desc") {
-        s_option = "7";
+        s_option = "5";
         $("#Msg_inq_prio_sort_acc div").removeClass("arrow_selected");
         $("#Msg_inq_prio_sort_desc div").addClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_date_sort_acc") {
-        s_option = "8";
+        s_option = "6";
         $("#Msg_inq_date_sort_acc div").addClass("arrow_selected");
         $("#Msg_inq_date_sort_desc div").removeClass("arrow_selected");
     } else if (chkboxname == "Msg_inq_date_sort_desc") {
-        s_option = "9";
+        s_option = "7";
         $("#Msg_inq_date_sort_acc div").removeClass("arrow_selected");
         $("#Msg_inq_date_sort_desc div").addClass("arrow_selected");
     } else {
