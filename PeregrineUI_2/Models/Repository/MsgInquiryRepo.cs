@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.IO;
 using PeregrineAPI;
+using PeregrineDB;
 
 namespace PeregrineUI_2.Models.Repository
 {
@@ -12,6 +13,29 @@ namespace PeregrineUI_2.Models.Repository
         public static PageData<Message> GetMessages(int page, int sortColumm, int sort_type, int searchpriority, string searchprocess, int SU_SD_msg, int pagesize)
         {
             List<Message> SummaryData = new List<Message>();
+            var pagingContext = new PageData<Message>();
+
+            PeregrineService service = new PeregrineService();
+
+            List<GetPageOfMessageSummaryResult> MessageSummaryData;
+            MessageSummaryData = service.getMessagesForMessageInq(page * pagesize, searchpriority, SU_SD_msg, SortBy.MESSAGE_CONTENT, SortDirection.DESENDING);
+
+            foreach (GetPageOfMessageSummaryResult summary in MessageSummaryData)
+            {
+                String state = getProcessStateString((int)summary.ProcState);
+                SummaryData.Add(new Message { 
+                    MessageID = summary.MessageID, 
+                    ProcessID = (int)summary.ProcID, 
+                    ProcessName = summary.ProcName, 
+                    ProcessState = state, 
+                    Category = summary.Category, 
+                    Content = summary.Message, 
+                    Date = summary.Date,
+                    Priority = summary.Priority
+                });
+            }
+
+            /*
             Random random = new Random();
 
             // Populate the SummaryData
@@ -32,7 +56,7 @@ namespace PeregrineUI_2.Models.Repository
                 SummaryData.Add(element);
             }
 
-            var pagingContext = new PageData<Message>();
+            
 
             // Filtering if searching is actived
             if (SU_SD_msg == 1)
@@ -100,15 +124,25 @@ namespace PeregrineUI_2.Models.Repository
                 default:
                     break;
             }
-
+            */
             // Fill out the info of PageData var type
             //pagingContext.Data = SummaryData.Skip(pagesize * (page - 1)).Take(pagesize).ToList();
-            pagingContext.Data = SummaryData.Take(pagesize * page).ToList();
-            pagingContext.NumberOfPages = totalpage;
+            pagingContext.Data = SummaryData;
+            //pagingContext.NumberOfPages = totalpage;
             pagingContext.CurrentPage = page;
             pagingContext.SortingType = (sortColumm * 2) + sort_type;
 
             return pagingContext;
+        }
+
+        private static String getProcessStateString(int state){
+            if(state == 0){
+                return "green";
+            }else if (state == 1){
+                return "yellow";
+            }else{
+                return "red";
+            }
         }
     }
 }

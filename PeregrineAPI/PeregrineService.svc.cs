@@ -32,6 +32,7 @@ namespace PeregrineAPI
             throw new NotImplementedException();
         }
 
+        /*
         public List<Message> getMessagesForMessageInq(
             int processId, 
             int pageSize, 
@@ -51,6 +52,13 @@ namespace PeregrineAPI
                 messages = db.GetMessagesWithProcessID(processId, (int)sortBy, 0, getStartIndex(pageNumber, pageSize), getEndIndex(pageNumber, pageSize)).ToList();
             }
 
+            return messages;
+        }
+         */
+
+        public List<GetPageOfMessageSummaryResult> getMessagesForMessageInq(int numToFetch, int priority, int getStartAndStop, SortBy sortBy, SortDirection sortDirection)
+        {
+            List<GetPageOfMessageSummaryResult> messages = db.GetPageOfMessageSummary(priority, getStartAndStop, (int)sortBy, (int)sortDirection, numToFetch).ToList<GetPageOfMessageSummaryResult>();
             return messages;
         }
 

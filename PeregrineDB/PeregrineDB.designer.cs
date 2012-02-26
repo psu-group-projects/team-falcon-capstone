@@ -450,6 +450,13 @@ namespace PeregrineDB
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), sortBy, order, num);
 			return ((ISingleResult<GetPageOfProcessSummaryResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfMessageSummary")]
+		public ISingleResult<GetPageOfMessageSummaryResult> GetPageOfMessageSummary([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> priority, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> startAndStop, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Num", DbType="Int")] System.Nullable<int> num)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), priority, startAndStop, sortBy, order, num);
+			return ((ISingleResult<GetPageOfMessageSummaryResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Job")]
@@ -4173,6 +4180,167 @@ namespace PeregrineDB
 				if ((this._MsgDate != value))
 				{
 					this._MsgDate = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class GetPageOfMessageSummaryResult
+	{
+		
+		private int _MessageID;
+		
+		private string _Message;
+		
+		private int _Priority;
+		
+		private int _Category;
+		
+		private System.DateTime _Date;
+		
+		private string _ProcName;
+		
+		private System.Nullable<int> _ProcID;
+		
+		private System.Nullable<int> _ProcState;
+		
+		public GetPageOfMessageSummaryResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MessageID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int MessageID
+		{
+			get
+			{
+				return this._MessageID;
+			}
+			set
+			{
+				if ((this._MessageID != value))
+				{
+					this._MessageID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this._Message = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Priority", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public int Priority
+		{
+			get
+			{
+				return this._Priority;
+			}
+			set
+			{
+				if ((this._Priority != value))
+				{
+					this._Priority = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public int Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.DateTime Date
+		{
+			get
+			{
+				return this._Date;
+			}
+			set
+			{
+				if ((this._Date != value))
+				{
+					this._Date = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcName", DbType="NVarChar(200)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public string ProcName
+		{
+			get
+			{
+				return this._ProcName;
+			}
+			set
+			{
+				if ((this._ProcName != value))
+				{
+					this._ProcName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public System.Nullable<int> ProcID
+		{
+			get
+			{
+				return this._ProcID;
+			}
+			set
+			{
+				if ((this._ProcID != value))
+				{
+					this._ProcID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcState", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+		public System.Nullable<int> ProcState
+		{
+			get
+			{
+				return this._ProcState;
+			}
+			set
+			{
+				if ((this._ProcState != value))
+				{
+					this._ProcState = value;
 				}
 			}
 		}
