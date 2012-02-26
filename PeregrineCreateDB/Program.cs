@@ -14,45 +14,78 @@ namespace PeregrineCreateDB
     {
         static void Main(string[] args)
         {
-            createDB();
-        }
-
-        static void createDB()
-        {
             string dbName = "PeregrineTestDB";  // name of db to be created
             string reply;                       // for user input
             Boolean okayToGo;                   // for input loop
-            Boolean createDB            = false;    // Create DB on the local server
-            Boolean createCleanupJob    = false;    // Create a Scheduled job on local
-                                                    // server for database cleanup
-            
-            okayToGo = false;
-            while (okayToGo == false)
+            Boolean createDB = true;            // Create DB on the local server
+            Boolean createCleanupJob = true;    // Create a Scheduled job on local
+                                                // server for database cleanup
+            Boolean quietMode = false;          // No prompts. Use defaults.
+                                                // Installs DB and cleanup job
+            Boolean namePassedAsArg = false;    // Don't ask for database name if already
+                                                // passed as an argument
+
+            if (args.Length > 0)
             {
-                Console.Write("Enter a database name (Enter for {0}): ", dbName);
-                reply = Console.ReadLine();
-                // make sure user doesn't enter 'master' and give extra warning
-                // for name of our master PeregrineDB
-                if (reply == "master") Console.WriteLine("The database cannot be named master.");
-                else
+                for (int i = 0;  i < args.Length; i++)
                 {
-                    if (reply != "") dbName = reply;
-                    if (String.Compare(dbName, Properties.Resources.OldDatabaseName, true) == 0)
-                        Console.WriteLine(Environment.NewLine + "Warning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDatabaseName);
-                    okayToGo = true;
+                    if (args[i] == "-q") quietMode = true;
+                    else if (args[i] == "-d")       // install database only
+                    {
+                        createDB = true;
+                        createCleanupJob = false;
+                    }
+                    else if (args[i] == "-c")       // install db cleanup only
+                    {
+                        createDB = false;
+                        createCleanupJob = true;
+                    }
+                    else if (args[i] == "-n")       // set database name
+                    {
+                        i++;
+                        dbName = args[i];
+                        namePassedAsArg = true;
+                    }
                 }
             }
 
-            Console.WriteLine(Environment.NewLine + "Warning! Creating a new {0} database will completely overwrite any other database of the same name." + Environment.NewLine, dbName);
-
-            Console.Write("Are you sure you wish drop and create a {0} database? (yes/no) ", dbName);
-            reply = Console.ReadLine();
-            if (reply.ToLower() == "yes") createDB = true;
-
-            Console.Write("Would you like to install a scheduled job for {0} database cleanup? (yes/no) ", dbName);
-            reply = Console.ReadLine();
-            if (reply.ToLower() == "yes") createCleanupJob = true;
-
+            if (quietMode != true)
+            {
+                if (namePassedAsArg == false)
+                {
+                    okayToGo = false;
+                    while (okayToGo == false)
+                    {
+                        Console.Write("Enter a database name (Enter for {0}): ", dbName);
+                        reply = Console.ReadLine();
+                        // make sure user doesn't enter 'master' and give extra warning
+                        // for name of our master PeregrineDB
+                        if (reply == "master") Console.WriteLine("The database cannot be named master.");
+                        else
+                        {
+                            if (reply != "") dbName = reply;
+                            okayToGo = true;
+                        }
+                    }
+                }
+                if (String.Compare(dbName, Properties.Resources.OldDatabaseName, true) == 0)
+                    Console.WriteLine(Environment.NewLine + "Warning! {0} is the name of the master database. If you are executing this on the capstone lab server, DO NOT CONTINUE. The master database would be overwritten!", Properties.Resources.OldDatabaseName);
+                if (createDB == true)           // don't ask if turned off by commandline arg
+                {
+                    Console.WriteLine(Environment.NewLine + "Warning! Creating a new {0} database will completely overwrite any other database of the same name." + Environment.NewLine, dbName);
+                    Console.Write("Are you sure you wish drop and create a {0} database? (yes/no) ", dbName);
+                    reply = Console.ReadLine();
+                    if (reply.ToLower() == "yes") createDB = true;
+                    else createDB = false;
+                }
+                if (createCleanupJob == true)   // don't ask if turned off by commandline arg
+                {
+                    Console.Write("Would you like to install a scheduled job for {0} database cleanup? (yes/no) ", dbName);
+                    reply = Console.ReadLine();
+                    if (reply.ToLower() == "yes") createCleanupJob = true;
+                    else createCleanupJob = false;
+                }
+            }
 
             // create connection string
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
@@ -60,7 +93,7 @@ namespace PeregrineCreateDB
             builder["integrated Security"] = true;
 
             // connect to SQL server
-            Console.WriteLine(Environment.NewLine + "Connecting to SQL server using \"{0}\" connection string...", builder.ConnectionString);
+            if (quietMode == false) Console.WriteLine(Environment.NewLine + "Connecting to SQL server using \"{0}\" connection string...", builder.ConnectionString);
             SqlConnection connection = new SqlConnection(builder.ConnectionString);
             connection.Open();
             Server server = new Server(new ServerConnection(connection));
@@ -68,62 +101,33 @@ namespace PeregrineCreateDB
             // drop and create Peregrine database
             if (createDB == true)
             {
-                Console.WriteLine("Dropping old and creating empty {0} database...", dbName);
+                if (quietMode == false) Console.WriteLine("Dropping old and creating empty {0} database...", dbName);
                 executeScript(server, dbName, Properties.Resources.DropCreateEmptyDatabaseSql);
 
-                Console.WriteLine("Creating {0} database tables, views, and stored procedures...", dbName);
+                if (quietMode == false) Console.WriteLine("Creating {0} database tables, views, and stored procedures...", dbName);
                 executeScript(server, dbName, Properties.Resources.CreateDatabaseSql);
             }
 
-            // drop and create Peregrine database
+            // drop and create Peregrine database cleanup job
             if (createCleanupJob == true)
             {
-                Console.Write("Installing scheduled job for {0} database cleanup...", dbName);
+                if (quietMode == false) Console.Write("Installing scheduled job for {0} database cleanup...", dbName);
                 executeScript(server, dbName, Properties.Resources.DropCreateCleanupJob);
             }
 
             // Close database connection
-            Console.WriteLine("Closing connection to SQL server...");
+            if (quietMode == false) Console.WriteLine("Closing connection to SQL server...");
             connection.Close();
-
-            Console.WriteLine("Finished!");
-
+            if (quietMode == false) Console.WriteLine("Finished!");        
         }
-
+        
         static void executeScript(Server server, string dbName, string script)
         {
             script = script + Environment.NewLine;
+            // Search and replace database name in SQL script.
+            // This does not currently protect from SQL injection.
             script = script.Replace(Properties.Resources.OldDatabaseName, dbName);
-            
             server.ConnectionContext.ExecuteNonQuery(script);
-            //executeSqlStrings(connection, script);
         }
-
-        // Commands can only be one batch. Batches are seperated by GO statements.
-        [Obsolete]
-        static string[] splitSqlAtGo(string commandString)
-        {
-            string delimiter = "GO" + Environment.NewLine;
-            string[] commands = Regex.Split(commandString, delimiter);
-            return commands;
-        }
-
-        [Obsolete]
-        static void executeSqlStrings(SqlConnection connection, string script)
-        {
-            string[] commandtexts = splitSqlAtGo(script);
-
-            foreach (string commandtext in commandtexts)
-            {
-                if (commandtext != "")
-                {
-                    //Console.WriteLine("Splt--------------");
-                    //Console.WriteLine(commandtext);
-                    SqlCommand command = new SqlCommand(commandtext, connection);
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
     }
 }
