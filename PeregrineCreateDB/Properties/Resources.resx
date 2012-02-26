@@ -2325,12 +2325,12 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'Execute 
 		@command=N'EXEC PeregrineDB.DeleteOldMessages 20;
 GO
 ', 
-		@database_name=N'PeregrineTestDB2', 
+		@database_name=N'PeregrineDB', 
 		@flags=0
 IF (@@ERROR &lt;&gt; 0 OR @ReturnCode &lt;&gt; 0) GOTO QuitWithRollback
 EXEC @ReturnCode = msdb.dbo.sp_update_job @job_id = @jobId, @start_step_id = 1
 IF (@@ERROR &lt;&gt; 0 OR @ReturnCode &lt;&gt; 0) GOTO QuitWithRollback
-EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'Scheduled Peregrine Database Cleanup', 
+EXEC @ReturnCode = msdb.dbo.sp_add_jobschedule @job_id=@jobId, @name=N'Scheduled PeregrineDB Database Cleanup', 
 		@enabled=1, 
 		@freq_type=4, 
 		@freq_interval=1, 
