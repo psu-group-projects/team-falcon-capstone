@@ -385,7 +385,7 @@ namespace PeregrineDBWrapper
 
         public void logJobStart(String jobName, String processName)
         {
-            Category category = Category.START;
+            Category category = Category.PROGRESS;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
 
             ProcessWrapper proc = new ProcessWrapper(processName);
@@ -402,7 +402,7 @@ namespace PeregrineDBWrapper
 
         public void logJobStartWithTotalTasks(String jobName, String processName, int totalTasks)
         {
-            Category category = Category.START;
+            Category category = Category.PROGRESS;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
             int completed = 0;
 
@@ -419,7 +419,7 @@ namespace PeregrineDBWrapper
 
         public void logJobComplete(String jobName, String processName)
         {
-            Category category = Category.STOP;
+            Category category = Category.PROGRESS;
             Priority priority = GlobVar.DEFAULT_PRIORITY;
             double percent = 100.0;
 

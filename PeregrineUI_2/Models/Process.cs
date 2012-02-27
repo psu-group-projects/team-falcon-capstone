@@ -34,6 +34,8 @@ namespace PeregrineUI_2.Models
                 }
             }
         }
+        public int MessageType { get; set; }
+        public int JobPercentage { get; set; }
         public int ProcessId { get; set; }
     }
 }

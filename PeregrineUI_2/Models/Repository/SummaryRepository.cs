@@ -17,7 +17,7 @@ namespace PeregrineUI_2.Models.Repository
             // API call will be here
             PeregrineService service = new PeregrineService();
 
-            List<ProcessSummary> OneProcessSummary;
+            List<GetProcessSummaryByNameResult> OneProcessSummary;
             List<GetPageOfProcessSummaryResult> ProcessSummaryData;
 
             if (process_name == "")
@@ -60,16 +60,22 @@ namespace PeregrineUI_2.Models.Repository
                 ProcessSummaryData = service.getSummaryByPage(1, pagesize * page, sort, sortd);
                 foreach (GetPageOfProcessSummaryResult summary in ProcessSummaryData)
                 {
-                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString() });
+                    int percent;
+                    if(summary.Percentage != null){
+                        percent = (int)summary.Percentage;
+                    }else{
+                        percent = 0;
+                    }
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = percent });
                 }
             }
             else
             {
                 
                 OneProcessSummary = service.getProcessByName(process_name);
-                foreach (ProcessSummary summary in OneProcessSummary)
+                foreach (GetProcessSummaryByNameResult summary in OneProcessSummary)
                 {
-                    SummaryData.Add(new Process { ProcessId = summary._process.ProcessID, ProcessName = summary._process.ProcessName, LastAction = summary._message.Message1, MsgDate = summary._message.Date, _ProcessState = summary._process.State.ToString() });
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = (int)summary.Percentage });
                 }
             }
 

@@ -444,13 +444,6 @@ namespace PeregrineDB
 			return ((ISingleResult<Message>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfProcessSummary")]
-		public ISingleResult<GetPageOfProcessSummaryResult> GetPageOfProcessSummary([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Num", DbType="Int")] System.Nullable<int> num)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), sortBy, order, num);
-			return ((ISingleResult<GetPageOfProcessSummaryResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetProcessIDFromName")]
 		public ISingleResult<GetProcessIDFromNameResult> GetProcessIDFromName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProcessName", DbType="NVarChar(200)")] string processName)
 		{
@@ -463,6 +456,20 @@ namespace PeregrineDB
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), processID, priority, startAndStop, sortBy, order, num);
 			return ((ISingleResult<GetPageOfMessageSummaryResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetPageOfProcessSummary")]
+		public ISingleResult<GetPageOfProcessSummaryResult> GetPageOfProcessSummary([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SortBy", DbType="Int")] System.Nullable<int> sortBy, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Order", DbType="Int")] System.Nullable<int> order, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Num", DbType="Int")] System.Nullable<int> num)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), sortBy, order, num);
+			return ((ISingleResult<GetPageOfProcessSummaryResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetProcessSummaryByName")]
+		public ISingleResult<GetProcessSummaryByNameResult> GetProcessSummaryByName([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Name", DbType="NVarChar(200)")] string name)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), name);
+			return ((ISingleResult<GetProcessSummaryByNameResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -4089,110 +4096,6 @@ namespace PeregrineDB
 	}
 	
 	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class GetPageOfProcessSummaryResult
-	{
-		
-		private int _ProcessID;
-		
-		private string _ProcessName;
-		
-		private int _State;
-		
-		private string _LastMsg;
-		
-		private System.Nullable<System.DateTime> _MsgDate;
-		
-		public GetPageOfProcessSummaryResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int ProcessID
-		{
-			get
-			{
-				return this._ProcessID;
-			}
-			set
-			{
-				if ((this._ProcessID != value))
-				{
-					this._ProcessID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public string ProcessName
-		{
-			get
-			{
-				return this._ProcessName;
-			}
-			set
-			{
-				if ((this._ProcessName != value))
-				{
-					this._ProcessName = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public int State
-		{
-			get
-			{
-				return this._State;
-			}
-			set
-			{
-				if ((this._State != value))
-				{
-					this._State = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-		public string LastMsg
-		{
-			get
-			{
-				return this._LastMsg;
-			}
-			set
-			{
-				if ((this._LastMsg != value))
-				{
-					this._LastMsg = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgDate", DbType="DateTime")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-		public System.Nullable<System.DateTime> MsgDate
-		{
-			get
-			{
-				return this._MsgDate;
-			}
-			set
-			{
-				if ((this._MsgDate != value))
-				{
-					this._MsgDate = value;
-				}
-			}
-		}
-	}
-	
-	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class GetProcessIDFromNameResult
 	{
 		
@@ -4376,6 +4279,290 @@ namespace PeregrineDB
 				if ((this._ProcState != value))
 				{
 					this._ProcState = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class GetPageOfProcessSummaryResult
+	{
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		private System.Nullable<double> _Percentage;
+		
+		private string _LastMsg;
+		
+		private System.Nullable<System.DateTime> _MsgDate;
+		
+		private System.Nullable<int> _MsgType;
+		
+		public GetPageOfProcessSummaryResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Percentage", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public System.Nullable<double> Percentage
+		{
+			get
+			{
+				return this._Percentage;
+			}
+			set
+			{
+				if ((this._Percentage != value))
+				{
+					this._Percentage = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public string LastMsg
+		{
+			get
+			{
+				return this._LastMsg;
+			}
+			set
+			{
+				if ((this._LastMsg != value))
+				{
+					this._LastMsg = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgDate", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public System.Nullable<System.DateTime> MsgDate
+		{
+			get
+			{
+				return this._MsgDate;
+			}
+			set
+			{
+				if ((this._MsgDate != value))
+				{
+					this._MsgDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgType", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public System.Nullable<int> MsgType
+		{
+			get
+			{
+				return this._MsgType;
+			}
+			set
+			{
+				if ((this._MsgType != value))
+				{
+					this._MsgType = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class GetProcessSummaryByNameResult
+	{
+		
+		private int _ProcessID;
+		
+		private string _ProcessName;
+		
+		private int _State;
+		
+		private System.Nullable<double> _Percentage;
+		
+		private string _LastMsg;
+		
+		private System.Nullable<System.DateTime> _MsgDate;
+		
+		private System.Nullable<int> _MsgType;
+		
+		public GetProcessSummaryByNameResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int ProcessID
+		{
+			get
+			{
+				return this._ProcessID;
+			}
+			set
+			{
+				if ((this._ProcessID != value))
+				{
+					this._ProcessID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public string ProcessName
+		{
+			get
+			{
+				return this._ProcessName;
+			}
+			set
+			{
+				if ((this._ProcessName != value))
+				{
+					this._ProcessName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_State", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public int State
+		{
+			get
+			{
+				return this._State;
+			}
+			set
+			{
+				if ((this._State != value))
+				{
+					this._State = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Percentage", DbType="Float")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public System.Nullable<double> Percentage
+		{
+			get
+			{
+				return this._Percentage;
+			}
+			set
+			{
+				if ((this._Percentage != value))
+				{
+					this._Percentage = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public string LastMsg
+		{
+			get
+			{
+				return this._LastMsg;
+			}
+			set
+			{
+				if ((this._LastMsg != value))
+				{
+					this._LastMsg = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgDate", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public System.Nullable<System.DateTime> MsgDate
+		{
+			get
+			{
+				return this._MsgDate;
+			}
+			set
+			{
+				if ((this._MsgDate != value))
+				{
+					this._MsgDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgType", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public System.Nullable<int> MsgType
+		{
+			get
+			{
+				return this._MsgType;
+			}
+			set
+			{
+				if ((this._MsgType != value))
+				{
+					this._MsgType = value;
 				}
 			}
 		}

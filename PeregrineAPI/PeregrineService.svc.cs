@@ -124,14 +124,11 @@ namespace PeregrineAPI
             return db.GetPageOfMessagesByProcessId(start, end, processId).ToList<Message>();
         }
 
-        public List<ProcessSummary> getProcessByName(String name)
+        public List<GetProcessSummaryByNameResult> getProcessByName(String name)
         {
-            List<ProcessSummary> processSummaries = new List<ProcessSummary>();
-            List<Process> p = db.GetProcessByName(name).ToList<Process>();
-            if (p.Count > 0)
-            {
-                processSummaries.Add(new ProcessSummary(p[0], db.GetTopMessageFromProcessId(p[0].ProcessID).ToList<Message>()[0]));
-            }
+            List<GetProcessSummaryByNameResult> processSummaries;
+            processSummaries = db.GetProcessSummaryByName(name).ToList<GetProcessSummaryByNameResult>();
+            
             return processSummaries;
         }
 

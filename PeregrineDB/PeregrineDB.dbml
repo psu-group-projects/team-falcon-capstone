@@ -419,18 +419,6 @@
     <Parameter Name="To" Parameter="to" Type="System.Int32" DbType="Int" />
     <ElementType IdRef="ID2" />
   </Function>
-  <Function Name="dbo.GetPageOfProcessSummary" Method="GetPageOfProcessSummary">
-    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Num" Parameter="num" Type="System.Int32" DbType="Int" />
-    <ElementType Name="GetPageOfProcessSummaryResult">
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LastMsg" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
-      <Column Name="MsgDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.GetProcessIDFromName" Method="GetProcessIDFromName">
     <Parameter Name="ProcessName" Parameter="processName" Type="System.String" DbType="NVarChar(200)" />
     <ElementType Name="GetProcessIDFromNameResult">
@@ -453,6 +441,32 @@
       <Column Name="ProcName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
       <Column Name="ProcID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ProcState" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetPageOfProcessSummary" Method="GetPageOfProcessSummary">
+    <Parameter Name="SortBy" Parameter="sortBy" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Order" Parameter="order" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Num" Parameter="num" Type="System.Int32" DbType="Int" />
+    <ElementType Name="GetPageOfProcessSummaryResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Percentage" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="LastMsg" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="MsgDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MsgType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetProcessSummaryByName" Method="GetProcessSummaryByName">
+    <Parameter Name="Name" Parameter="name" Type="System.String" DbType="NVarChar(200)" />
+    <ElementType Name="GetProcessSummaryByNameResult">
+      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Percentage" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="LastMsg" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="MsgDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="MsgType" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

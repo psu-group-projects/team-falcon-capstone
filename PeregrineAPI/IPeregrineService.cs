@@ -113,7 +113,7 @@ namespace PeregrineAPI
 
         //This is for the search functionality on the UI
         [OperationContract]
-        List<ProcessSummary> getProcessByName(String name);
+        List<GetProcessSummaryByNameResult> getProcessByName(String name);
 
         //This is for the search functionality on the UI
         [OperationContract]

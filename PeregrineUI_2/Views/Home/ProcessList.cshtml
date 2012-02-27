@@ -83,6 +83,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 </div>                 
             </td>
             <td>
+                Current Job's Progress
             </td>
         </tr>
     </thead>
@@ -99,6 +100,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td>@process.LastAction </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
                 <td style="text-align: center;"><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/> </td>
+                <td>@if (process.MessageType > 1)
+                    {
+                        @process.JobPercentage
+                    }</td>
             </tr>
         }
     </tbody>
