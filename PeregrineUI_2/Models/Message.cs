@@ -24,5 +24,6 @@ namespace PeregrineUI_2.Models
         public string MsgType { get; set; }
         public DateTime Date { get; set; }
         public int MessageID { get; set; }
+        public int MessageLength { get; set; }
     }
 }

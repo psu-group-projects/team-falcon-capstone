@@ -17,7 +17,7 @@ namespace PeregrineUI_2.Models.Repository
             PeregrineService service = new PeregrineService();
 
 
-            string content = service.getMessage(msg_id_int).ToString(); 
+            string content = service.getMessage(msg_id_int).Message1;
             return content;
         }
     }

@@ -452,9 +452,10 @@ function GetFullDetailMessage(msg_id, pro_name) {
         type: "POST",
         url: '/Home/MsgInq_getfulldetail',
         data: { "msg_id": msg_id },
+        dataType: "html",
         success: function (data) {
             var header_title = "Process: " + pro_name + " | Message_id : " + msg_id;
-            document.getElementById("message_modal").innerHTML = data;
+            $("#message_modal").html(data);
             $("#message_modal").dialog({ "title": header_title });
         },
         error: function (result) {

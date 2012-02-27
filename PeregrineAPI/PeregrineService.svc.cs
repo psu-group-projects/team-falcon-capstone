@@ -21,9 +21,16 @@ namespace PeregrineAPI
         
         public Message getMessage(int msg_id)
         {
-            var message_result = db.GetMessage(msg_id).ToList();
-
-            Message message = message_result[0];
+            List<Message> message_result = db.GetMessage(msg_id).ToList();
+            Message message;
+            if (message_result.Count > 0)
+            {
+                message = message_result[0];
+            }
+            else
+            {
+                message = new Message();
+            }
             return message;
         }
 

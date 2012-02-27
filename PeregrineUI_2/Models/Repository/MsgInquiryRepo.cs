@@ -66,7 +66,8 @@ namespace PeregrineUI_2.Models.Repository
                     ProcessName = summary.ProcName,
                     ProcessState = state,
                     Category = summary.Category,
-                    Content = summary.Message,
+                    Content = summary.Message.Substring(0, Math.Min(60, summary.Message.Length)),
+                    MessageLength = summary.Message.Length,
                     Date = summary.Date,
                     Priority = summary.Priority,
                     MsgType = msgType
