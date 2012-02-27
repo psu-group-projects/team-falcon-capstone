@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PeregrineAPI;
+using PeregrineDB;
 
 namespace PeregrineUI_2.Models.Repository
 {
@@ -12,118 +14,10 @@ namespace PeregrineUI_2.Models.Repository
         {
             int msg_id_int = Convert.ToInt32(msg_id);
             // API call will be here
-            string content = "asdfsdfsdfsdfsdfsafdsdfsdfsdfsdfsdfsdf" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsldkfjlsdjflskjdf" +
-                            " asfjlsdjflaksjflksjdfljsdlfkjsldkfjlsd" +
-                            " askdjflskdjflkjsdlkfjsl222222222222222";
+            PeregrineService service = new PeregrineService();
+
+
+            string content = service.getMessage(msg_id_int).ToString(); 
             return content;
         }
     }
