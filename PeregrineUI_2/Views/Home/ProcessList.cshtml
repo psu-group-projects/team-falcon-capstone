@@ -102,7 +102,13 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td style="text-align: center;"><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/> </td>
                 <td>@if (process.MessageType > 1)
                     {
-                        @process.JobPercentage
+                        <div class="meter-wrap" width: 100px;>
+                            <div class="meter-value" style="background-color: #3399CC; width: @(process.JobPercentage)%;">
+                                <div class="meter-text">
+                                    @(process.JobPercentage)%
+                                </div>
+                            </div>
+                        </div>
                     }</td>
             </tr>
         }

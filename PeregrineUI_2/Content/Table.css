@@ -285,7 +285,7 @@ table.job_table tbody tr:nth-child(odd) td
 
 .meter-wrap, .meter-value, .meter-text {
     /* The width and height of your image */
-    width: 200px; height: 20px;
+    width:150px; height: 20px;
 }
 
 .meter-wrap, .meter-value {
