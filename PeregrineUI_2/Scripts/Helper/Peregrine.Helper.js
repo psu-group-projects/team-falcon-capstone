@@ -26,7 +26,7 @@ function Main_page_setup(s_process) {
 
     current_scrolldown_process = '*_*';
 
-    var search_process = s_process;
+    var search_process = decodeURI(s_process);
 
     MainPageAjaxUpdate(1, 7, search_process);
 
