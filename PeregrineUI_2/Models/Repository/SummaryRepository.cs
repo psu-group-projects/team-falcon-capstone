@@ -97,7 +97,14 @@ namespace PeregrineUI_2.Models.Repository
                 OneProcessSummary = service.getProcessByName(process_name);
                 foreach (GetProcessSummaryByNameResult summary in OneProcessSummary)
                 {
-                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = (int)summary.Percentage });
+                    int percent;
+                    if (summary.Percentage != null)
+                    {
+                        percent = (int)summary.Percentage;
+                    }else{
+                        percent = 0;
+                    }
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = percent });
                 }
             }
     

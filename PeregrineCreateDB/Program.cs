@@ -1,4 +1,12 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+// c. 2012 by Nicholas Benson and Devon Gleeson
+// This is the console installer for the Peregrine Database
+// Building this requires references to SQL Server 2008 library assemblies.
+//
+//-----------------------------------------------------------------------------
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -111,7 +119,7 @@ namespace PeregrineCreateDB
             // drop and create Peregrine database cleanup job
             if (createCleanupJob == true)
             {
-                if (quietMode == false) Console.Write("Installing scheduled job for {0} database cleanup...", dbName);
+                if (quietMode == false) Console.WriteLine("Installing scheduled job for {0} database cleanup...", dbName);
                 executeScript(server, dbName, Properties.Resources.DropCreateCleanupJob);
             }
 
