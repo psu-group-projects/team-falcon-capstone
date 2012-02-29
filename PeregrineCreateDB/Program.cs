@@ -119,7 +119,7 @@ namespace PeregrineCreateDB
             // drop and create Peregrine database cleanup job
             if (createCleanupJob == true)
             {
-                if (quietMode == false) Console.Write("Installing scheduled job for {0} database cleanup...", dbName);
+                if (quietMode == false) Console.WriteLine("Installing scheduled job for {0} database cleanup...", dbName);
                 executeScript(server, dbName, Properties.Resources.DropCreateCleanupJob);
             }
 
