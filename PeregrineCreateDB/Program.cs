@@ -1,4 +1,12 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------
+// c. 2012 by Nicholas Benson and Devon Gleeson
+// This is the console installer for the Peregrine Database
+// Building this requires references to SQL Server 2008's R2 libraries.
+//
+//-----------------------------------------------------------------------------
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
