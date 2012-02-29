@@ -8,15 +8,26 @@ using PeregrineDB;
 
 namespace PeregrineUI_2.Models.Repository
 {
+    /// <summary>
+    /// Class SummaryRepository
+    /// </summary>
     public class SummaryRepository
     {
+        /// <summary>
+        /// The function is used to get the list of process from DB throught Perergrine API 
+        /// and supply the return list to home controller which will be populated into UI page : ProcessList.cshtml
+        /// </summary>
+        /// <param name="page">page [int]</param>
+        /// <param name="sortColumm">sortColumm [int]</param>
+        /// <param name="sort_type">sort_type [int]</param>
+        /// <param name="process_name">process_name [int]</param>
+        /// <param name="pagesize">pagesize [int]</param>
+        /// <returns> PageData[Process] </returns>
         public static PageData<Process> GetSummaryDataByPage(int page, int sortColumm, int sort_type, string process_name, int pagesize)
         {
-            List<Process> SummaryData = new List<Process>();
-         
-            // API call will be here
-            PeregrineService service = new PeregrineService();
-
+            List<Process> SummaryData   = new List<Process>();      
+            PeregrineService service    = new PeregrineService();
+            var pagingContext           = new PageData<Process>();
             List<GetProcessSummaryByNameResult> OneProcessSummary;
             List<GetPageOfProcessSummaryResult> ProcessSummaryData;
 
@@ -60,13 +71,24 @@ namespace PeregrineUI_2.Models.Repository
                 ProcessSummaryData = service.getSummaryByPage(1, pagesize * page, sort, sortd);
                 foreach (GetPageOfProcessSummaryResult summary in ProcessSummaryData)
                 {
-                    int percent;
+                    int percent, MsgType;
+
                     if(summary.Percentage != null){
                         percent = (int)summary.Percentage;
                     }else{
                         percent = 0;
                     }
-                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = percent });
+
+                    if (summary.MsgType != null)
+                    {
+                        MsgType = (int)summary.MsgType;
+                    }
+                    else
+                    {
+                        MsgType = 0;
+                    }
+
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
                 }
             }
             else
@@ -78,12 +100,7 @@ namespace PeregrineUI_2.Models.Repository
                     SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = (int)summary.Percentage });
                 }
             }
-
-            
-            
-            var pagingContext = new PageData<Process>();
-
-           
+    
             // Fill out the info of PageData var type
             pagingContext.Data = SummaryData;
             pagingContext.CurrentPage = page;

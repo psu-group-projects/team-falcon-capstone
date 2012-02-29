@@ -14,12 +14,43 @@ using System.IO;
 
 namespace PeregrineUI_2.Models
 {
+    /// <summary>
+    /// Class : Process
+    /// </summary>
     public class Process
     {
-        public string ProcessName { get; set; }
-        public string LastAction { get; set; }
-        public DateTime MsgDate { get; set; }
         public string ProcessState;
+
+        /// <summary>
+        /// Gets or sets the name of the process.
+        /// </summary>
+        /// <value>
+        /// ProcessName.
+        /// </value>
+        public string ProcessName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the process last action.
+        /// </summary>
+        /// <value>
+        /// LastAction.
+        /// </value>
+        public string LastAction { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MSG date.
+        /// </summary>
+        /// <value>
+        /// MsgDate.
+        /// </value>
+        public DateTime MsgDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the state of the process.
+        /// </summary>
+        /// <value>
+        /// _ProcessState.
+        /// </value>
         public string _ProcessState
         {
             get { return this.ProcessState; }
@@ -34,8 +65,29 @@ namespace PeregrineUI_2.Models
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the type of the message.
+        /// </summary>
+        /// <value>
+        /// MessageType.
+        /// </value>
         public int MessageType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the job percentage.
+        /// </summary>
+        /// <value>
+        /// JobPercentage.
+        /// </value>
         public int JobPercentage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the process id.
+        /// </summary>
+        /// <value>
+        /// ProcessId.
+        /// </value>
         public int ProcessId { get; set; }
     }
 }

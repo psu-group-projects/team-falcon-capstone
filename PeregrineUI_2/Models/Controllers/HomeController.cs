@@ -53,9 +53,9 @@ namespace PeregrineUI_2.Controllers
         /// This function will request the information from the DB using SOAP API, then
         /// it will bring these received info from DB to the partial view ProcessList.
         /// </summary>
-        /// <param name="page">page.</param>
-        /// <param name="sort_input">sort_input.</param>
-        /// <param name="process_name">process_name.</param>
+        /// <param name="page">page [int]</param>
+        /// <param name="sort_input">sort_input [int]</param>
+        /// <param name="process_name">process_name [string]</param>
         /// <returns> PartialView </returns>
         [HttpPost]
         public ActionResult MainPageAjaxUpdate(int page, int sort_input, string process_name)
@@ -73,8 +73,8 @@ namespace PeregrineUI_2.Controllers
         /// <summary>
         /// Processes the MSG update.
         /// </summary>
-        /// <param name="page">page.</param>
-        /// <param name="processName">processName.</param>
+        /// <param name="page">page [int]</param>
+        /// <param name="processName">processName [int]</param>
         /// <returns> ActionResult </returns>
         [HttpPost]
         public ActionResult ProcessMsgUpdate(int page, int processID)
@@ -87,8 +87,8 @@ namespace PeregrineUI_2.Controllers
         /// <summary>
         /// Processes the job update.
         /// </summary>
-        /// <param name="page">page.</param>
-        /// <param name="processName">processName.</param>
+        /// <param name="page">page [int]</param>
+        /// <param name="processName">processName [int]</param>
         /// <returns> ActionResult </returns>
         [HttpPost]
         public ActionResult ProcessJobUpdate(int page, int processID)
@@ -119,11 +119,11 @@ namespace PeregrineUI_2.Controllers
         /// This function will request the information from the DB using SOAP API, then
         /// it will bring these received info from DB to the partial view MessageList.
         /// </summary>
-        /// <param name="page_number">page_number.</param>
-        /// <param name="sort_option">sort_option.</param>
-        /// <param name="msg_priority">msg_priority.</param>
-        /// <param name="process_name">process_name.</param>
-        /// <param name="SU_SD_msg">SU_SD_msg.</param>
+        /// <param name="page_number">page_number [string]</param>
+        /// <param name="sort_option">sort_option [string]</param>
+        /// <param name="msg_priority">msg_priority [string]</param>
+        /// <param name="process_name">process_name [string]</param>
+        /// <param name="SU_SD_msg">SU_SD_msg [string]</param>
         /// <returns> ActionResult </returns>
         [HttpPost]
         public ActionResult MsgInquiryUpdate(   string page_number,
@@ -160,7 +160,7 @@ namespace PeregrineUI_2.Controllers
         /// <summary>
         /// This function is used to get the full detail version of a long message using msg_id
         /// </summary>
-        /// <param name="msg_id">msg_id.</param>
+        /// <param name="msg_id">msg_id [string]</param>
         /// <returns> string </returns>
         [HttpPost]
         public string MsgInq_getfulldetail(string msg_id)
@@ -173,7 +173,7 @@ namespace PeregrineUI_2.Controllers
         /// <summary>
         /// This function is used to get the list for autocomplete search features
         /// </summary>
-        /// <param name="search_string">search_string</param>
+        /// <param name="search_string">search_string [string]</param>
         /// <returns> string </returns>
         [HttpPost]
         public string AutoCompleteUpdate( string search_string)

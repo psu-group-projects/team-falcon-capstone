@@ -8,18 +8,32 @@ using PeregrineDB;
 
 namespace PeregrineUI_2.Models.Repository
 {
+    /// <summary>
+    /// Class : MsgInquiryRepo
+    /// </summary>
     public class MsgInquiryRepo
     {
+        /// <summary>
+        /// The function is used to get the list of process's messages from DB throught Perergrine API 
+        /// and supply the return list to home controller which will be populated into UI page : MessageList.cshtml
+        /// </summary>
+        /// <param name="page">page [int]</param>
+        /// <param name="sortColumm">sortColumm [int]</param>
+        /// <param name="sort_type">sort_type [int]</param>
+        /// <param name="searchpriority">searchpriority [int]</param>
+        /// <param name="searchprocess">searchprocess [string]</param>
+        /// <param name="SU_SD_msg">SU_SD_msg [int]</param>
+        /// <param name="pagesize">pagesize [int]</param>
+        /// <returns>PageData[Message]</returns>
         public static PageData<Message> GetMessages(int page, int sortColumm, int sort_type, int searchpriority, string searchprocess, int SU_SD_msg, int pagesize)
         {
             List<Message> SummaryData = new List<Message>();
             var pagingContext = new PageData<Message>();
-
             PeregrineService service = new PeregrineService();
-
             List<GetPageOfMessageSummaryResult> MessageSummaryData;
-
             SortBy sort;
+            SortDirection sortd;
+
             switch (sortColumm)
             {
                 case 0:
@@ -39,7 +53,6 @@ namespace PeregrineUI_2.Models.Repository
                     break;
             }
 
-            SortDirection sortd;
             switch (sort_type)
             {
                 case 0:
@@ -74,16 +87,19 @@ namespace PeregrineUI_2.Models.Repository
                 });
             }
 
-            // Fill out the info of PageData var type
-            //pagingContext.Data = SummaryData.Skip(pagesize * (page - 1)).Take(pagesize).ToList();
-            pagingContext.Data = SummaryData;
-            //pagingContext.NumberOfPages = totalpage;
+            // Fill out the info of PageData var type        
+            pagingContext.Data = SummaryData;        
             pagingContext.CurrentPage = page;
             pagingContext.SortingType = (sortColumm * 2) + sort_type;
 
             return pagingContext;
         }
 
+        /// <summary>
+        /// Translate the message type from type Category to String
+        /// </summary>
+        /// <param name="c">c [Category]</param>
+        /// <returns>String</returns>
         private static String getMessageTypeString(Category c){
             switch (c)
             {
@@ -104,6 +120,11 @@ namespace PeregrineUI_2.Models.Repository
             }
         }
 
+        /// <summary>
+        /// Translate the message state from type int to String
+        /// </summary>
+        /// <param name="state">state [int]</param>
+        /// <returns>String</returns>
         private static String getProcessStateString(int state){
             if (state == 0) {
                 return "green";

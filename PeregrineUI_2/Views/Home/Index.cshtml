@@ -35,15 +35,26 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <h2>Processes Summary</h2>
 
-
 <fieldset>
     <label>Search:</label>
     <input  id="main_page_search_input" type="text" value="@Request.QueryString["Process"]" /> 
     <input type="button" class="ui_button" value="X" onclick="$('#main_page_search_input').val(''); refreshMainPage();" />
 </fieldset>
 
+<!-- 
+This is where the partial view ProcessList.cshtml is added to
+When user click search, sort or autoupdate kick in, the current partial view "ProcessList.cshtml" will be 
+deleted and updated by the new partil view "ProcessList.cshtml" with new information query from DB throught
+api services
+ -->
 <div class="process-list" style="height: 100%;"></div>
 
+<!-- 
+This is where the partial view for Job.cshtml or Message.cshtml is added to
+When user click search, sort or autoupdate kick in, the current partial view "ProcessList.cshtml" will be 
+deleted and updated by the new partil view "ProcessList.cshtml" with new information query from DB throught
+api services
+ -->
 <div id="fixed_info_container">
     <div id="fixed_info_tab" class="ui-widget-header ui-corner-top" onclick="toggleFixedInfoTab()">Click a process to view info...</div>
     <div id="fixed_info_content"></div>

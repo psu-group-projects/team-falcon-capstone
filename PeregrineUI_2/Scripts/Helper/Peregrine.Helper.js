@@ -8,7 +8,12 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 ///////////////////////////////////////// Main Page ////////////////////////////////////////////////////////////
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Main_page_setup(s_process) {
     // Fix event.layerx and layery broken warning, work like a charm
     var all = $.event.props,
@@ -61,15 +66,26 @@ function Main_page_setup(s_process) {
         }
     });
 
-    // Automatic refresh the page        
-        
+    // Automatic refresh the page                
     setInterval('MainPageAjaxUpdate(main_page_accumulate_page, main_page_current_sort, document.getElementById("main_page_search_input").value)', Refresh_Rate);
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function refreshMainPage() {
     MainPageAjaxUpdate(main_page_accumulate_page, main_page_current_sort, document.getElementById("main_page_search_input").value);
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function toggleFixedInfoTab() {
     if ($("#fixed_info_content").css("display") == "none") {
         $("#fixed_info_content").slideDown(500, function () {
@@ -84,6 +100,12 @@ function toggleFixedInfoTab() {
 
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function showFixedInfoTab() {
     if ($("#fixed_info_content").css("display") == "none") {
         $("#fixed_info_content").slideDown(500, function () {
@@ -100,6 +122,12 @@ function showFixedInfoTab() {
     }
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function get_selected_sort_arrow_index() {
     var up_arrows = $(".up_arrow");
     for (var x = 0; x < up_arrows.length; ++x) {
@@ -116,61 +144,46 @@ function get_selected_sort_arrow_index() {
     return -1;
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Main_partial_page_setup(acc_page, sort_type) {
     main_page_accumulate_page = acc_page;
     main_page_current_sort = sort_type;
-
-    //$("#process_table tr:odd").addClass("odd");
-    //$("#process_table tr:not(.odd)").hide();
-    //$("#process_table tr:first-child").show();
 
     opened_row_id = $('#fixed_info_tab').data('process_name');
     if (opened_row_id != undefined) {
         ExpandedTabUpdate(opened_row_id, msg_or_job, more_info_accumulate_page);
     }
-             
-    // Handle clicking msg page number 
-    /*
-    $(".process_msg_page-number").live("click", function () {
-        show_message(   parseInt($(this).html()),
-                        current_scrolldown_process);
+    $(".arrow_bg").bind("click", function (event) {
+        Main_page_sorting($(event.currentTarget).attr("id"));
     });
-
-    // Handle clicking job page number 
-    $(".process_job_page-number").live("click", function () {
-        show_job(   parseInt($(this).html()),
-                    current_scrolldown_process);
-    });*/
+    $("#main_page_load_more").bind("click", { curPage: main_page_accumulate_page, curSort: main_page_current_sort }, function (event) {
+        MainPageAjaxUpdate((event.data.curPage + 1), event.data.curSort, document.getElementById('main_page_search_input').value);
+    });         
 }
 
-/**/
 /*
-function toggleMoreInfo(id) {
-    //check to see if requested tr is already open
-    var is_closed = ($("#" + id + "_more").css("display") == "none");
-    //first close all other trs...
-    $(".more_info_rows").hide();
-    $(".arrow").removeClass("up");
-    //then show the right tr
-    if (is_closed) {
-        $("#" + id + "_more").fadeIn(500);
-        $("#" + id + " .arrow").addClass("up");
-        show_message('1', id);
-        current_scrolldown_process = id;
-    }
-    else {
-        current_scrolldown_process = '*_*';
-    }
-}*/
-
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function toggleMoreInfo(id) {
     show_message(1, id);
     $(".table_row_selected").removeClass("table_row_selected");
     $("#" + id).addClass("table_row_selected");
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function MainPageAjaxUpdate(page, sort_input, process_name) {
     current_scroll_pos = $(window).scrollTop();
     $.ajax({
@@ -186,7 +199,12 @@ function MainPageAjaxUpdate(page, sort_input, process_name) {
     });
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Main_page_sorting(id) {
     var s_option;
 
@@ -242,20 +260,28 @@ function Main_page_sorting(id) {
     current_scrolldown_process = '*_*';
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
     $("#" + process_name).addClass("table_row_selected");
     if (msg_or_job == 'Msg') {
-        //show_message(inside_page, process_name);
         ProcessMsgUpdate(inside_page, process_name);
     }
-    else {
-        //show_job(inside_page, process_name);
+    else {       
         ProcessJobUpdate(inside_page, process_name);
     }
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function ProcessMsgUpdate(page, process_name, show) {
     var id = process_name.split("_")[1];
     $.ajax({
@@ -282,7 +308,12 @@ function ProcessMsgUpdate(page, process_name, show) {
     });
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function ProcessJobUpdate(page, process_name, show) {
     var id = process_name.split("_")[1];
     $.ajax({
@@ -309,41 +340,39 @@ function ProcessJobUpdate(page, process_name, show) {
     });
 }
 
-// Show Jobs, hide Messages on clicks
+/*
+function    : show_job
+parameter   : page, process_name
+what does this function do :
+    Show Jobs, hide Messages on clicks        
+*/
 function show_job(page, process_name) {
-
     // Save info of the opened tab
     msg_or_job = 'Job';
-    //inside_page = page;
-
-    // Show jobs and hide messages
-    //document.getElementById(process_name + 'message').style.display = 'none';
-    //document.getElementById(process_name + 'JobBtn').style.display = 'none';
-    //document.getElementById(process_name + 'job').style.display = 'block';
-    //document.getElementById(process_name + 'MsgBtn').style.display = 'block';
     ProcessJobUpdate(page, process_name, true);
 }
 
-// Show Messages, hide Jobs on clicks
+/*
+function    : show_message
+parameter   : page, process_name
+what does this function do :
+    Show Messages, hide Jobs on clicks        
+*/
 function show_message(page, process_name) {
-
     // Save info of the opened tab
     msg_or_job = 'Msg';
-    //inside_page = page;
-
-    // Show messages and hide jobs
-    /*
-    document.getElementById(process_name + 'job').style.display = 'none';
-    document.getElementById(process_name + 'MsgBtn').style.display = 'none';
-    document.getElementById(process_name + 'message').style.display = 'block';
-    document.getElementById(process_name + 'JobBtn').style.display = 'block';
-    */
     ProcessMsgUpdate(page, process_name, true);
 }
 
 
 ///////////////////////////////////////// Message Inquiry Page ////////////////////////////////////////////////////////////
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Msg_Inquiry_setup(refresh_rate) {
     // Fix event.layerx and layery broken warning, work like a charm
     var all = $.event.props,
@@ -359,21 +388,12 @@ function Msg_Inquiry_setup(refresh_rate) {
     MsgInquiryUpdate(
                             "1",    // current page number = 1
                             "7",    // sort_option = 5 which is sort by date descending
-                            "-1",    // msg_priority = -1 which will show every message with every possible priority
+                            "-1",   // msg_priority = -1 which will show every message with every possible priority
                             "",     // processname = "" which will search for all message
                             "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
                         );
 
-    // Handle clicking page number 
-    /*
-    $(".msg_inquiry_page-number").live("click", function () {
-        Msg_inquiry_collect_info(
-                                        $(this).html(),
-                                        msg_inquiry_current_sort,
-                                        document.getElementById("process_prio_input").value,
-                                        document.getElementById("process_name_input").value
-                                    );
-    });*/
+    
 
     // Automatic update
     setInterval("updateMsgs()", Refresh_Rate);
@@ -415,17 +435,22 @@ function Msg_Inquiry_setup(refresh_rate) {
     });
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function updateMsgs() {
     MsgInquiryUpdate(msg_inquiry_accumulate_page, msg_inquiry_current_sort, $('#process_prio_input').val(), $('#process_name_input').val(), (document.getElementById('SU_SD_Checkbox').checked + 0));
 }
 
-/**/
-//function GoToMainPage(processName) {
-//    window.location.href = "Index";
-//    MainPageAjaxUpdate(1, 1, processName)
-//}
-
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
     $.ajax({
         type: "POST",
@@ -446,7 +471,12 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
     });
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function GetFullDetailMessage(msg_id, pro_name) {
     $.ajax({
         type: "POST",
@@ -464,7 +494,12 @@ function GetFullDetailMessage(msg_id, pro_name) {
     });
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Msg_inquiry_collect_info(page_number, sort_option, process_priority, process_name) {
     // Getting the current state of the SU_SD_Checkbox checkbox
     var state = document.getElementById("SU_SD_Checkbox").checked;
@@ -478,6 +513,12 @@ function Msg_inquiry_collect_info(page_number, sort_option, process_priority, pr
     }
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function findPos(obj) {
     var curtop = 0;
     if (obj.offsetParent) {   
@@ -489,12 +530,22 @@ function findPos(obj) {
     return curtop;
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function showpopup(msg_id, process_name, top_value) {
     GetFullDetailMessage(msg_id, process_name);
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Change_SU_SD_Status(sort_option, process_priority, process_name) {
     // Getting the current state of the SU_SD_Checkbox checkbox
     var state = document.getElementById("SU_SD_Checkbox").checked;
@@ -508,7 +559,12 @@ function Change_SU_SD_Status(sort_option, process_priority, process_name) {
     }
 }
 
-/**/
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function Msg_inquiry_sorting(chkboxname) {   
     var s_option;
 
@@ -552,7 +608,12 @@ function Msg_inquiry_sorting(chkboxname) {
     MsgInquiryUpdate(msg_inquiry_accumulate_page, s_option, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0))
 }
 
-
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function setCookie(c_name, value, exdays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
@@ -560,6 +621,12 @@ function setCookie(c_name, value, exdays) {
     document.cookie = c_name + "=" + c_value;
 }
 
+/*
+function    : 
+parameter   : 
+what does this function do :
+        
+*/
 function getCookie(c_name) {
     var i, x, y, ARRcookies = document.cookie.split(";");
     for (i = 0; i < ARRcookies.length; i++) {

@@ -13,15 +13,16 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     // Expand process detail
     $(document).ready(function () {
         Main_partial_page_setup (@(Model.CurrentPage), @(Model.SortingType));
-        $(".arrow_bg").bind("click", function(event){
-            Main_page_sorting($(event.currentTarget).attr("id"));
-        });
-        $("#main_page_load_more").bind("click", {curPage: main_page_accumulate_page, curSort: main_page_current_sort}, function(event){
-            MainPageAjaxUpdate((event.data.curPage+1), event.data.curSort, document.getElementById('main_page_search_input').value);
-        });
     });
 
-    
+    for (var x = 0; x < $("#process_table tr").length-1; ++x) {
+        $("#process_table tr").eq(x).bind("click", { num: x }, function (event) {
+            if (event.data.num > 0) {
+                toggleMoreInfo($("#process_table tr").eq(event.data.num).attr("id"));
+            }
+        });
+    }
+      
 </script>
 
 <!-- Main table -->
@@ -88,7 +89,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         </tr>
     </thead>
 
-
     <!-- Table Body: Display summary & details -->
     <tbody>
         <!-- For every process -->
@@ -113,6 +113,8 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             </tr>
         }
     </tbody>
+
+    <!-- Table Body: Display summary & details -->
     <tfoot>
         <tr>
             <td colspan="5">
@@ -121,12 +123,3 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
         </tr>              
     </tfoot>
 </table>
-<script type="text/javascript">
-    for (var x = 0; x < $("#process_table tr").length-1; ++x) {
-        $("#process_table tr").eq(x).bind("click", { num: x }, function (event) {
-            if (event.data.num > 0) {
-                toggleMoreInfo($("#process_table tr").eq(event.data.num).attr("id"));
-            }
-        });
-    }
-</script>
