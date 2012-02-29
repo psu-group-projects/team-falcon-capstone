@@ -120,233 +120,24 @@
   <data name="CreateDatabaseSql" xml:space="preserve">
     <value>USE [PeregrineDB]
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithPercent]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  Table [dbo].[Job]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
--- Author:		Kyle Paulsen
--- Create date: 2012-01-31
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetPageOfProcessSummaryWithPercent] 
-	-- Add the parameters for the stored procedure here
-	(
-		@SortBy int = 1,
-		@Order int = 0,
-		@Num int = 10
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-	DECLARE @SQLString nvarchar(700);
-	DECLARE @Orderby nvarchar(100);
-	DECLARE @Direction nvarchar(4);
-
-	IF(@SortBy = 0) 
-		SET @Orderby = 'pro.ProcessName';
-	ELSE
-	IF(@SortBy = 2)
-		SET @Orderby = 'LastMsg';
-	ELSE
-	IF(@SortBy = 3)
-		SET @Orderby = 'MsgDate';
-	ELSE
-		SET @Orderby = 'pro.State'; --sortby should be 1
-
-
-	IF(@Order = 0) 
-		SET @Direction = 'DESC';
-	ELSE
-		SET @Direction = 'ASC';
-
-
-	SET @SQLString = 
-	N'
-	SELECT TOP '+CONVERT(varchar(5), @Num)+'
-		pro.ProcessID,
-		pro.ProcessName,
-		pro.State,
-		(SELECT TOP 1 dbo.Job.PercentComplete FROM dbo.Job) AS Percentage,
-		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
-		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate
-	FROM
-		dbo.Process AS pro
-	ORDER BY '+@Orderby+' '+@Direction
-	
-	/*
-	SELECT TOP 10
-		pro.ProcessID,
-		pro.ProcessName,
-		pro.State,
-		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
-		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate
-	FROM
-		dbo.Process AS pro
-	ORDER BY MsgDate DESC
-	*/
-	
-	EXECUTE sp_executesql @SQLString
-
-RETURN
+CREATE TABLE [dbo].[Job](
+	[JobID] [int] IDENTITY(1,1) NOT NULL,
+	[JobName] [nvarchar](200) NOT NULL,
+	[PlannedCount] [int] NULL,
+	[CompletedCount] [int] NULL,
+	[PercentComplete] [float] NULL,
+ CONSTRAINT [PK_Job] PRIMARY KEY CLUSTERED 
+(
+	[JobID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfMessages]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Kyle Palsen / Weixiong Lu
--- Create date: 2012-02-04
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetPageOfMessages] 
-	-- Add the parameters for the stored procedure here
-	(
-		@SortBy int = 3,
-		@Order int = 0,
-		@From int = 0,
-		@To int = 10
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-	DECLARE @SQLString nvarchar(700);
-	DECLARE @Orderby nvarchar(100);
-	DECLARE @Direction nvarchar(4);
-
-	IF(@SortBy = 2) 
-		SET @Orderby = 'dbo.Message.Message';
-	ELSE
-	IF(@SortBy = 3)
-		SET @Orderby = 'dbo.Message.Date';
-	ELSE
-	IF(@SortBy = 4)
-		SET @Orderby = 'dbo.Message.Category';
-	ELSE
-	IF(@SortBy = 5)
-		SET @Orderby = 'dbo.Message.Priority';
-
-
-	IF(@Order = 0) 
-		SET @Direction = 'DESC';
-	ELSE
-		SET @Direction = 'ASC';
-
-
-	SET @SQLString = 
-	N'WITH NumberedRows AS
-	(
-	SELECT 
-		dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority,
-		ROW_NUMBER() OVER (ORDER BY '+@Orderby+' '+@Direction+') AS RowNumber
-	FROM dbo.LogRel
-	)
-	SELECT MessageID, Message, Date, Category, Priority
-	FROM NumberedRows
-	WHERE RowNumber BETWEEN '+CONVERT(varchar(5), @From)+' AND '+CONVERT(varchar(5), @To);
-
-
-	--WITH NumberedRows AS
-	--(
-	--SELECT 
-	--	dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority,
-	--	ROW_NUMBER() OVER (ORDER BY dbo.Message.Category DESC) AS RowNumber
-	--FROM dbo.LogRel
-	--LEFT JOIN dbo.Message on dbo.LogRel.MessageID = dbo.Message.MessageID
-	--WHERE (dbo.LogRel.ProcessID = 1)
-	--)
-	--SELECT MessageID, Message, Date, Category, Priority
-	--FROM NumberedRows
-	--WHERE RowNumber BETWEEN 0 AND 1
-
-
-	--EXECUTE sp_executesql @SQLString, N'@P_ID int', @P_ID = @ProcessID 
-	EXECUTE sp_executesql @SQLString
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummary]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Kyle Paulsen
--- Create date: 2012-01-31
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetPageOfProcessSummary] 
-	-- Add the parameters for the stored procedure here
-	(
-		@SortBy int = 1,
-		@Order int = 0,
-		@Num int = 10
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-	DECLARE @SQLString nvarchar(700);
-	DECLARE @Orderby nvarchar(100);
-	DECLARE @Direction nvarchar(4);
-
-	IF(@SortBy = 0) 
-		SET @Orderby = 'pro.ProcessName';
-	ELSE
-	IF(@SortBy = 2)
-		SET @Orderby = 'LastMsg';
-	ELSE
-	IF(@SortBy = 3)
-		SET @Orderby = 'MsgDate';
-	ELSE
-		SET @Orderby = 'pro.State'; --sortby should be 1
-
-
-	IF(@Order = 0) 
-		SET @Direction = 'DESC';
-	ELSE
-		SET @Direction = 'ASC';
-
-
-	SET @SQLString = 
-	N'
-	SELECT TOP '+CONVERT(varchar(5), @Num)+'
-		pro.ProcessID,
-		pro.ProcessName,
-		pro.State,
-		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
-		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate
-	FROM
-		dbo.Process AS pro
-	ORDER BY '+@Orderby+' '+@Direction
-	
-	/*
-	SELECT TOP 10
-		pro.ProcessID,
-		pro.ProcessName,
-		pro.State,
-		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
-		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate
-	FROM
-		dbo.Process AS pro
-	ORDER BY MsgDate DESC
-	*/
-	
-	EXECUTE sp_executesql @SQLString
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetStartStopMessagesWithProcessID]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetStartStopMessagesWithProcessID]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -428,24 +219,351 @@ AS
 
 RETURN
 GO
-/****** Object:  Table [dbo].[Job]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfMessages]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Job](
-	[JobID] [int] IDENTITY(1,1) NOT NULL,
-	[JobName] [nvarchar](200) NOT NULL,
-	[PlannedCount] [int] NULL,
-	[CompletedCount] [int] NULL,
-	[PercentComplete] [float] NULL,
- CONSTRAINT [PK_Job] PRIMARY KEY CLUSTERED 
-(
-	[JobID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
+-- =============================================
+-- Author:		Kyle Palsen / Weixiong Lu
+-- Create date: 2012-02-04
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetPageOfMessages] 
+	-- Add the parameters for the stored procedure here
+	(
+		@SortBy int = 3,
+		@Order int = 0,
+		@From int = 0,
+		@To int = 10
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+	DECLARE @SQLString nvarchar(700);
+	DECLARE @Orderby nvarchar(100);
+	DECLARE @Direction nvarchar(4);
+
+	IF(@SortBy = 2) 
+		SET @Orderby = 'dbo.Message.Message';
+	ELSE
+	IF(@SortBy = 3)
+		SET @Orderby = 'dbo.Message.Date';
+	ELSE
+	IF(@SortBy = 4)
+		SET @Orderby = 'dbo.Message.Category';
+	ELSE
+	IF(@SortBy = 5)
+		SET @Orderby = 'dbo.Message.Priority';
+
+
+	IF(@Order = 0) 
+		SET @Direction = 'DESC';
+	ELSE
+		SET @Direction = 'ASC';
+
+
+	SET @SQLString = 
+	N'WITH NumberedRows AS
+	(
+	SELECT 
+		dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority,
+		ROW_NUMBER() OVER (ORDER BY '+@Orderby+' '+@Direction+') AS RowNumber
+	FROM dbo.LogRel
+	)
+	SELECT MessageID, Message, Date, Category, Priority
+	FROM NumberedRows
+	WHERE RowNumber BETWEEN '+CONVERT(varchar(5), @From)+' AND '+CONVERT(varchar(5), @To);
+
+
+	--WITH NumberedRows AS
+	--(
+	--SELECT 
+	--	dbo.Message.MessageID, dbo.Message.Message, dbo.Message.Date, dbo.Message.Category, dbo.Message.Priority,
+	--	ROW_NUMBER() OVER (ORDER BY dbo.Message.Category DESC) AS RowNumber
+	--FROM dbo.LogRel
+	--LEFT JOIN dbo.Message on dbo.LogRel.MessageID = dbo.Message.MessageID
+	--WHERE (dbo.LogRel.ProcessID = 1)
+	--)
+	--SELECT MessageID, Message, Date, Category, Priority
+	--FROM NumberedRows
+	--WHERE RowNumber BETWEEN 0 AND 1
+
+
+	--EXECUTE sp_executesql @SQLString, N'@P_ID int', @P_ID = @ProcessID 
+	EXECUTE sp_executesql @SQLString
+
+RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithProcessID]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfMessageSummary]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Kyle Paulsen
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetPageOfMessageSummary] 
+	-- Add the parameters for the stored procedure here
+	(
+		@processID int = -1,
+		@priority int = -1,
+		@startAndStop int = 0,
+		@SortBy int = 1,
+		@Order int = 0,
+		@Num int = 10
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+	DECLARE @SQLString nvarchar(1200);
+	DECLARE @Orderby nvarchar(100);
+	DECLARE @GetPrior nvarchar(100);
+	DECLARE @GetStartStop nvarchar(100);
+	DECLARE @whereprocid nvarchar(100);
+	DECLARE @Direction nvarchar(4);
+
+	IF(@SortBy = 0) 
+		SET @Orderby = 'ProcName';
+	ELSE
+	IF(@SortBy = 2)
+		SET @Orderby = 'Message';
+	ELSE
+	IF(@SortBy = 5)
+		SET @Orderby = 'Priority';
+	ELSE
+		SET @Orderby = 'Date';
+	
+
+	IF(@Order = 0) 
+		SET @Direction = 'DESC';
+	ELSE
+		SET @Direction = 'ASC';
+
+	IF(@priority = 0)
+		SET @GetPrior = '(0)';
+	ELSE
+	IF(@priority = 1)
+		SET @GetPrior = '(1)';
+	ELSE
+	IF(@priority = 2)
+		SET @GetPrior = '(2)';
+	ELSE
+		SET @GetPrior = '(0,1,2)';
+
+	IF(@startAndStop = 1)
+		SET @GetStartStop = ' AND Category &lt; 2 ';
+	ELSE
+		SET @GetStartStop = '';
+
+	IF(@processID = -1)
+		SET @whereprocid = '';
+	ELSE
+		SET @whereprocid = ' AND ProcID = '+CONVERT(varchar(5), @processID)+' ';
+
+	SET @SQLString = 
+	N'
+	WITH SummaryTable AS (
+		SELECT 
+			msg.MessageID,
+			msg.Message,
+			msg.Priority,
+			msg.Category,
+			msg.Date,
+			(SELECT TOP 1 pro.ProcessName FROM dbo.Message AS msg2 LEFT JOIN dbo.LogRel AS lo ON msg2.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro ON lo.ProcessID = pro.ProcessID WHERE msg2.MessageID = msg.MessageID) AS ProcName,
+			(SELECT TOP 1 pro.ProcessID FROM dbo.Message AS msg2 LEFT JOIN dbo.LogRel AS lo ON msg2.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro ON lo.ProcessID = pro.ProcessID WHERE msg2.MessageID = msg.MessageID) AS ProcID,
+			(SELECT TOP 1 pro.State FROM dbo.Message AS msg2 LEFT JOIN dbo.LogRel AS lo ON msg2.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro ON lo.ProcessID = pro.ProcessID WHERE msg2.MessageID = msg.MessageID) AS ProcState
+		FROM
+			dbo.Message AS msg
+	)
+	SELECT TOP '+CONVERT(varchar(5), @Num)+'
+		MessageID, Message, Priority, Category, Date, ProcName, ProcID, ProcState 
+	FROM SummaryTable
+	WHERE
+		Priority IN '+@GetPrior+@GetStartStop+@whereprocid+' 
+	ORDER BY '+@Orderby+' '+@Direction
+	
+	/*
+	SELECT TOP 10
+		msg.MessageID,
+		msg.Message,
+		msg.Priority,
+		msg.Category,
+		msg.Date,
+		(SELECT TOP 1 pro.ProcessName FROM dbo.Message AS msg2 LEFT JOIN dbo.LogRel AS lo ON msg2.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro ON lo.ProcessID = pro.ProcessID WHERE msg2.MessageID = msg.MessageID) AS ProcName,
+		(SELECT TOP 1 pro.ProcessID FROM dbo.Message AS msg2 LEFT JOIN dbo.LogRel AS lo ON msg2.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro ON lo.ProcessID = pro.ProcessID WHERE msg2.MessageID = msg.MessageID) AS ProcID,
+		(SELECT TOP 1 pro.State FROM dbo.Message AS msg2 LEFT JOIN dbo.LogRel AS lo ON msg2.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro ON lo.ProcessID = pro.ProcessID WHERE msg2.MessageID = msg.MessageID) AS ProcState
+	FROM
+		dbo.Message AS msg
+	WHERE
+		msg.Priority IN (1)
+	ORDER BY msg.Message DESC
+	*/
+	
+	EXECUTE sp_executesql @SQLString
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithPercent]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Kyle Paulsen
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetPageOfProcessSummaryWithPercent] 
+	-- Add the parameters for the stored procedure here
+	(
+		@SortBy int = 1,
+		@Order int = 0,
+		@Num int = 10
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+	DECLARE @SQLString nvarchar(700);
+	DECLARE @Orderby nvarchar(100);
+	DECLARE @Direction nvarchar(4);
+
+	IF(@SortBy = 0) 
+		SET @Orderby = 'pro.ProcessName';
+	ELSE
+	IF(@SortBy = 2)
+		SET @Orderby = 'LastMsg';
+	ELSE
+	IF(@SortBy = 3)
+		SET @Orderby = 'MsgDate';
+	ELSE
+		SET @Orderby = 'pro.State'; --sortby should be 1
+
+
+	IF(@Order = 0) 
+		SET @Direction = 'DESC';
+	ELSE
+		SET @Direction = 'ASC';
+
+
+	SET @SQLString = 
+	N'
+	SELECT TOP '+CONVERT(varchar(5), @Num)+'
+		pro.ProcessID,
+		pro.ProcessName,
+		pro.State,
+		(SELECT TOP 1 dbo.Job.PercentComplete FROM dbo.Job) AS Percentage,
+		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
+		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate
+	FROM
+		dbo.Process AS pro
+	ORDER BY '+@Orderby+' '+@Direction
+	
+	/*
+	SELECT TOP 10
+		pro.ProcessID,
+		pro.ProcessName,
+		pro.State,
+		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
+		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate
+	FROM
+		dbo.Process AS pro
+	ORDER BY MsgDate DESC
+	*/
+	
+	EXECUTE sp_executesql @SQLString
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummary]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Kyle Paulsen
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetPageOfProcessSummary] 
+	-- Add the parameters for the stored procedure here
+	(
+		@SortBy int = 1,
+		@Order int = 0,
+		@Num int = 10
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+	DECLARE @SQLString nvarchar(1200);
+	DECLARE @Orderby nvarchar(100);
+	DECLARE @Direction nvarchar(4);
+
+	IF(@SortBy = 0) 
+		SET @Orderby = 'pro.ProcessName';
+	ELSE
+	IF(@SortBy = 2)
+		SET @Orderby = 'LastMsg';
+	ELSE
+	IF(@SortBy = 3)
+		SET @Orderby = 'MsgDate';
+	ELSE
+		SET @Orderby = 'pro.State'; --sortby should be 1
+
+
+	IF(@Order = 0) 
+		SET @Direction = 'DESC';
+	ELSE
+		SET @Direction = 'ASC';
+
+
+	SET @SQLString = 
+	N'
+	SELECT TOP '+CONVERT(varchar(5), @Num)+'
+		pro.ProcessID,
+		pro.ProcessName,
+		pro.State,
+		(SELECT TOP 1 j.PercentComplete FROM dbo.Job AS j LEFT JOIN dbo.LogRel AS lo ON j.JobID = lo.JobID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID LEFT JOIN dbo.Message AS msg ON lo.MessageID = msg.MessageID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS Percentage,
+		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
+		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate,
+		(SELECT TOP 1 msg.Category FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgType
+	FROM
+		dbo.Process AS pro
+	ORDER BY '+@Orderby+' '+@Direction
+	
+	/*
+	SELECT TOP 10
+		pro.ProcessID,
+		pro.ProcessName,
+		pro.State,
+		(SELECT TOP 1 j.PercentComplete FROM dbo.Job AS j LEFT JOIN dbo.LogRel AS lo ON j.JobID = lo.JobID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID LEFT JOIN dbo.Message AS msg ON lo.MessageID = msg.MessageID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS Percentage,
+		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
+		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate,
+		(SELECT TOP 1 msg.Category FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgType
+	FROM
+		dbo.Process AS pro
+	ORDER BY MsgDate DESC
+	*/
+	
+	EXECUTE sp_executesql @SQLString
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithProcessID]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -527,7 +645,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithCategory]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithCategory]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -628,7 +746,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessagesWithProcessID]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessagesWithProcessID]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -710,7 +828,7 @@ AS
 
 RETURN
 GO
-/****** Object:  Table [dbo].[Process]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  Table [dbo].[Process]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -725,7 +843,7 @@ CREATE TABLE [dbo].[Process](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Message]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  Table [dbo].[Message]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -742,7 +860,7 @@ CREATE TABLE [dbo].[Message](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LogRel]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  Table [dbo].[LogRel]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -757,7 +875,7 @@ CREATE TABLE [dbo].[LogRel](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyPriority]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyPriority]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -784,7 +902,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyMsg]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyMsg]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -808,7 +926,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyID]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyID]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -832,7 +950,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyDate]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyDate]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -856,7 +974,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyCategory]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyCategory]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -879,7 +997,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -906,7 +1024,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPlannedCount]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPlannedCount]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -930,7 +1048,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPercentComplete]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPercentComplete]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -954,7 +1072,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyName]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyName]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -978,7 +1096,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyID]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyID]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1002,7 +1120,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyCompletedCount]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyCompletedCount]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1026,7 +1144,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1053,7 +1171,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1080,233 +1198,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson /Weixiong Lu
--- Create date: 2012-01-04
--- Modify date: 2012-01-08
--- Description:	Create a new process
--- =============================================
-CREATE PROCEDURE [dbo].[InsertProcess2] 
-	-- Add the parameters for the stored procedure here
-	(
-		@ProcessID int OUTPUT,
-		@ProcessName nvarchar(200) = NULL, 
-		@State int = 0
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    -- Insert statements for procedure here
-	
-	INSERT INTO dbo.Process (ProcessName, State)
-       VALUES (@ProcessName, @State)
-       SET @ProcessID = SCOPE_IDENTITY();
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson /Weixiong Lu
--- Create date: 2012-01-04
--- Modify date: 2012-01-08
--- Description:	Create a new process
--- =============================================
-CREATE PROCEDURE [dbo].[InsertProcess] 
-	-- Add the parameters for the stored procedure here
-	(
-		@ProcessID int,
-		@ProcessName nvarchar(200) = NULL, 
-		@State int = 0
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    -- Insert statements for procedure here
-	
-	INSERT INTO dbo.Process (ProcessName, State)
-       VALUES (@ProcessName, @State)
-       SET @ProcessID = IDENT_CURRENT('dbo.Process');
-
-	 SELECT ProcessID, ProcessName, State FROM dbo.Process WHERE (ProcessID = @ProcessID)
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-/*
-Author   : Weixiong Lu
-Version  : 1.0.0
-Date     : 01/08/2012
-Copyright: Capstone Project Team Falcon 2012 All right reserved
-*/
-
-
-CREATE PROCEDURE [dbo].[InsertMessage]
-(
-    @MessageID int,
-    @Message nvarchar(500),
-    @Date datetime,
-	@Category int,
-	@Priority int
-)
-
-AS
-    SET NOCOUNT OFF;
-	
-	INSERT INTO [dbo].[Message] (Message,Date,Category,Priority)
-	VALUES (@Message,@Date,@Category,@Priority)
-	SET @MessageID = IDENT_CURRENT('dbo.Message');
-
-	SELECT * FROM dbo.Message WHERE (MessageID = @MessageID)
-
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyState]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-02-10
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetProcessOrderbyState] 
-	-- Add the parameters for the stored procedure here
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT ProcessID, ProcessName, State
-    FROM dbo.Process
-	ORDER BY State
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyName]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-02-10
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetProcessOrderbyName] 
-	-- Add the parameters for the stored procedure here
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT ProcessID, ProcessName, State
-    FROM dbo.Process
-	ORDER BY ProcessName
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyID]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-02-10
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetProcessOrderbyID] 
-	-- Add the parameters for the stored procedure here
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT ProcessID, ProcessName, State
-    FROM dbo.Process
-	ORDER BY ProcessID
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-01-31
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetProcessByName] 
-	-- Add the parameters for the stored procedure here
-	(
-		@ProcessName nvarchar(200)
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT ProcessID, ProcessName, State
-    FROM dbo.Process
-    WHERE (ProcessName = @ProcessName)
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Nicholas Benson / Weixiong Lu
--- Create date: 2012-01-12
--- Description:	Retrieve process by ProcessID
--- =============================================
-CREATE PROCEDURE [dbo].[GetProcess] 
-	-- Add the parameters for the stored procedure here
-	(
-		@ProcessID int
-	)
-
-AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT OFF;
-
-    SELECT ProcessID, ProcessName, State
-    FROM dbo.Process
-    WHERE (ProcessID = @ProcessID)
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1349,7 +1241,160 @@ WHERE
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyState]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-02-10
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessOrderbyState] 
+	-- Add the parameters for the stored procedure here
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+	ORDER BY State
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyName]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-02-10
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessOrderbyName] 
+	-- Add the parameters for the stored procedure here
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+	ORDER BY ProcessName
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyID]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-02-10
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessOrderbyID] 
+	-- Add the parameters for the stored procedure here
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+	ORDER BY ProcessID
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcessIDFromName]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Kyle Paulsen
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessIDFromName] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessName nvarchar(200)
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+	SELECT ProcessID
+    FROM dbo.Process
+    WHERE (ProcessName = @ProcessName)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessByName] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessName nvarchar(200)
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+    WHERE (ProcessName = @ProcessName)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson / Weixiong Lu
+-- Create date: 2012-01-12
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcess] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    SELECT ProcessID, ProcessName, State
+    FROM dbo.Process
+    WHERE (ProcessID = @ProcessID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1383,7 +1428,107 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[SearchProcessByName]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson /Weixiong Lu
+-- Create date: 2012-01-04
+-- Modify date: 2012-01-08
+-- Description:	Create a new process
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertProcess2] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int OUTPUT,
+		@ProcessName nvarchar(200) = NULL, 
+		@State int = 0
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    -- Insert statements for procedure here
+	
+	INSERT INTO dbo.Process (ProcessName, State)
+       VALUES (@ProcessName, @State)
+       SET @ProcessID = SCOPE_IDENTITY();
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Nicholas Benson /Weixiong Lu
+-- Create date: 2012-01-04
+-- Modify date: 2012-01-08
+-- Description:	Create a new process
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertProcess] 
+	-- Add the parameters for the stored procedure here
+	(
+		@ProcessID int,
+		@ProcessName nvarchar(200) = NULL, 
+		@State int = 0
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+
+    -- Insert statements for procedure here
+	
+	INSERT INTO dbo.Process (ProcessName, State)
+       VALUES (@ProcessName, @State)
+       SET @ProcessID = IDENT_CURRENT('dbo.Process');
+
+	 SELECT ProcessID, ProcessName, State FROM dbo.Process WHERE (ProcessID = @ProcessID)
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[InsertMessage]
+(
+    @MessageID int,
+    @Message nvarchar(500),
+    @Date datetime,
+	@Category int,
+	@Priority int
+)
+
+AS
+    SET NOCOUNT OFF;
+	
+	INSERT INTO [dbo].[Message] (Message,Date,Category,Priority)
+	VALUES (@Message,@Date,@Category,@Priority)
+	SET @MessageID = IDENT_CURRENT('dbo.Message');
+
+	SELECT * FROM dbo.Message WHERE (MessageID = @MessageID)
+
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[SearchProcessByName]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1411,7 +1556,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[SearchMessageBySting]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[SearchMessageBySting]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1439,7 +1584,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[SearchJobByName]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[SearchJobByName]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1467,7 +1612,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1494,35 +1639,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-/*
-Author   : Weixiong Lu
-Version  : 1.0.0
-Date     : 01/06/2012
-Copyright: Capstone Project Team Falcon 2012 All right reserved
-*/
-
-
-
-CREATE PROCEDURE [dbo].[GetTable1]
-	/*
-	(
-	@parameter1 int = 5,
-	@parameter2 datatype OUTPUT
-	)
-	*/
-AS
-	/* SET NOCOUNT ON */
-	
-	Select *
-	from Process 
-	RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1552,7 +1669,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1584,7 +1701,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1616,7 +1733,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1636,7 +1753,7 @@ FROM         dbo.Process
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1663,7 +1780,35 @@ AS
 
 	RETURN
 GO
-/****** Object:  View [dbo].[ViewJob]    Script Date: 02/25/2012 17:51:02 ******/
+/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/06/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+
+CREATE PROCEDURE [dbo].[GetTable1]
+	/*
+	(
+	@parameter1 int = 5,
+	@parameter2 datatype OUTPUT
+	)
+	*/
+AS
+	/* SET NOCOUNT ON */
+	
+	Select *
+	from Process 
+	RETURN
+GO
+/****** Object:  View [dbo].[ViewJob]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1784,7 +1929,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewJob'
 GO
-/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/25/2012 17:51:02 ******/
+/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1905,7 +2050,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewProcess'
 GO
-/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/25/2012 17:51:02 ******/
+/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2026,7 +2171,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewMessage'
 GO
-/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/25/2012 17:51:02 ******/
+/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2147,7 +2292,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewLogRel'
 GO
-/****** Object:  View [dbo].[ViewAll]    Script Date: 02/25/2012 17:51:02 ******/
+/****** Object:  View [dbo].[ViewAll]    Script Date: 02/28/2012 18:50:27 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2302,7 +2447,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewAll'
 GO
-/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2330,7 +2475,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2360,7 +2505,39 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+Author   : Weixiong Lu
+Version  : 1.0.0
+Date     : 01/08/2012
+Copyright: Capstone Project Team Falcon 2012 All right reserved
+*/
+
+
+CREATE PROCEDURE [dbo].[InsertLogRel]
+(
+    @MessageID int,
+	@ProcessID int,
+	@JobID int
+)
+
+AS
+    SET NOCOUNT OFF;
+	
+	INSERT INTO [dbo].[LogRel] (MessageID,ProcessID,JobID)
+	VALUES (@MessageID,@ProcessID,@JobID)
+
+
+	SELECT * FROM dbo.LogRel WHERE (MessageID = @MessageID)
+
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2395,7 +2572,43 @@ AS
 		LogRel.ProcessID = @ProcessId 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithJobPercenComplete]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessSummaryByName]    Script Date: 02/28/2012 18:50:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Kyle Paulsen
+-- Create date: 2012-01-31
+-- Description:	Retrieve process by ProcessID
+-- =============================================
+CREATE PROCEDURE [dbo].[GetProcessSummaryByName] 
+	-- Add the parameters for the stored procedure here
+	(
+		@Name nvarchar(200)
+	)
+
+AS
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT OFF;
+	
+	SELECT
+		pro.ProcessID,
+		pro.ProcessName,
+		pro.State,
+		(SELECT TOP 1 j.PercentComplete FROM dbo.Job AS j LEFT JOIN dbo.LogRel AS lo ON j.JobID = lo.JobID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID LEFT JOIN dbo.Message AS msg ON lo.MessageID = msg.MessageID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS Percentage,
+		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
+		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate,
+		(SELECT TOP 1 msg.Category FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgType
+	FROM
+		dbo.Process AS pro
+	WHERE
+		pro.ProcessName = @Name
+
+RETURN
+GO
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithJobPercenComplete]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2425,7 +2638,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfMessagesByProcessId]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfMessagesByProcessId]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2476,7 +2689,7 @@ WHERE
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfJobs]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfJobs]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2501,7 +2714,7 @@ AS
 
 WITH NumberedJobs AS
 (
-    SELECT
+    SELECT DISTINCT
         dbo.Job.JobID,
         dbo.Job.JobName,
         dbo.Job.PlannedCount,
@@ -2510,11 +2723,11 @@ WITH NumberedJobs AS
         ROW_NUMBER() OVER (ORDER BY PercentComplete ASC) AS RowNumber
     FROM
         dbo.Job 
-		inner join dbo.LogRel on dbo.LogRel.JobId = dbo.Job.JobId
+		join dbo.LogRel on dbo.Job.JobId = dbo.LogRel.JobId
 	WHERE dbo.LogRel.ProcessID = @processID
 		
 )
-SELECT
+SELECT DISTINCT
     JobID,
     JobName,
     PlannedCount,
@@ -2527,39 +2740,7 @@ WHERE
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/25/2012 17:51:00 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-/*
-Author   : Weixiong Lu
-Version  : 1.0.0
-Date     : 01/08/2012
-Copyright: Capstone Project Team Falcon 2012 All right reserved
-*/
-
-
-CREATE PROCEDURE [dbo].[InsertLogRel]
-(
-    @MessageID int,
-	@ProcessID int,
-	@JobID int
-)
-
-AS
-    SET NOCOUNT OFF;
-	
-	INSERT INTO [dbo].[LogRel] (MessageID,ProcessID,JobID)
-	VALUES (@MessageID,@ProcessID,@JobID)
-
-
-	SELECT * FROM dbo.LogRel WHERE (MessageID = @MessageID)
-
-
-RETURN
-GO
-/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2588,7 +2769,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteOldMessages]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteOldMessages]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2637,7 +2818,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2666,7 +2847,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/25/2012 17:51:00 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/28/2012 18:50:26 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2695,19 +2876,19 @@ AS
 
 	RETURN
 GO
-/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/28/2012 18:50:27 ******/
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Job] FOREIGN KEY([JobID])
 REFERENCES [dbo].[Job] ([JobID])
 GO
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Job]
 GO
-/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/28/2012 18:50:27 ******/
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Message] FOREIGN KEY([MessageID])
 REFERENCES [dbo].[Message] ([MessageID])
 GO
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Message]
 GO
-/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/25/2012 17:51:01 ******/
+/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/28/2012 18:50:27 ******/
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Process] FOREIGN KEY([ProcessID])
 REFERENCES [dbo].[Process] ([ProcessID])
 GO
@@ -2799,7 +2980,7 @@ GO</value>
     <value>USE [master]
 GO
 
-/****** Object:  Database [PeregrineDB]    Script Date: 02/13/2012 19:30:04 ******/
+/****** Object:  Database [PeregrineDB]    Script Date: 02/28/2012 18:49:09 ******/
 IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'PeregrineDB')
 DROP DATABASE [PeregrineDB]
 GO
@@ -2807,9 +2988,9 @@ GO
 USE [master]
 GO
 
-/****** Object:  Database [PeregrineDB]    Script Date: 02/13/2012 19:30:04 ******/
+/****** Object:  Database [PeregrineDB]    Script Date: 02/28/2012 18:49:09 ******/
 CREATE DATABASE [PeregrineDB] ON  PRIMARY 
-( NAME = N'PeregrineDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf' , SIZE = 2048KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+( NAME = N'PeregrineDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
  LOG ON 
 ( NAME = N'PeregrineDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
 GO
