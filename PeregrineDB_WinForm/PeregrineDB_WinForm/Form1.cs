@@ -68,7 +68,7 @@ namespace PeregrineDB_WinForm
 
         private void processBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
-            //peregrineDB_formDataContext1.UpdateProcesses(2,"SecondProcess",1);
+            //peregrineDB_formDataContext1.UpdateProcesses(2,"Sample process demo",1);
             peregrineDB_formDataContext1.SubmitChanges();
         }
 
@@ -76,27 +76,6 @@ namespace PeregrineDB_WinForm
         {
 
         }
-
-        /*
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-
-
-            var results = from pro in peregrineDB_formDataContext1.Processes
-                          select pro;
-
-            foreach(Process pro in results)
-            {
-                processDataGridView.Rows.Add(pro);
-            }
-
-
-
-
-        }
-
-        */
-        
 
     }
 }

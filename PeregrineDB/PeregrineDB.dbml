@@ -312,55 +312,6 @@
     <Parameter Name="ProcessNamePartial" Parameter="processNamePartial" Type="System.String" DbType="NVarChar(200)" />
     <ElementType IdRef="ID3" />
   </Function>
-  <Function Name="dbo.ShowAll" Method="ShowAll">
-    <ElementType Name="ShowAllResult">
-      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.ShowJobs" Method="ShowJobs">
-    <ElementType Name="ShowJobsResult">
-      <Column Name="JobID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="PlannedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CompletedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PercentComplete" Type="System.Double" DbType="Float" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.ShowLogRel" Method="ShowLogRel">
-    <ElementType Name="ShowLogRelResult">
-      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="JobID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.ShowMessages" Method="ShowMessages">
-    <ElementType Name="ShowMessagesResult">
-      <Column Name="MessageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Category" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Priority" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.ShowProcesses" Method="ShowProcesses">
-    <ElementType Name="ShowProcessesResult">
-      <Column Name="ProcessID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.UpdateJob" Method="UpdateJob">
     <Parameter Name="JobID" Parameter="jobID" Type="System.Int32" DbType="Int" />
     <Parameter Name="JobName" Parameter="jobName" Type="System.String" DbType="NVarChar(200)" />
