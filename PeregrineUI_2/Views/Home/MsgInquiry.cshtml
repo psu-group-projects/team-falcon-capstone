@@ -27,20 +27,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 </script>
 
-<!-- -->
 <nav>
     <ul id="menu">
         <li>@Html.ActionLink("Home Page", "Index", "Home")</li>
     </ul>
 </nav>
 
-<!-- -->
 <label>Search message by process name:</label>
 <input  id="process_name_input" type="text"/>
 
 <br />
 
-<!-- -->
 <label>Search message by message priority:</label>
 <select id="process_prio_input" onchange="updateMsgs()">
     <option value="-1">Any</option>                                            
@@ -53,20 +50,25 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 <label>Only get start up and shutdown messages: </label>
 
-<!-- -->
 <input id="SU_SD_Checkbox" type="checkbox" />
                                                                              
 <hr />
 
-<!-- -->
+<!-- 
+This is where the partial view MessageList.cshtml is added to
+When user click search, sort or autoupdate kick in, the current partial view "MessageList.cshtml" will be 
+deleted and updated by the new partial view "MessageList.cshtml" with new information query from DB throught
+api services
+ -->
 <div class="message-list"></div>
 
-<!-- -->
+<!-- 
+With the long message, the full detail of a message will the put into this div and show to user.
+ -->
 <div id="popwindow" class="popperHid">
     <div id="popwindow_header"></div>
     <div id="popwindow_message"></div>
     <div id="closebutton" ><input type="button" value="Close" onclick="showpopup('-1', '');" /></div>
 </div>
 
-<!-- -->
 <div id="message_modal" style="display: none; max-height: 200px; overflow: auto;"></div>

@@ -8,27 +8,18 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Message>
 
-<!-- -->
 <script type="text/javascript">
     
     $(document).ready(function () {
         more_info_accumulate_page = @(Model.CurrentPage);
-        $("#show_jobs_btn").click(function(){
-            show_job(1, $('#fixed_info_tab').data('process_name'));
-        });
-        $("#msg_load_more").bind("click", {curPage: more_info_accumulate_page}, function(event){
-            show_message((event.data.curPage+1), $('#fixed_info_tab').data('process_name'));
-        });
+        Msg_partial_page_setup();
     });
     
 </script>
 
-<!-- -->
 <input id="show_jobs_btn" class="ui_button" type="button" value="Show Jobs"/>
 
-<!-- -->
 <table class = "msg_table">
-        <!-- -->
         <thead>
             <tr>
                 <td>Message Content </td>
@@ -37,8 +28,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td>Date </td>
             </tr>
         </thead>   
-
-        <!-- -->  
+  
         <tbody>
             @{
                 bool odd = true;
@@ -69,7 +59,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             }
         </tbody>
 
-        <!-- -->
         <tfoot>
             <tr>
                 <td colspan="4">

@@ -12,30 +12,20 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     
     $(document).ready(function () {
         more_info_accumulate_page = @(Model.CurrentPage);
-        $("#show_msg_btn").click(function(){
-            show_message(1, $('#fixed_info_tab').data('process_name'));
-        });
-        $("#job_load_more").bind("click", {curPage: more_info_accumulate_page}, function(event){
-            show_job((event.data.curPage+1), $('#fixed_info_tab').data('process_name'));
-        });
+        Job_partial_page_setup();
     });
     
 </script>
 
-<!-- -->
 <input id="show_msg_btn" class="ui_button" type="button" value="Show Messages" />
-
-<!-- -->     
-<table class = "job_table"> 
-        <!-- -->   
+  
+<table class = "job_table">  
         <thead>
             <tr>
                 <td>Job Name </td>
                 <td>Progress </td>
             </tr>
-        </thead> 
-        
-        <!-- -->    
+        </thead>   
         <tbody>
             @{
                 bool odd = true;
@@ -67,8 +57,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 </tr>
             }
         </tbody>
-
-        <!-- -->
         <tfoot>
             <tr>
                 <td colspan="4">

@@ -31,8 +31,10 @@ namespace PeregrineUI_2.Models.Repository
             List<GetProcessSummaryByNameResult> OneProcessSummary;
             List<GetPageOfProcessSummaryResult> ProcessSummaryData;
 
+             
             if (process_name == "")
             {
+                // Case that the the process search box in main page is empty
                 SortBy sort;
                 switch (sortColumm)
                 {
@@ -73,37 +75,32 @@ namespace PeregrineUI_2.Models.Repository
                 {
                     int percent, MsgType;
 
-                    if(summary.Percentage != null){
+                    if(summary.Percentage != null)
                         percent = (int)summary.Percentage;
-                    }else{
+                    else
                         percent = 0;
-                    }
 
                     if (summary.MsgType != null)
-                    {
                         MsgType = (int)summary.MsgType;
-                    }
                     else
-                    {
                         MsgType = 0;
-                    }
 
                     SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
                 }
             }
             else
             {
-                
+                // Case that the the process search box in main page is NOT empty
+                // At most one process will be returned using this function
                 OneProcessSummary = service.getProcessByName(process_name);
                 foreach (GetProcessSummaryByNameResult summary in OneProcessSummary)
                 {
                     int percent;
                     if (summary.Percentage != null)
-                    {
                         percent = (int)summary.Percentage;
-                    }else{
+                    else
                         percent = 0;
-                    }
+                    
                     SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = percent });
                 }
             }
@@ -114,7 +111,6 @@ namespace PeregrineUI_2.Models.Repository
             pagingContext.SortingType = (sortColumm * 2) + sort_type;
 
             return pagingContext;
-
         }
     }
 }

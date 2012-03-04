@@ -11,20 +11,13 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
    
     $(document).ready(function () {   
         msg_inquiry_accumulate_page = @(Model.CurrentPage);
-        $(".arrow_bg").bind("click", function(event){
-            Msg_inquiry_sorting($(event.currentTarget).attr("id"));
-        });
-        msg_inquiry_current_sort = @(Model.SortingType);
-        $("#msg_load_more").bind("click", {curPage: msg_inquiry_accumulate_page, curSort: msg_inquiry_current_sort}, function(event){
-            MsgInquiryUpdate((event.data.curPage+1), event.data.curSort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked+0));
-        });
+        msg_inquiry_current_sort    = @(Model.SortingType);
+        Msg_list_partial_page_setup();
     });
 
 </script>                          
 
-<!-- -->
 <table id ="msg_list_table" class="display">
-        <!-- -->
         <thead>
             <tr>            
                 <td>     
@@ -84,8 +77,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 </td>
             </tr>
         </thead>  
-        
-        <!-- -->   
+           
         <tbody>
             @foreach (var message in Model.Data)
             {
@@ -113,7 +105,6 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             }
         </tbody>
 
-        <!-- -->
         <tfoot>
             <tr>
                 <td colspan="6">

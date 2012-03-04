@@ -9,13 +9,14 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 ///////////////////////////////////////// Main Page ////////////////////////////////////////////////////////////
 
 /*
-function    : 
-parameter   : 
+function    : Main_page_setup
+parameter   : s_process
 what does this function do :
-        
+    Constructor for the main page.        
 */
 function Main_page_setup(s_process) {
     // Fix event.layerx and layery broken warning, work like a charm
+    // --->
     var all = $.event.props,
     len = all.length,
     res = [];
@@ -24,23 +25,23 @@ function Main_page_setup(s_process) {
         if (el != 'layerX' && el != 'layerY') res.push(el);
     }
     $.event.props = res;
-
-    tab_amt = 0;
+    // <---
 
     // Initialize the default value for current_scrolldown_process
-
-    current_scrolldown_process = '*_*';
+    current_scrolldown_process = '*_*';     
 
     var search_process = decodeURI(s_process);
 
+    // Initial population of the table
     MainPageAjaxUpdate(1, 7, search_process);
 
-    // Use enter to send value in input box. Work for IE, Firefox and Chrome
+    // Binding key press with search input box.
+    // If user hit enter, value of the search input box will be sent to controller by ajax function call to 
+    // get the query information using peregrine API
     $('#main_page_search_input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
             MainPageAjaxUpdate(1, get_selected_sort_arrow_index(), document.getElementById("main_page_search_input").value);
-            //current_scrolldown_process = '*_*';
         } else {
             if (document.getElementById("main_page_search_input").value == "") {
                 MainPageAjaxUpdate(1, get_selected_sort_arrow_index(), "");
@@ -59,7 +60,7 @@ function Main_page_setup(s_process) {
                         });
                     },
                     error: function (result) {
-                        alert(result);
+                        alert("Main_page_setup_err");
                     }
                 });
             }
@@ -71,20 +72,51 @@ function Main_page_setup(s_process) {
 }
 
 /*
-function    : 
+function    : Job_partial_page_setup
 parameter   : 
 what does this function do :
-        
+    Job partial page constructor            
+*/
+function Job_partial_page_setup() {
+    $("#show_msg_btn").click(function () {
+        show_message(1, $('#fixed_info_tab').data('process_name'));
+    });
+    $("#job_load_more").bind("click", { curPage: more_info_accumulate_page }, function (event) {
+        show_job((event.data.curPage + 1), $('#fixed_info_tab').data('process_name'));
+    });
+}
+
+/*
+function    : Msg_partial_page_setup
+parameter   : 
+what does this function do :
+    Message partial page constructor         
+*/
+function Msg_partial_page_setup() {
+    $("#show_jobs_btn").click(function () {
+        show_job(1, $('#fixed_info_tab').data('process_name'));
+    });
+    $("#msg_load_more").bind("click", { curPage: more_info_accumulate_page }, function (event) {
+        show_message((event.data.curPage + 1), $('#fixed_info_tab').data('process_name'));
+    });
+}
+
+/*
+function    : refreshMainPage
+parameter   : 
+what does this function do :
+    Call ajax to update asynchronized the content of processlist partial page in main page. 
+    This function is used for automatic updating        
 */
 function refreshMainPage() {
     MainPageAjaxUpdate(main_page_accumulate_page, main_page_current_sort, document.getElementById("main_page_search_input").value);
 }
 
 /*
-function    : 
+function    : toggleFixedInfoTab
 parameter   : 
 what does this function do :
-        
+    This function is used to open or close the job-message detail tab when user click to the "Click a process to view info..." tab       
 */
 function toggleFixedInfoTab() {
     if ($("#fixed_info_content").css("display") == "none") {
@@ -97,14 +129,15 @@ function toggleFixedInfoTab() {
         $("#fixed_info_page_padding").css("height", "0");
         $("#fixed_info_content").slideUp(500);
     }
-
 }
 
 /*
-function    : 
+function    : showFixedInfoTab
 parameter   : 
 what does this function do :
-        
+    This function is called when the job-message info tab have opened and users want to change 
+        from job view -> message view
+        from message biew -> job view  
 */
 function showFixedInfoTab() {
     if ($("#fixed_info_content").css("display") == "none") {
@@ -123,10 +156,10 @@ function showFixedInfoTab() {
 }
 
 /*
-function    : 
+function    : get_selected_sort_arrow_index
 parameter   : 
 what does this function do :
-        
+    This function is used to get what kind of sort that users want to perform        
 */
 function get_selected_sort_arrow_index() {
     var up_arrows = $(".up_arrow");
@@ -145,12 +178,25 @@ function get_selected_sort_arrow_index() {
 }
 
 /*
-function    : 
-parameter   : 
+function    : toggleMoreInfo
+parameter   : id
 what does this function do :
-        
+    When user click into any data row in main page table, this function will be run.
+    The new job-message tab detail will be filled up with the detail of the clicked process.  
 */
-function Main_partial_page_setup(acc_page, sort_type) {
+function toggleMoreInfo(id) {
+    show_message(1, id);
+    $(".table_row_selected").removeClass("table_row_selected");
+    $("#" + id).addClass("table_row_selected");
+}
+
+/*
+function    : ProcessList_partial_page_setup
+parameter   : acc_page, sort_type
+what does this function do :
+       ProcessList partial page constructor 
+*/
+function ProcessList_partial_page_setup(acc_page, sort_type) {
     main_page_accumulate_page = acc_page;
     main_page_current_sort = sort_type;
 
@@ -167,25 +213,13 @@ function Main_partial_page_setup(acc_page, sort_type) {
 }
 
 /*
-function    : 
-parameter   : 
+function    : MainPageAjaxUpdate
+parameter   : page, sort_input, process_name
 what does this function do :
-        
-*/
-function toggleMoreInfo(id) {
-    show_message(1, id);
-    $(".table_row_selected").removeClass("table_row_selected");
-    $("#" + id).addClass("table_row_selected");
-}
-
-/*
-function    : 
-parameter   : 
-what does this function do :
-        
+    Update the content of ProcessList partial page.
+    This function is call when users perform sorting, searching or the automatic updating kicks in
 */
 function MainPageAjaxUpdate(page, sort_input, process_name) {
-    current_scroll_pos = $(window).scrollTop();
     $.ajax({
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',
@@ -194,21 +228,22 @@ function MainPageAjaxUpdate(page, sort_input, process_name) {
             $('.process-list').html(data);     
         },
         error: function (result) {
-            alert(result);
+            alert("MainPageAjaxUpdate_err");
         }
     });
 }
 
 /*
-function    : 
-parameter   : 
+function    : Main_page_sorting
+parameter   : id
 what does this function do :
-        
+    Find out about sort type (ascending or descending)  and sort columm.
+    Then, calculate the s_option
+    Then, call MainPageAjaxUpdate        
 */
 function Main_page_sorting(id) {
     var s_option;
 
-    // If we check this checkbox, turnoff the other sorting checkbox
     if (id == "Main_page_pro_name_sort_acc") {
         s_option = "0";
         $("#Main_page_pro_name_sort_acc div").addClass("arrow_selected");
@@ -261,10 +296,11 @@ function Main_page_sorting(id) {
 }
 
 /*
-function    : 
-parameter   : 
+function    : ExpandedTabUpdate
+parameter   : process_name, msg_or_job, inside_page
 what does this function do :
-        
+    If the job-message detail of a process is currently opened, when the page got updated, 
+    this function will be call to open this tab again.      
 */
 function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
     $("#" + process_name).addClass("table_row_selected");
@@ -277,10 +313,10 @@ function ExpandedTabUpdate(process_name, msg_or_job, inside_page) {
 }
 
 /*
-function    : 
-parameter   : 
+function    : ProcessMsgUpdate
+parameter   : page, process_name, show
 what does this function do :
-        
+    Update the message partial page inside the ProcessList partial page        
 */
 function ProcessMsgUpdate(page, process_name, show) {
     var id = process_name.split("_")[1];
@@ -309,10 +345,10 @@ function ProcessMsgUpdate(page, process_name, show) {
 }
 
 /*
-function    : 
-parameter   : 
+function    : ProcessJobUpdate
+parameter   : page, process_name, show
 what does this function do :
-        
+    Update the Job partial page inside the ProcessList partial page                
 */
 function ProcessJobUpdate(page, process_name, show) {
     var id = process_name.split("_")[1];
@@ -335,7 +371,7 @@ function ProcessJobUpdate(page, process_name, show) {
             }
         },
         error: function (result) {
-            alert(result);
+            alert("ProcessJobUpdate_err");
         }
     });
 }
@@ -368,13 +404,14 @@ function show_message(page, process_name) {
 ///////////////////////////////////////// Message Inquiry Page ////////////////////////////////////////////////////////////
 
 /*
-function    : 
-parameter   : 
+function    : Msg_Inquiry_setup
+parameter   : refresh_rate
 what does this function do :
-        
+    MsgInquiry page constructor
 */
 function Msg_Inquiry_setup(refresh_rate) {
     // Fix event.layerx and layery broken warning, work like a charm
+    // -->
     var all = $.event.props,
         len = all.length,
         res = [];
@@ -383,22 +420,23 @@ function Msg_Inquiry_setup(refresh_rate) {
         if (el != 'layerX' && el != 'layerY') res.push(el);
     }
     $.event.props = res;
+    // <--
 
     // Set up the initial stage of the message inquiry page
     MsgInquiryUpdate(
-                            "1",    // current page number = 1
-                            "7",    // sort_option = 5 which is sort by date descending
-                            "-1",   // msg_priority = -1 which will show every message with every possible priority
-                            "",     // processname = "" which will search for all message
-                            "0"     // SU_SD_msg = 0 which will not search for startup and shutdown message
-                        );
-
+                            "1",    // current accumulative page
+                            "7",    // sort_option
+                            "-1",   // msg_priority
+                            "",     // processname
+                            "0"     // SU_SD_msg
+                    );
     
-
     // Automatic update
     setInterval("updateMsgs()", Refresh_Rate);
 
-    // Use enter to send value in input box. Work for IE, Firefox and Chrome
+    // Binding key press with search input box.
+    // If user hit enter, value of the search input box will be sent to controller by ajax function call to 
+    // get the query information using peregrine API
     $('#process_name_input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
@@ -421,7 +459,7 @@ function Msg_Inquiry_setup(refresh_rate) {
                         });
                     },
                     error: function (result) {
-                        alert(result);
+                        alert("Msg_Inquiry_setup_err");
                     }
                 });
             }
@@ -436,20 +474,37 @@ function Msg_Inquiry_setup(refresh_rate) {
 }
 
 /*
-function    : 
+function    : Msg_list_partial_page_setup
 parameter   : 
 what does this function do :
-        
+    MessageList partial page constructor        
+*/
+function Msg_list_partial_page_setup() {
+    $(".arrow_bg").bind("click", function (event) {
+        Msg_inquiry_sorting($(event.currentTarget).attr("id"));
+    });
+    $("#msg_load_more").bind("click", { curPage: msg_inquiry_accumulate_page, curSort: msg_inquiry_current_sort }, function (event) {
+        MsgInquiryUpdate((event.data.curPage + 1), event.data.curSort, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0));
+    });
+}
+
+/*
+function    : updateMsgs
+parameter   : 
+what does this function do :
+    This function will call MsgInquiryUpdate          
 */
 function updateMsgs() {
     MsgInquiryUpdate(msg_inquiry_accumulate_page, msg_inquiry_current_sort, $('#process_prio_input').val(), $('#process_name_input').val(), (document.getElementById('SU_SD_Checkbox').checked + 0));
 }
 
 /*
-function    : 
-parameter   : 
+function    : MsgInquiryUpdate
+parameter   : page_number, sort_option, msg_priority, process_name, SU_SD_msg
 what does this function do :
-        
+    Update the content of MessageList partial page.
+    This function is call when users perform sorting, searching, choosing msg_priority and start-up-shut-down msg
+    or the automatic updating kicks in        
 */
 function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, SU_SD_msg) {
     $.ajax({
@@ -466,16 +521,16 @@ function MsgInquiryUpdate(page_number, sort_option, msg_priority, process_name, 
             $('div.message-list').html(data);
         },
         error: function (result) {
-            alert(result);
+            alert("MsgInquiryUpdate_err");
         }
     });
 }
 
 /*
-function    : 
-parameter   : 
+function    : GetFullDetailMessage
+parameter   : msg_id, pro_name
 what does this function do :
-        
+    This function is called when use want to see the full detail version of long messages       
 */
 function GetFullDetailMessage(msg_id, pro_name) {
     $.ajax({
@@ -489,35 +544,17 @@ function GetFullDetailMessage(msg_id, pro_name) {
             $("#message_modal").dialog({ "title": header_title });
         },
         error: function (result) {
-            alert(result);
+            alert("GetFullDetailMessage_err");
         }
     });
 }
 
 /*
-function    : 
-parameter   : 
+function    : findPos
+parameter   : obj
 what does this function do :
-        
-*/
-function Msg_inquiry_collect_info(page_number, sort_option, process_priority, process_name) {
-    // Getting the current state of the SU_SD_Checkbox checkbox
-    var state = document.getElementById("SU_SD_Checkbox").checked;
-
-    // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
-    if (state) {
-        MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '1');
-    }
-    else {
-        MsgInquiryUpdate(page_number, sort_option, process_priority, process_name, '0');
-    }
-}
-
-/*
-function    : 
-parameter   : 
-what does this function do :
-        
+    This function is used for pop-up window.
+    Get current location of an object       
 */
 function findPos(obj) {
     var curtop = 0;
@@ -531,44 +568,26 @@ function findPos(obj) {
 }
 
 /*
-function    : 
-parameter   : 
+function    : showpopup
+parameter   : msg_id, process_name, top_value
 what does this function do :
-        
+    Open the long detail version of a message by calling GetFullDetailMessage           
 */
 function showpopup(msg_id, process_name, top_value) {
     GetFullDetailMessage(msg_id, process_name);
 }
 
 /*
-function    : 
-parameter   : 
+function    : Msg_inquiry_sorting
+parameter   : chkboxname
 what does this function do :
-        
-*/
-function Change_SU_SD_Status(sort_option, process_priority, process_name) {
-    // Getting the current state of the SU_SD_Checkbox checkbox
-    var state = document.getElementById("SU_SD_Checkbox").checked;
-
-    // Run MsgInquiryUpdate with the additional value of SU_SD_Checkbox
-    if (state) {
-        MsgInquiryUpdate('1', sort_option, process_priority, process_name, '1');
-    }
-    else {
-        MsgInquiryUpdate('1', sort_option, process_priority, process_name, '0');
-    }
-}
-
-/*
-function    : 
-parameter   : 
-what does this function do :
-        
+    Find out about sort type (ascending or descending)  and sort columm.
+    Then, calculate the s_option
+    Then, call MsgInquiryUpdate           
 */
 function Msg_inquiry_sorting(chkboxname) {   
     var s_option;
 
-    // If we check this checkbox, turnoff the other sorting checkbox
     if (chkboxname == "Msg_inq_context_sort_acc") {
         s_option = "0";
         $("#Msg_inq_context_sort_acc div").addClass("arrow_selected");
@@ -606,35 +625,4 @@ function Msg_inquiry_sorting(chkboxname) {
     }
 
     MsgInquiryUpdate(msg_inquiry_accumulate_page, s_option, document.getElementById('process_prio_input').value, document.getElementById('process_name_input').value, (document.getElementById('SU_SD_Checkbox').checked + 0))
-}
-
-/*
-function    : 
-parameter   : 
-what does this function do :
-        
-*/
-function setCookie(c_name, value, exdays) {
-    var exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
-    document.cookie = c_name + "=" + c_value;
-}
-
-/*
-function    : 
-parameter   : 
-what does this function do :
-        
-*/
-function getCookie(c_name) {
-    var i, x, y, ARRcookies = document.cookie.split(";");
-    for (i = 0; i < ARRcookies.length; i++) {
-        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
-        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
-        x = x.replace(/^\s+|\s+$/g, "");
-        if (x == c_name) {
-            return unescape(y);
-        }
-    }
 }
