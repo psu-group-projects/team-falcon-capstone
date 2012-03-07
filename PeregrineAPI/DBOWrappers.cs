@@ -12,6 +12,9 @@ namespace PeregrineDBWrapper
     using PeregrineDB;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// These are global variables and default values used for DBOWrappers.
+    /// </summary>
     public static class GlobVar
     {
         // identity is assigned when an Object is created or retrieved in DB
@@ -24,16 +27,11 @@ namespace PeregrineDBWrapper
         public const double DEFAULT_PERCENT_COUNT = 0.0;
     }
 
+    /// <summary>
+    /// This is a wrapper class for Process objects.
+    /// </summary>
     public class ProcessWrapper : ProcessDTO
     {
-        [Obsolete]
-        public ProcessWrapper()
-        {
-            ProcessId = GlobVar.UNASSIGNED_IDENTITY;
-            ProcessName = "";
-            State = GlobVar.DEFAULT_PROCESS_STATE;
-        }
-
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
         
         // This constructor will retrieve a process from the DB by ProcessName or add it
@@ -84,37 +82,17 @@ namespace PeregrineDBWrapper
             // repopulate Properties?
         }
 
-        [Obsolete]
-        public void PutInDatabase()
-        {
-            ISingleResult<InsertProcessResult> result = db.InsertProcess(null, ProcessName, (int)State);
-            // should only have one proc in result
-            foreach (InsertProcessResult proc in result)
-            {
-                ProcessId = proc.ProcessID;
-                ProcessName = proc.ProcessName;
-                State = (ProcessState)proc.State;
-            }
-        }
-
         public void DeleteFromDatabase()
         {
             db.DeleteProcess(ProcessId);
         }
     }
 
+    /// <summary>
+    /// This is a wrapper class for Job objects.
+    /// </summary>
     public class JobWrapper : JobDTO
     {
-        [Obsolete]
-        public JobWrapper()
-        {
-            JobId = GlobVar.UNASSIGNED_IDENTITY;
-            JobName = "";
-            PlannedCount = 0;
-            PercentComplete = 0;
-            PercentComplete = 0;
-        }
-
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
 
         public JobWrapper(string jobName)
@@ -178,38 +156,17 @@ namespace PeregrineDBWrapper
             // repopulate Properties?
         }
 
-        [Obsolete]
-        public void PutInDatabase()
-        {
-            ISingleResult<InsertJobResult> result = db.InsertJob(null, JobName, PlannedCount, 0, PercentComplete);
-            // should only have one job in result
-            foreach (InsertJobResult job in result)
-            {
-                JobId = job.JobID;
-                JobName = job.JobName;
-                PlannedCount = (int)job.PlannedCount;
-                PercentComplete = (double)job.PercentComplete;
-            }
-        }
-
         public void DeleteFromDatabase()
         {
             db.DeleteJob(JobId);
         }
     }
 
+    /// <summary>
+    /// This is a wrapper class for Message objects.
+    /// </summary>
     public class MessageWrapper : MessageDTO
     {
-        [Obsolete]
-        public MessageWrapper()
-        {
-            MessageId = GlobVar.UNASSIGNED_IDENTITY;
-            Message = "";      
-            Date = DateTime.Now;
-            Category = 0;
-            Priority = 0;
-        }
-
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
 
         public MessageWrapper(String message, Category category, Priority priority)
@@ -237,27 +194,15 @@ namespace PeregrineDBWrapper
             }
         }
 
-        [Obsolete]
-        public void PutInDatabase()
-        {
-            ISingleResult<InsertMessageResult> result = db.InsertMessage(null, Message, Date, (int)Category, (int)Priority);
-            // should only have one message in result
-            foreach (InsertMessageResult mess in result)
-            {
-                MessageId = mess.MessageID;
-                Message = mess.Message;
-                Date = mess.Date;
-                Category = (Category)mess.Category;
-                Priority = (Priority)mess.Priority;
-            }
-        }
-
         public void DeleteFromDatabase()
         {
             db.DeleteMessage(MessageId);
         }
     }
 
+    /// <summary>
+    /// This is a wrapper class for For message/job/process relationships.
+    /// </summary>
     public class LogRelWrapper
     {
         private int messageId;
@@ -321,21 +266,10 @@ namespace PeregrineDBWrapper
         }
     }
 
-    // for DB retrieval
-    public class DBSearchWrapper
-    {
-        public DBSearchWrapper()
-        {
-        }
 
-        //MessageDTO getMessage(int msg_id);
-
-        //List<ProcessDTO> getAllProcesses();
-
-        //List<ProcessSummary> getSummaryByPage(int pageNumber, int num_to_fetch, SortBy sortBy);
-    }
-
-    // for DB insertion / alteration
+    /// <summary>
+    /// Used to implement API calls for creating log messages.
+    /// </summary>
     public class DBLogWrapper
     {
         public DBLogWrapper()
