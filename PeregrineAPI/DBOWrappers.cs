@@ -34,8 +34,13 @@ namespace PeregrineDBWrapper
     {
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
         
-        // This constructor will retrieve a process from the DB by ProcessName or add it
-        // to the DB if it's not already there.
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProcessWrapper"/> class.
+        /// If given process name is in database, populated this object with database values.
+        /// If given process name is not in database, populate this object with default
+        /// values and store in database.
+        /// </summary>
+        /// <param name="procName">Name of a process.</param>
         public ProcessWrapper(string procName)
         {
             List<Process> result = db.GetProcessByName(procName).ToList<Process>();
@@ -62,6 +67,11 @@ namespace PeregrineDBWrapper
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProcessWrapper"/> class.
+        /// Populate object with values stored in database matching given process id.
+        /// </summary>
+        /// <param name="id">The id for a process.</param>
         public ProcessWrapper(int id)
         {
             ISingleResult<GetProcessResult> result = db.GetProcess(id);
@@ -74,6 +84,10 @@ namespace PeregrineDBWrapper
             }
         }
 
+        /// <summary>
+        /// Updates the process state both for current object and in the database.
+        /// </summary>
+        /// <param name="state">The process state.</param>
         public void Update(ProcessState state)
         {
             State = state;
@@ -82,6 +96,7 @@ namespace PeregrineDBWrapper
             // repopulate Properties?
         }
 
+        [Obsolete]
         public void DeleteFromDatabase()
         {
             db.DeleteProcess(ProcessId);
@@ -156,6 +171,7 @@ namespace PeregrineDBWrapper
             // repopulate Properties?
         }
 
+        [Obsolete]
         public void DeleteFromDatabase()
         {
             db.DeleteJob(JobId);
@@ -194,6 +210,7 @@ namespace PeregrineDBWrapper
             }
         }
 
+        [Obsolete]
         public void DeleteFromDatabase()
         {
             db.DeleteMessage(MessageId);
