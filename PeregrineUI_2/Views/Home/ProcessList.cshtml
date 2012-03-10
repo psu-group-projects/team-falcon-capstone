@@ -98,7 +98,10 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             <tr id="Process_@(process.ProcessId)">
                 <td>@process.ProcessName </td>
                 <td>@process.LastAction </td>
-                <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
+                <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") 
+                    <br /> ( : 
+                    @( ((int)(DateTime.Now.Subtract(process.MsgDate).TotalMinutes)).ToString()) minutes )
+                </td>
                 <td style="text-align: center;"><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/> </td>
                 <td>@if (process.MessageType > 1)
                     {

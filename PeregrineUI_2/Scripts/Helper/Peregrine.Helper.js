@@ -1,6 +1,7 @@
 ﻿/*
 Author   : Chinh T Cao
            Anh T Nguyen
+           Kyle Paulsen
 Version  : 1.0.0
 Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
@@ -220,6 +221,9 @@ what does this function do :
     This function is call when users perform sorting, searching or the automatic updating kicks in
 */
 function MainPageAjaxUpdate(page, sort_input, process_name) {
+    //alert("Input : " + page);
+    //alert("Input : " + sort_input);
+    //alert("Input : " + process_name);
     $.ajax({
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',
