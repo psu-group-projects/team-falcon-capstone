@@ -110,6 +110,13 @@ namespace PeregrineDBWrapper
     {
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JobWrapper"/> class.
+        /// If given job name is in database, populated this object with database values.
+        /// If given job name is not in database, populate this object with default
+        /// values and store in database.
+        /// </summary>
+        /// <param name="jobName">Name of the Job.</param>
         public JobWrapper(string jobName)
         {
             List<Job> result = db.GetJobByName(jobName).ToList<Job>();
@@ -139,6 +146,12 @@ namespace PeregrineDBWrapper
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JobWrapper"/> class.
+        /// Populate the object with values in database corresponding
+        /// to the given Job ID.
+        /// </summary>
+        /// <param name="id">The Job's ID.</param>
         public JobWrapper(int id)
         {
             ISingleResult<GetJobResult> result = db.GetJob(id);
@@ -152,6 +165,13 @@ namespace PeregrineDBWrapper
             }
         }
 
+        /// <summary>
+        /// Updates the current job's progress to specified percent.
+        /// Sets PlannedCount to default value and calculates
+        /// the completed count based on percentage.
+        /// Store current job progress in the database.
+        /// </summary>
+        /// <param name="percent">The percentage of Job completion.</param>
         public void Update(double percent)
         {
             PercentComplete = percent;
@@ -161,6 +181,12 @@ namespace PeregrineDBWrapper
             // repopulate Properties?
         }
 
+        /// <summary>
+        /// Updates the jobs progress to specified total and completed counts.
+        /// Calculates percentage complete and updates values in the database.
+        /// </summary>
+        /// <param name="total">The total number of Job tasks.</param>
+        /// <param name="completed">The number of completed Job tasks.</param>
         public void Update(int total, int completed)
         {
             if (total == 0) PercentComplete = 0.0;      // Should PercentComplete = 0 or 100, or throw exception?
@@ -185,6 +211,14 @@ namespace PeregrineDBWrapper
     {
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageWrapper"/> class.
+        /// Adds the message with given message, category, and priority
+        /// to the database.
+        /// </summary>
+        /// <param name="message">The message text.</param>
+        /// <param name="category">The message category.</param>
+        /// <param name="priority">The message priority.</param>
         public MessageWrapper(String message, Category category, Priority priority)
         {
             InsertMessageResult result = db.InsertMessage(GlobVar.UNASSIGNED_IDENTITY, message, DateTime.Now, (int)category, (int)priority).First();
@@ -195,7 +229,13 @@ namespace PeregrineDBWrapper
             Category = (Category)result.Category;
             Priority = (Priority)result.Priority;
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageWrapper"/> class.
+        /// Populates the object with values from the database matching the given
+        /// Message ID.
+        /// </summary>
+        /// <param name="id">The Message ID.</param>
         public MessageWrapper(int id)
         {
             ISingleResult<Message> result = db.GetMessage(id);
@@ -228,6 +268,13 @@ namespace PeregrineDBWrapper
 
         private PeregrineDBDataContext db = new PeregrineDBDataContext();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogRelWrapper"/> class.
+        /// Create a relationship between the given Message ID and Process ID
+        /// and store that relationship in the database.
+        /// </summary>
+        /// <param name="messageId">The Message ID.</param>
+        /// <param name="processId">The Process ID.</param>
         public LogRelWrapper(int messageId, int processId)
         {
             LogRel result = db.InsertLogRel(messageId, processId, null).First();
@@ -237,6 +284,14 @@ namespace PeregrineDBWrapper
             JobId = GlobVar.UNASSIGNED_IDENTITY;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogRelWrapper"/> class.
+        /// Create a relationship between the given Message ID, Process ID,
+        /// and Job ID, and store that relationship in the database.
+        /// </summary>
+        /// <param name="messageId">The Message ID.</param>
+        /// <param name="processId">The Process ID.</param>
+        /// <param name="jobId">The Job ID.</param>
         public LogRelWrapper(int messageId, int processId, int jobId)
         {
             LogRel result = db.InsertLogRel(messageId, processId, jobId).First();
@@ -246,6 +301,12 @@ namespace PeregrineDBWrapper
             JobId = (int)result.JobID;      //JobID is nullable in DB
         }
 
+        /// <summary>
+        /// Gets or sets the Message ID.
+        /// </summary>
+        /// <value>
+        /// The Message ID.
+        /// </value>
         public int MessageId
         {
             get
@@ -258,6 +319,12 @@ namespace PeregrineDBWrapper
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Process ID.
+        /// </summary>
+        /// <value>
+        /// The Process ID.
+        /// </value>
         public int ProcessId
         {
             get
@@ -270,6 +337,12 @@ namespace PeregrineDBWrapper
             }
         }
 
+        /// <summary>
+        /// Gets or sets the Job ID.
+        /// </summary>
+        /// <value>
+        /// The Job ID.
+        /// </value>
         public int JobId
         {
             get
@@ -289,10 +362,20 @@ namespace PeregrineDBWrapper
     /// </summary>
     public class DBLogWrapper
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBLogWrapper"/> class.
+        /// </summary>
         public DBLogWrapper()
         {
         }
 
+        /// <summary>
+        /// Logs a message for a given process.
+        /// </summary>
+        /// <param name="processName">Name of the process.</param>
+        /// <param name="message">The message text.</param>
+        /// <param name="category">The message category.</param>
+        /// <param name="priority">The message priority.</param>
         public void logProcessMessage(String processName, String message, Category category, Priority priority)
         {
             message = processName + ": " + message;
@@ -302,6 +385,12 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId); 
         }
 
+        /// <summary>
+        /// Logs the progress of a job, given as a percentage.
+        /// </summary>
+        /// <param name="jobName">Name of the job.</param>
+        /// <param name="processName">Name of the process associated with the job.</param>
+        /// <param name="percent">The job progress as a percentage.</param>
         public void logJobProgressAsPercentage(String jobName, String processName, double percent)
         {
             Category category = Category.PROGRESS;
@@ -318,6 +407,14 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
 
+        /// <summary>
+        /// Logs the progress of a job, given as a number of completed tasks
+        /// out of a total number of tasks.
+        /// </summary>
+        /// <param name="jobName">Name of the job.</param>
+        /// <param name="processName">Name of the process associated with the job.</param>
+        /// <param name="total">The total number of tasks.</param>
+        /// <param name="completed">The completed number of tasks.</param>
         public void logJobProgress(String jobName, String processName, int total, int completed)
         {
             Category category = Category.PROGRESS;
@@ -334,6 +431,11 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
 
+        /// <summary>
+        /// Logs the starting of a job.
+        /// </summary>
+        /// <param name="jobName">Name of the job.</param>
+        /// <param name="processName">Name of the process associated with the job.</param>
         public void logJobStart(String jobName, String processName)
         {
             Category category = Category.PROGRESS;
@@ -351,6 +453,12 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId); 
         }
 
+        /// <summary>
+        /// Logs the start of a job with a given number of total tasks.
+        /// </summary>
+        /// <param name="jobName">Name of the job.</param>
+        /// <param name="processName">Name of the process associated with the job.</param>
+        /// <param name="totalTasks">The number of total tasks for this job.</param>
         public void logJobStartWithTotalTasks(String jobName, String processName, int totalTasks)
         {
             Category category = Category.PROGRESS;
@@ -368,6 +476,11 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId);
         }
 
+        /// <summary>
+        /// Logs the completion of a job.
+        /// </summary>
+        /// <param name="jobName">Name of the job.</param>
+        /// <param name="processName">Name of the process associated with the job.</param>
         public void logJobComplete(String jobName, String processName)
         {
             Category category = Category.PROGRESS;
@@ -384,6 +497,10 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId, job.JobId);
         }
 
+        /// <summary>
+        /// Logs the starting of a process.
+        /// </summary>
+        /// <param name="processName">Name of the process.</param>
         public void logProcessStart(String processName)
         {
             Category category = Category.START;
@@ -401,6 +518,10 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
+        /// <summary>
+        /// Logs the shutdown of a process.
+        /// </summary>
+        /// <param name="processName">Name of the process.</param>
         public void logProcessShutdown(String processName)
         {
             Category category = Category.STOP;
@@ -414,6 +535,11 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
+        /// <summary>
+        /// Logs the change of a process' state.
+        /// </summary>
+        /// <param name="processName">Name of the process.</param>
+        /// <param name="state">The process state.</param>
         public void logProcessStateChange(String processName, ProcessState state)
         {
             Category category = Category.STATE_CHANGE;
@@ -429,6 +555,11 @@ namespace PeregrineDBWrapper
             LogRelWrapper rel = new LogRelWrapper(mess.MessageId, proc.ProcessId);
         }
 
+        /// <summary>
+        /// converts a ProcessesState enum to a string representation.
+        /// </summary>
+        /// <param name="state">The ProcessState enum value.</param>
+        /// <returns></returns>
         public String ProcessStateToString(ProcessState state)
         {
             String returnString;
