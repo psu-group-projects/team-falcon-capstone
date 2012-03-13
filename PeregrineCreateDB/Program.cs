@@ -18,6 +18,10 @@ using Microsoft.SqlServer.Management.Common;    // Requires SqlServer Assemblies
 
 namespace PeregrineCreateDB
 {
+    /// <summary>
+    /// Creates a Peregrine database with a given name on a local SQL server.
+    /// Also will install a database maintenance job for given database.
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
@@ -128,7 +132,14 @@ namespace PeregrineCreateDB
             connection.Close();
             if (quietMode == false) Console.WriteLine("Finished!");        
         }
-        
+
+        /// <summary>
+        /// Executes an SQL script on the given server for a given
+        /// database name.
+        /// </summary>
+        /// <param name="server">The SQL server intance.</param>
+        /// <param name="dbName">Name of the database on given server.</param>
+        /// <param name="script">The SQL script to run.</param>
         static void executeScript(Server server, string dbName, string script)
         {
             script = script + Environment.NewLine;
