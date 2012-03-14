@@ -195,26 +195,6 @@ namespace PeregrineAPI
         {
             logWrapper.logProcessStateChange(processName, state);
         }
-
-
-        //This method will be called automatically on some callback.
-        //http://www.mikesdotnetting.com/Article/129/Simple-task-Scheduling-using-Global.asax
-        public void cleanUpDatabase()
-        {
-            int interval = int.Parse(ConfigurationManager.AppSettings.Get("DB_Cleanup_Interval"));
-            int process_min_life = int.Parse(ConfigurationManager.AppSettings.Get("Process_Min_Life_Time"));
-
-            //call some stored proceedure to fetch the last cleanup datetime. (we will need to store this somewhere. maybe a file or a new table?)
-            //if ((now time) - (last cleanup time) > interval){
-            //  call stored proceedure to delete processes that are in a done state and (now - their datetime) > process_min_life
-            //}
-        }
-
-
-        public List<MessageDTO> getMessagesByProcessId(int processId, int pageSize, int pageNumber, SortBy sortBy, bool isShowStartUpAndShutdownCheckMarkEnabled)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 
