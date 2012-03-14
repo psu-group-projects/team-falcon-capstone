@@ -55,7 +55,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                         <a id="message_listing_popup_link_@(message.MessageID)" href='javascript:showpopup(@(message.MessageID), "This Process", document.getElementById(this.id))' style="text-decoration:none">...</a> 
                     }
                     </td>
-                    <td>@message.Priority </td>
+                    <td>@(message.Priority+1) </td>
                     <td class= "@if (message.Category == 5)
                                 {
                                     @:error
