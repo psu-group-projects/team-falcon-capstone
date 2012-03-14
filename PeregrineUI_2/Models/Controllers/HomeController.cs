@@ -20,6 +20,7 @@ namespace PeregrineUI_2.Controllers
     {
         private int PageSize;
         private int Refresh_Rate;
+        private int Msg_Length_Threshold;
 
         /// <summary>
         /// Initializes a new instance of the HomeController class.
@@ -153,6 +154,8 @@ namespace PeregrineUI_2.Controllers
                                                             Convert.ToInt32(SU_SD_msg),
                                                             PageSize);
 
+            Msg_Length_Threshold = Properties.Settings.Default.Message_Length;
+            ViewBag.Msg_Length_Threshold = Msg_Length_Threshold;
             return PartialView("MessageList", pagingContext);
         }
 

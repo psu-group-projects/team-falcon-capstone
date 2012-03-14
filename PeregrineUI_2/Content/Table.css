@@ -14,11 +14,48 @@ body {
 
 /*
 -----------------*/
-#process_table  {
+/*#process_table  {
     margin: 0 auto;
 	clear: both;
 	width: 100%;
+}*/
+
+#process_table  
+{
+	clear: both;
+	width: 100%;
 }
+
+#main_columm1
+{
+    clear: both;
+	width: 15%;
+}
+
+#main_columm2
+{
+    clear: both;
+	width: 40%;
+}
+
+#main_columm3
+{
+    clear: both;
+	width: 15%;
+}
+
+#main_columm4
+{
+    clear: both;
+	width: 15%;
+}
+
+#main_columm5
+{
+    clear: both;
+	width: 15%;
+}
+
 
 #process_table h4  {
     margin:0px; padding:0px;
