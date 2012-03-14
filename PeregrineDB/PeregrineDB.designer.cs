@@ -3665,6 +3665,8 @@ namespace PeregrineDB
 		
 		private System.Nullable<double> _Percentage;
 		
+		private System.Nullable<int> _LastMsgID;
+		
 		private string _LastMsg;
 		
 		private System.Nullable<System.DateTime> _MsgDate;
@@ -3743,8 +3745,25 @@ namespace PeregrineDB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsgID", DbType="Int")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.Nullable<int> LastMsgID
+		{
+			get
+			{
+				return this._LastMsgID;
+			}
+			set
+			{
+				if ((this._LastMsgID != value))
+				{
+					this._LastMsgID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public string LastMsg
 		{
 			get
@@ -3761,7 +3780,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgDate", DbType="DateTime")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
 		public System.Nullable<System.DateTime> MsgDate
 		{
 			get
@@ -3778,7 +3797,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgType", DbType="Int")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
 		public System.Nullable<int> MsgType
 		{
 			get
@@ -3806,6 +3825,8 @@ namespace PeregrineDB
 		private int _State;
 		
 		private System.Nullable<double> _Percentage;
+		
+		private System.Nullable<int> _LastMsgID;
 		
 		private string _LastMsg;
 		
@@ -3885,8 +3906,25 @@ namespace PeregrineDB
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsgID", DbType="Int")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.Nullable<int> LastMsgID
+		{
+			get
+			{
+				return this._LastMsgID;
+			}
+			set
+			{
+				if ((this._LastMsgID != value))
+				{
+					this._LastMsgID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastMsg", DbType="NVarChar(500)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public string LastMsg
 		{
 			get
@@ -3903,7 +3941,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgDate", DbType="DateTime")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
 		public System.Nullable<System.DateTime> MsgDate
 		{
 			get
@@ -3920,7 +3958,7 @@ namespace PeregrineDB
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgType", DbType="Int")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
 		public System.Nullable<int> MsgType
 		{
 			get

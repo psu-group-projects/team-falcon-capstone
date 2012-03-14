@@ -403,6 +403,7 @@
       <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Percentage" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="LastMsgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LastMsg" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Column Name="MsgDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="MsgType" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -415,6 +416,7 @@
       <Column Name="ProcessName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Percentage" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="LastMsgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LastMsg" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Column Name="MsgDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="MsgType" Type="System.Int32" DbType="Int" CanBeNull="true" />

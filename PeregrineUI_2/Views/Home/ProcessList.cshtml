@@ -97,7 +97,13 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             <!-- Show summary -->
             <tr id="Process_@(process.ProcessId)">
                 <td>@process.ProcessName </td>
-                <td>@process.LastAction </td>
+                <td>
+                @process.LastAction
+                @if (process.MessageLength > 60)
+                {                      
+                    <a id="message_popup_link_@(process.MessageID)" class="view_full_message_link_main_page" data-message-id="@(process.MessageID)" data-process-name="@(process.ProcessName.Trim())" style="text-decoration:none">...</a> 
+                }   
+                </td>
                 <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") 
                     <br /> ( : 
                     @( ((int)(DateTime.Now.Subtract(process.MsgDate).TotalMinutes)).ToString()) minutes )

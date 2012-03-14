@@ -86,7 +86,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             @message.Content
                             @if (message.MessageLength > @ViewBag.Msg_Length_Threshold)
                             {                      
-                                <a id="@(message.Content)" href='javascript:showpopup(@(message.MessageID), "@(message.ProcessName.Trim())", document.getElementById(this.id))' style="text-decoration:none">...</a> 
+                                <a id="message_popup_link_@(message.MessageID)" href='javascript:showpopup(@(message.MessageID), "@(message.ProcessName.Trim())", document.getElementById(this.id))' style="text-decoration:none">...</a> 
                             }                                                              
                     </td>
                     <td id="@(message.ProcessName)" >
