@@ -211,7 +211,7 @@ function ProcessList_partial_page_setup(acc_page, sort_type) {
         MainPageAjaxUpdate((event.data.curPage + 1), event.data.curSort, document.getElementById('main_page_search_input').value);
     });
     $(".view_full_message_link_main_page").click(function (event) {
-        showpopup($(this).data("message-id"), $(this).data("message-id"));
+        showpopup($(this).data("message-id"), $(this).data("process-name"));
         return false;
     });         
 }
