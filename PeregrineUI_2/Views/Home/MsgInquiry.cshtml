@@ -41,9 +41,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 <label>Search message by message priority:</label>
 <select id="process_prio_input" onchange="updateMsgs()">
     <option value="-1">Any</option>                                            
-    <option value="0">Low</option>
-    <option value="1">Medium</option>
-    <option value="2">High</option>
+    <option value="0">1</option>
+    <option value="1">2</option>
+    <option value="2">3</option>
 </select>
 
 <br />
@@ -70,5 +70,3 @@ With the long message, the full detail of a message will the put into this div a
     <div id="popwindow_message"></div>
     <div id="closebutton" ><input type="button" value="Close" onclick="showpopup('-1', '');" /></div>
 </div>
-
-<div id="message_modal" style="display: none; max-height: 200px; overflow: auto;"></div>

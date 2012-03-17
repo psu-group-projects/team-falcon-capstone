@@ -8,7 +8,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
 @model PeregrineUI_2.Models.PageData<PeregrineUI_2.Models.Message>
 
 <script type="text/javascript">
-   
+
     $(document).ready(function () {   
         msg_inquiry_accumulate_page = @(Model.CurrentPage);
         msg_inquiry_current_sort    = @(Model.SortingType);
@@ -84,9 +84,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <tr>           
                     <td>
                             @message.Content
-                            @if (message.MessageLength > 60)
+                            @if (message.MessageLength > @ViewBag.Msg_Length_Threshold)
                             {                      
-                                <a id="@(message.Content)" href='javascript:showpopup(@(message.MessageID), "@(message.ProcessName.Trim())", document.getElementById(this.id))' style="text-decoration:none">...</a> 
+                                <a id="message_popup_link_@(message.MessageID)" href='javascript:showpopup(@(message.MessageID), "@(message.ProcessName.Trim())", document.getElementById(this.id))' style="text-decoration:none">...</a> 
                             }                                                              
                     </td>
                     <td id="@(message.ProcessName)" >
@@ -95,12 +95,9 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                             <a href="Index?Process=@message.ProcessName">@message.ProcessName</a>
                             </div>
                     </td>
-                    <td>    @message.Priority.ToString() </td>
+                    <td>    @(message.Priority+1)</td>
                     <td>    @message.MsgType </td>
-                    <td>    @message.Date.ToString("yyyy-MM-dd HH:mm tt") 
-                            <br /> ( : 
-                            @( ((int)(DateTime.Now.Subtract(message.Date).TotalMinutes)).ToString()) minutes )
-                    </td>
+                    <td>    @message.Date.ToString("yyyy-MM-dd HH:mm tt") </td>                        
                 </tr>
             }
         </tbody>

@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\PeregrineUI_2.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -82,14 +83,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\arrows.png" />
-    <Content Include="Content\images\down.png" />
     <Content Include="Content\images\green.png" />
     <Content Include="Content\images\header_bkg.png" />
     <Content Include="Content\images\red.png" />
     <Content Include="Content\images\row_bkg.png" />
     <Content Include="Content\images\row_bkg2.png" />
-    <Content Include="Content\images\sad.jpg" />
-    <Content Include="Content\images\up.png" />
     <Content Include="Content\images\yellow.png" />
     <Content Include="Content\Table.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

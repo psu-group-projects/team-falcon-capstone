@@ -33,6 +33,7 @@ namespace PeregrineUI_2.Models.Repository
             List<GetPageOfMessageSummaryResult> MessageSummaryData;
             SortBy sort;
             SortDirection sortd;
+            int Msg_Length_Threshold;
 
             switch (sortColumm)
             {
@@ -67,6 +68,7 @@ namespace PeregrineUI_2.Models.Repository
             }
 
             MessageSummaryData = service.getMessagesForMessageInq(searchprocess, page * pagesize, searchpriority, SU_SD_msg, sort, sortd);
+            Msg_Length_Threshold = Properties.Settings.Default.Message_Length;
 
             foreach (GetPageOfMessageSummaryResult summary in MessageSummaryData)
             {
@@ -79,7 +81,7 @@ namespace PeregrineUI_2.Models.Repository
                     ProcessName = summary.ProcName,
                     ProcessState = state,
                     Category = summary.Category,
-                    Content = summary.Message.Substring(0, Math.Min(60, summary.Message.Length)),
+                    Content = summary.Message.Substring(0, Math.Min(Msg_Length_Threshold, summary.Message.Length)),
                     MessageLength = summary.Message.Length,
                     Date = summary.Date,
                     Priority = summary.Priority,

@@ -31,7 +31,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
     <!-- Table header: Display column names, use checkboxes for Sorting -->
     <thead id = "process_list_header">     
         <tr>
-            <td>
+            <td id = "main_columm1">
                 <div style="float: left">Process Name</div> 
                 <div style="float: right">           
                    
@@ -44,7 +44,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                                                                                                           }"></div></div>
                 </div>                               
             </td>
-            <td>
+            <td id = "main_columm2">
                 <div style="float: left">Last Message</div> 
                 <div style="float: right">           
                     
@@ -57,7 +57,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                                                                                                           }"></div></div>
                 </div>            
             </td>
-            <td>
+            <td id = "main_columm3">
                 <div style="float: left">Message Date</div> 
                 <div style="float: right">           
                     
@@ -70,7 +70,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                                                                                                           }"></div></div>
                 </div>              
             </td>
-            <td>
+            <td id = "main_columm4">
                 <div style="float: left">Process State</div> 
                 <div style="float: right">           
                     
@@ -83,7 +83,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                                                                                                                                           }"></div></div>
                 </div>                 
             </td>
-            <td>
+            <td id = "main_columm5">
                 Current Job's Progress
             </td>
         </tr>
@@ -97,8 +97,17 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
             <!-- Show summary -->
             <tr id="Process_@(process.ProcessId)">
                 <td>@process.ProcessName </td>
-                <td>@process.LastAction </td>
-                <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") </td>
+                <td>
+                @process.LastAction
+                @if (process.MessageLength > 60)
+                {                      
+                    <a id="message_popup_link_@(process.MessageID)" class="view_full_message_link_main_page" data-message-id="@(process.MessageID)" data-process-name="@(process.ProcessName.Trim())" style="text-decoration:none">...</a> 
+                }   
+                </td>
+                <td>@process.MsgDate.ToString("yyyy-MM-dd HH:mm tt") 
+                    <br /> ( : 
+                    @( ((int)(DateTime.Now.Subtract(process.MsgDate).TotalMinutes)).ToString()) minutes )
+                </td>
                 <td style="text-align: center;"><img src="../../Content/images/@(process.ProcessState.Trim()).png" alt=""/> </td>
                 <td>@if (process.MessageType > 1)
                     {

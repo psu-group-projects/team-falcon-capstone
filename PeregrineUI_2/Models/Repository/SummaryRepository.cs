@@ -73,7 +73,7 @@ namespace PeregrineUI_2.Models.Repository
                 ProcessSummaryData = service.getSummaryByPage(1, pagesize * page, sort, sortd);
                 foreach (GetPageOfProcessSummaryResult summary in ProcessSummaryData)
                 {
-                    int percent, MsgType;
+                    int percent, MsgType, MsgID;
 
                     if(summary.Percentage != null)
                         percent = (int)summary.Percentage;
@@ -85,7 +85,12 @@ namespace PeregrineUI_2.Models.Repository
                     else
                         MsgType = 0;
 
-                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
+                    if (summary.LastMsgID != null)
+                        MsgID = (int)summary.LastMsgID;
+                    else
+                        MsgID = 0;
+
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg.Substring(0, Math.Min(60, summary.LastMsg.Length)), MessageLength = summary.LastMsg.Length, MessageID = MsgID, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
                 }
             }
             else
@@ -95,13 +100,23 @@ namespace PeregrineUI_2.Models.Repository
                 OneProcessSummary = service.getProcessByName(process_name);
                 foreach (GetProcessSummaryByNameResult summary in OneProcessSummary)
                 {
-                    int percent;
+                    int percent, MsgID, MsgType;
                     if (summary.Percentage != null)
                         percent = (int)summary.Percentage;
                     else
                         percent = 0;
-                    
-                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = (int)summary.MsgType, JobPercentage = percent });
+
+                    if (summary.MsgType != null)
+                        MsgType = (int)summary.MsgType;
+                    else
+                        MsgType = 0;
+
+                    if (summary.LastMsgID != null)
+                        MsgID = (int)summary.LastMsgID;
+                    else
+                        MsgID = 0;
+
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg.Substring(0, Math.Min(60, summary.LastMsg.Length)), MessageLength = summary.LastMsg.Length, MessageID = MsgID, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
                 }
             }
     

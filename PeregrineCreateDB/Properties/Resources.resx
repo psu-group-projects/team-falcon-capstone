@@ -120,7 +120,7 @@
   <data name="CreateDatabaseSql" xml:space="preserve">
     <value>USE [PeregrineDB]
 GO
-/****** Object:  Table [dbo].[Job]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  Table [dbo].[Job]    Script Date: 03/13/2012 19:09:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -137,7 +137,7 @@ CREATE TABLE [dbo].[Job](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[GetStartStopMessagesWithProcessID]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetStartStopMessagesWithProcessID]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -219,7 +219,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfMessages]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfMessages]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -298,7 +298,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfMessageSummary]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfMessageSummary]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -412,7 +412,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithPercent]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithPercent]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -486,7 +486,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummary]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummary]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -509,7 +509,7 @@ AS
 	-- interfering with SELECT statements.
 	SET NOCOUNT OFF;
 
-	DECLARE @SQLString nvarchar(1200);
+	DECLARE @SQLString nvarchar(2000);
 	DECLARE @Orderby nvarchar(100);
 	DECLARE @Direction nvarchar(4);
 
@@ -538,6 +538,7 @@ AS
 		pro.ProcessName,
 		pro.State,
 		(SELECT TOP 1 j.PercentComplete FROM dbo.Job AS j LEFT JOIN dbo.LogRel AS lo ON j.JobID = lo.JobID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID LEFT JOIN dbo.Message AS msg ON lo.MessageID = msg.MessageID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS Percentage,
+		(SELECT TOP 1 msg.MessageID FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsgID,
 		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
 		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate,
 		(SELECT TOP 1 msg.Category FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgType
@@ -551,19 +552,20 @@ AS
 		pro.ProcessName,
 		pro.State,
 		(SELECT TOP 1 j.PercentComplete FROM dbo.Job AS j LEFT JOIN dbo.LogRel AS lo ON j.JobID = lo.JobID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID LEFT JOIN dbo.Message AS msg ON lo.MessageID = msg.MessageID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS Percentage,
+		(SELECT TOP 1 msg.MessageID FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsgID,
 		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
 		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate,
 		(SELECT TOP 1 msg.Category FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgType
 	FROM
 		dbo.Process AS pro
-	ORDER BY MsgDate DESC
-	*/
+	ORDER BY MsgDate DESC*/
+	
 	
 	EXECUTE sp_executesql @SQLString
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithProcessID]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithProcessID]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -645,7 +647,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithCategory]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageMessagesWithCategory]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -746,7 +748,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessagesWithProcessID]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessagesWithProcessID]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -828,7 +830,7 @@ AS
 
 RETURN
 GO
-/****** Object:  Table [dbo].[Process]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  Table [dbo].[Process]    Script Date: 03/13/2012 19:09:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -843,7 +845,7 @@ CREATE TABLE [dbo].[Process](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Message]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  Table [dbo].[Message]    Script Date: 03/13/2012 19:09:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -860,7 +862,7 @@ CREATE TABLE [dbo].[Message](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LogRel]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  Table [dbo].[LogRel]    Script Date: 03/13/2012 19:09:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -875,7 +877,7 @@ CREATE TABLE [dbo].[LogRel](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyPriority]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyPriority]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -902,7 +904,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyMsg]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyMsg]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -926,7 +928,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyID]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyID]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -950,7 +952,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyDate]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyDate]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -974,7 +976,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyCategory]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessageOrderbyCategory]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -997,7 +999,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetMessage]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1024,7 +1026,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPlannedCount]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPlannedCount]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1048,7 +1050,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPercentComplete]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyPercentComplete]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1072,7 +1074,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1096,7 +1098,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyID]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyID]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1120,7 +1122,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobOrderbyCompletedCount]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobOrderbyCompletedCount]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1144,7 +1146,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJobByName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1171,7 +1173,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetJob]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1198,7 +1200,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcess]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1241,7 +1243,7 @@ WHERE
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyState]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyState]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1265,7 +1267,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1289,7 +1291,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyID]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessOrderbyID]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1313,7 +1315,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessIDFromName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessIDFromName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1340,7 +1342,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessByName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1367,7 +1369,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcess]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1394,7 +1396,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[InsertJob]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1428,7 +1430,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[InsertProcess2]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1460,7 +1462,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[InsertProcess]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1494,7 +1496,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[InsertMessage]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1528,7 +1530,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[SearchProcessByName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[SearchProcessByName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1556,7 +1558,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[SearchMessageBySting]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[SearchMessageBySting]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1584,7 +1586,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[SearchJobByName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[SearchJobByName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1612,7 +1614,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[ShowJobs]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1639,7 +1641,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateProcess]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1669,7 +1671,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateMessage]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1701,7 +1703,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[UpdateJob]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1733,7 +1735,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[ShowProcesses]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1753,7 +1755,7 @@ FROM         dbo.Process
 
 return
 GO
-/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[ShowMessages]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1780,7 +1782,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetTable1]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1808,7 +1810,7 @@ AS
 	from Process 
 	RETURN
 GO
-/****** Object:  View [dbo].[ViewJob]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  View [dbo].[ViewJob]    Script Date: 03/13/2012 19:09:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1929,7 +1931,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewJob'
 GO
-/****** Object:  View [dbo].[ViewProcess]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  View [dbo].[ViewProcess]    Script Date: 03/13/2012 19:09:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2050,7 +2052,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewProcess'
 GO
-/****** Object:  View [dbo].[ViewMessage]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  View [dbo].[ViewMessage]    Script Date: 03/13/2012 19:09:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2171,7 +2173,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewMessage'
 GO
-/****** Object:  View [dbo].[ViewLogRel]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  View [dbo].[ViewLogRel]    Script Date: 03/13/2012 19:09:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2292,7 +2294,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewLogRel'
 GO
-/****** Object:  View [dbo].[ViewAll]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  View [dbo].[ViewAll]    Script Date: 03/13/2012 19:09:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2447,7 +2449,7 @@ End
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'ViewAll'
 GO
-/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[ShowLogRel]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2475,7 +2477,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[ShowAll]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2505,7 +2507,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[InsertLogRel]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2537,7 +2539,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetTopMessageFromProcessId]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2572,7 +2574,7 @@ AS
 		LogRel.ProcessID = @ProcessId 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetProcessSummaryByName]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetProcessSummaryByName]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2598,6 +2600,7 @@ AS
 		pro.ProcessName,
 		pro.State,
 		(SELECT TOP 1 j.PercentComplete FROM dbo.Job AS j LEFT JOIN dbo.LogRel AS lo ON j.JobID = lo.JobID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID LEFT JOIN dbo.Message AS msg ON lo.MessageID = msg.MessageID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS Percentage,
+		(SELECT TOP 1 msg.MessageID FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsgID,
 		(SELECT TOP 1 msg.Message FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS LastMsg,
 		(SELECT TOP 1 msg.Date FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgDate,
 		(SELECT TOP 1 msg.Category FROM dbo.Message AS msg LEFT JOIN dbo.LogRel AS lo ON msg.MessageID = lo.MessageID LEFT JOIN dbo.Process AS pro2 ON lo.ProcessID = pro2.ProcessID WHERE lo.ProcessID = pro.ProcessID ORDER BY msg.Date DESC) AS MsgType
@@ -2608,7 +2611,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithJobPercenComplete]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfProcessSummaryWithJobPercenComplete]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2638,7 +2641,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfMessagesByProcessId]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfMessagesByProcessId]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2689,7 +2692,7 @@ WHERE
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[GetPageOfJobs]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[GetPageOfJobs]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2740,7 +2743,7 @@ WHERE
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteProcess]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2769,7 +2772,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteOldMessages]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteOldMessages]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2818,7 +2821,7 @@ AS
 
 RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteMessage]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2847,7 +2850,7 @@ AS
 
 	RETURN
 GO
-/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 02/28/2012 18:50:26 ******/
+/****** Object:  StoredProcedure [dbo].[DeleteJob]    Script Date: 03/13/2012 19:09:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2876,19 +2879,19 @@ AS
 
 	RETURN
 GO
-/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  ForeignKey [FK_LogRel_Job]    Script Date: 03/13/2012 19:09:31 ******/
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Job] FOREIGN KEY([JobID])
 REFERENCES [dbo].[Job] ([JobID])
 GO
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Job]
 GO
-/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  ForeignKey [FK_LogRel_Message]    Script Date: 03/13/2012 19:09:31 ******/
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Message] FOREIGN KEY([MessageID])
 REFERENCES [dbo].[Message] ([MessageID])
 GO
 ALTER TABLE [dbo].[LogRel] CHECK CONSTRAINT [FK_LogRel_Message]
 GO
-/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 02/28/2012 18:50:27 ******/
+/****** Object:  ForeignKey [FK_LogRel_Process]    Script Date: 03/13/2012 19:09:31 ******/
 ALTER TABLE [dbo].[LogRel]  WITH CHECK ADD  CONSTRAINT [FK_LogRel_Process] FOREIGN KEY([ProcessID])
 REFERENCES [dbo].[Process] ([ProcessID])
 GO
@@ -2980,7 +2983,7 @@ GO</value>
     <value>USE [master]
 GO
 
-/****** Object:  Database [PeregrineDB]    Script Date: 02/28/2012 18:49:09 ******/
+/****** Object:  Database [PeregrineDB]    Script Date: 03/13/2012 19:07:26 ******/
 IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'PeregrineDB')
 DROP DATABASE [PeregrineDB]
 GO
@@ -2988,7 +2991,7 @@ GO
 USE [master]
 GO
 
-/****** Object:  Database [PeregrineDB]    Script Date: 02/28/2012 18:49:09 ******/
+/****** Object:  Database [PeregrineDB]    Script Date: 03/13/2012 19:07:26 ******/
 CREATE DATABASE [PeregrineDB] ON  PRIMARY 
 ( NAME = N'PeregrineDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
  LOG ON 

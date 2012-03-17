@@ -1,6 +1,7 @@
 ﻿/*
 Author   : Chinh T Cao
            Anh T Nguyen
+           Kyle Paulsen
 Version  : 1.0.0
 Date     : 12/29/2011
 Copyright: Capstone Project Team Falcon 2011 All right reserved
@@ -209,6 +210,10 @@ function ProcessList_partial_page_setup(acc_page, sort_type) {
     });
     $("#main_page_load_more").bind("click", { curPage: main_page_accumulate_page, curSort: main_page_current_sort }, function (event) {
         MainPageAjaxUpdate((event.data.curPage + 1), event.data.curSort, document.getElementById('main_page_search_input').value);
+    });
+    $(".view_full_message_link_main_page").click(function (event) {
+        showpopup($(this).data("message-id"), $(this).data("process-name"));
+        return false;
     });         
 }
 
@@ -220,6 +225,9 @@ what does this function do :
     This function is call when users perform sorting, searching or the automatic updating kicks in
 */
 function MainPageAjaxUpdate(page, sort_input, process_name) {
+    //alert("Input : " + page);
+    //alert("Input : " + sort_input);
+    //alert("Input : " + process_name);
     $.ajax({
         type: "POST",
         url: '/Home/MainPageAjaxUpdate',

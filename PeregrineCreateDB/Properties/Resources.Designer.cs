@@ -63,7 +63,7 @@ namespace PeregrineCreateDB.Properties {
         /// <summary>
         ///   Looks up a localized string similar to USE [PeregrineDB]
         ///GO
-        ////****** Object:  Table [dbo].[Job]    Script Date: 02/28/2012 18:50:27 ******/
+        ////****** Object:  Table [dbo].[Job]    Script Date: 03/13/2012 19:09:31 ******/
         ///SET ANSI_NULLS ON
         ///GO
         ///SET QUOTED_IDENTIFIER ON
@@ -113,7 +113,7 @@ namespace PeregrineCreateDB.Properties {
         ///   Looks up a localized string similar to USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 02/28/2012 18:49:09 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 03/13/2012 19:07:26 ******/
         ///IF  EXISTS (SELECT name FROM sys.databases WHERE name = N&apos;PeregrineDB&apos;)
         ///DROP DATABASE [PeregrineDB]
         ///GO
@@ -121,7 +121,7 @@ namespace PeregrineCreateDB.Properties {
         ///USE [master]
         ///GO
         ///
-        ////****** Object:  Database [PeregrineDB]    Script Date: 02/28/2012 18:49:09 ******/
+        ////****** Object:  Database [PeregrineDB]    Script Date: 03/13/2012 19:07:26 ******/
         ///CREATE DATABASE [PeregrineDB] ON  PRIMARY 
         ///( NAME = N&apos;PeregrineDB&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\PeregrineDB.mdf&apos; , SIZE = 3072KB , MAXSIZE  [rest of string was truncated]&quot;;.
         /// </summary>

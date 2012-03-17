@@ -38,6 +38,22 @@ namespace PeregrineUI_2.Models
         public string LastAction { get; set; }
 
         /// <summary>
+        /// Gets or sets the length of the message.
+        /// </summary>
+        /// <value>
+        /// The length of the message.
+        /// </value>
+        public int MessageLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message ID.
+        /// </summary>
+        /// <value>
+        /// The message ID.
+        /// </value>
+        public int MessageID { get; set; }
+
+        /// <summary>
         /// Gets or sets the MSG date.
         /// </summary>
         /// <value>
