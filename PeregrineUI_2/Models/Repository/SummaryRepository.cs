@@ -90,7 +90,7 @@ namespace PeregrineUI_2.Models.Repository
                     else
                         MsgID = 0;
 
-                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg.Substring(0, Math.Min(60, summary.LastMsg.Length)), MessageLength = summary.LastMsg.Length, MessageID = MsgID, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
+                    SummaryData.Add(new Process { ProcessId = summary.ProcessID, ProcessName = summary.ProcessName, LastAction = summary.LastMsg.Substring(0, Math.Min(Properties.Settings.Default.Message_Length, summary.LastMsg.Length)), MessageLength = summary.LastMsg.Length, MessageID = MsgID, MsgDate = (System.DateTime)summary.MsgDate, _ProcessState = summary.State.ToString(), MessageType = MsgType, JobPercentage = percent });
                 }
             }
             else

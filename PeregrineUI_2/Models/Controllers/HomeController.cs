@@ -67,6 +67,8 @@ namespace PeregrineUI_2.Controllers
             sort_type = sort_input % 2;  // sort_type = [0 for accending and 1 for descending]
 
             var pagingContext = SummaryRepository.GetSummaryDataByPage(page, sort_columm, sort_type, process_name, PageSize);
+            Msg_Length_Threshold = Properties.Settings.Default.Message_Length;
+            ViewBag.Msg_Length_Threshold = Msg_Length_Threshold;
             return PartialView("ProcessList", pagingContext);
         }
 
@@ -81,6 +83,8 @@ namespace PeregrineUI_2.Controllers
         public ActionResult ProcessMsgUpdate(int page, int processID)
         {
             var pagingContext = MessageRepository.GetMessageByProcess(page, PageSize, processID);
+            Msg_Length_Threshold = Properties.Settings.Default.Message_Length;
+            ViewBag.Msg_Length_Threshold = Msg_Length_Threshold;
             return PartialView("Message", pagingContext);
         }
 

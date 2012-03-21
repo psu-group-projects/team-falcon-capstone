@@ -34,7 +34,7 @@ namespace PeregrineUI_2.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int Page_Size {
             get {
                 return ((int)(this["Page_Size"]));
@@ -43,7 +43,7 @@ namespace PeregrineUI_2.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int Message_Length {
             get {
                 return ((int)(this["Message_Length"]));

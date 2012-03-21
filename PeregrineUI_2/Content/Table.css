@@ -14,11 +14,6 @@ body {
 
 /*
 -----------------*/
-/*#process_table  {
-    margin: 0 auto;
-	clear: both;
-	width: 100%;
-}*/
 
 #process_table  
 {
@@ -55,7 +50,6 @@ body {
     clear: both;
 	width: 15%;
 }
-
 
 #process_table h4  {
     margin:0px; padding:0px;
@@ -130,12 +124,42 @@ body {
 /*
 ---For message inquiry page--------------*/
 
-#msg_list_table  {
-    margin: 0 auto;
+#msg_list_table  
+{
 	clear: both;
 	width: 100%;
- }
+}
 
+#msg_page_col1
+{
+    clear: both;
+	width: 50%;
+}
+
+#msg_page_col2
+{
+    clear: both;
+	width: 20%;
+}
+
+#msg_page_col3
+{
+    clear: both;
+	width: 10%;
+}
+
+#msg_page_col4
+{
+    clear: both;
+	width: 10%;
+}
+
+#msg_page_col5
+{
+    clear: both;
+	width: 10%;
+}
+ 
 #msg_list_table h4  {
     margin:0px; padding:0px;
 }

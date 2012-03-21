@@ -99,7 +99,7 @@ Copyright: Capstone Project Team Falcon 2011 All right reserved
                 <td>@process.ProcessName </td>
                 <td>
                 @process.LastAction
-                @if (process.MessageLength > 60)
+                @if (process.MessageLength > @ViewBag.Msg_Length_Threshold)
                 {                      
                     <a id="message_popup_link_@(process.MessageID)" class="view_full_message_link_main_page" data-message-id="@(process.MessageID)" data-process-name="@(process.ProcessName.Trim())" style="text-decoration:none">...</a> 
                 }   

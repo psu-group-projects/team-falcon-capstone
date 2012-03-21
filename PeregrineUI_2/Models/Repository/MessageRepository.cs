@@ -30,7 +30,7 @@ namespace PeregrineUI_2.Models.Repository
 
             foreach (PeregrineDB.Message m in message_list)
             {
-                MessageByProcess.Add(new Message { Category = m.Category, Date = m.Date, Content = m.Message1.Substring(0, Math.Min(60, m.Message1.Length)), MessageLength = m.Message1.Length, MessageID = m.MessageID, Priority = m.Priority });
+                MessageByProcess.Add(new Message { Category = m.Category, Date = m.Date, Content = m.Message1.Substring(0, Math.Min(Properties.Settings.Default.Message_Length, m.Message1.Length)), MessageLength = m.Message1.Length, MessageID = m.MessageID, Priority = m.Priority });
             }
 
             // Fill out the info of PageData var type
